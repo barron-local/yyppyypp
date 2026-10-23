@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevOps Skills Competition Master Guide - IT Program & Network</title>
+  <!-- Google Fonts: Inter & Sarabun -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Sarabun', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            notion: {
+              bg: '#ffffff',
+              darkBg: '#191919',
+              sidebar: '#fbfbfa',
+              darkSidebar: '#202020',
+              border: '#edece9',
+              darkBorder: '#2f2f2f',
+              text: '#37352f',
+              darkText: '#d4d4d4',
+              muted: '#787774',
+              darkMuted: '#9b9b9b',
+              callout: '#f7f6f3',
+              darkCallout: '#252525',
+              blueBg: '#e8f3f9',
+              darkBlueBg: '#1c2834',
+              yellowBg: '#fbf3db',
+              darkYellowBg: '#322b1c',
+              redBg: '#fbe4e4',
+              darkRedBg: '#351f1f',
+              greenBg: '#edf6ed',
+              darkGreenBg: '#1c2e20',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', 'Sarabun', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+    /* Notion style scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 3px; }
+    .dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); }
+    /* Notion toggle styling */
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] > summary .arrow-icon { transform: rotate(90deg); }
+  </style>
+</head>
+<body class="h-full bg-notion-bg text-notion-text dark:bg-notion-darkBg dark:text-notion-darkText transition-colors duration-150 flex flex-col md:flex-row antialiased">
+
+  <!-- ========================================================================= -->
+  <!-- NOTION SIDEBAR NAVIGATION -->
+  <!-- ========================================================================= -->
+  <aside id="sidebar" class="w-full md:w-72 bg-notion-sidebar dark:bg-notion-darkSidebar border-r border-notion-border dark:border-notion-darkBorder flex flex-col h-auto md:h-screen sticky top-0 shrink-0 z-40">
+    <!-- Workspace Header -->
+    <div class="p-3 border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-5 h-5 bg-black dark:bg-white rounded flex items-center justify-center text-white dark:text-black font-bold text-xs">N</div>
+        <span class="font-semibold text-sm tracking-tight truncate">DevOps Competition (58)</span>
+      </div>
+      <button onclick="toggleDarkMode()" class="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-notion-muted dark:text-notion-darkMuted" title="Toggle Theme">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+      </button>
+    </div>
+
+    <!-- Quick Search Filter -->
+    <div class="p-2 border-b border-notion-border dark:border-notion-darkBorder">
+      <input type="text" id="sidebar-search" oninput="filterNavItems()" placeholder="Search sections..." 
+        class="w-full px-2.5 py-1 text-xs rounded bg-white dark:bg-notion-darkBg border border-notion-border dark:border-notion-darkBorder focus:outline-none focus:ring-1 focus:ring-slate-400">
+    </div>
+
+    <!-- Navigation Tree Links -->
+    <nav class="flex-1 overflow-y-auto p-2 space-y-0.5 text-xs text-notion-text dark:text-notion-darkText" id="nav-list">
+      <div class="text-[10px] font-semibold tracking-wider text-notion-muted dark:text-notion-darkMuted px-2 py-1 uppercase">Overview & Rules</div>
+      <a href="#overview" class="nav-item flex items-center gap-2 px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+        <span class="truncate">Competition Overview & 7h Rules</span>
+      </a>
+      <a href="#team-strategy" class="nav-item flex items-center gap-2 px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+        <span class="truncate">3-Person Team Strategy</span>
+      </a>
+
+      <div class="text-[10px] font-semibold tracking-wider text-notion-muted dark:text-notion-darkMuted px-2 py-1 uppercase mt-3">Module Checklist</div>
+      <a href="#sec-network" class="nav-item flex items-center justify-between px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+          <span class="truncate">1. Network & Cisco L3</span>
+        </div>
+        <span class="font-mono text-[10px] px-1.5 py-0.2 bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300 rounded">13 pts</span>
+      </a>
+      <a href="#sec-server" class="nav-item flex items-center justify-between px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+          <span class="truncate">2. Server, VM & DevOps</span>
+        </div>
+        <span class="font-mono text-[10px] px-1.5 py-0.2 bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300 rounded">24 pts</span>
+      </a>
+      <a href="#sec-design" class="nav-item flex items-center justify-between px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span class="truncate">3. System Design & API</span>
+        </div>
+        <span class="font-mono text-[10px] px-1.5 py-0.2 bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 rounded">20 pts</span>
+      </a>
+      <a href="#sec-backend" class="nav-item flex items-center justify-between px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+          <span class="truncate">4. Node.js Backend API</span>
+        </div>
+        <span class="font-mono text-[10px] px-1.5 py-0.2 bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 rounded">10 pts</span>
+      </a>
+      <a href="#sec-frontend" class="nav-item flex items-center justify-between px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
+          <span class="truncate">5. Frontend & Automated Test</span>
+        </div>
+        <span class="font-mono text-[10px] px-1.5 py-0.2 bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300 rounded">23 pts</span>
+      </a>
+      <a href="#sec-iot" class="nav-item flex items-center justify-between px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+          <span class="truncate">6. IoT & MQTT (Option)</span>
+        </div>
+        <span class="font-mono text-[10px] px-1.5 py-0.2 bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300 rounded">10 pts</span>
+      </a>
+      <a href="#sec-presentation" class="nav-item flex items-center justify-between px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+          <span class="truncate">7. Presentation & 3 Q&A</span>
+        </div>
+        <span class="font-mono text-[10px] px-1.5 py-0.2 bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 rounded">10 pts</span>
+      </a>
+      <a href="#sec-audit" class="nav-item flex items-center justify-between px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/5 transition">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+          <span class="truncate">8. 100-Point Audit Checklist</span>
+        </div>
+        <span class="font-mono text-[10px] px-1.5 py-0.2 bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300 rounded">Check</span>
+      </a>
+    </nav>
+
+    <!-- Bottom Status -->
+    <div class="p-3 border-t border-notion-border dark:border-notion-darkBorder text-[11px] text-notion-muted dark:text-notion-darkMuted flex items-center justify-between">
+      <span>Rubric Version: 2569-2572</span>
+      <span class="font-mono font-semibold text-emerald-600 dark:text-emerald-400">100/100 PTS</span>
+    </div>
+  </aside>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN NOTION DOCUMENT BODY -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 overflow-y-auto px-4 md:px-16 py-8 md:py-12 max-w-4xl mx-auto space-y-10">
+
+    <!-- Notion Breadcrumbs -->
+    <div class="flex items-center gap-1.5 text-xs text-notion-muted dark:text-notion-darkMuted">
+      <span>Vocational Skills Competition</span>
+      <span>/</span>
+      <span>Item 58: DevOps IT & Network</span>
+      <span>/</span>
+      <span class="text-notion-text dark:text-notion-darkText font-medium">Master Specification</span>
+    </div>
+
+    <!-- Notion Page Title -->
+    <div class="space-y-4">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-notion-text dark:text-notion-darkText">
+        ทักษะเทคโนโลยีสารสนเทศด้านโปรแกรมและเครือข่ายด้วยกระบวนการ DevOps
+      </h1>
+      <p class="text-base text-notion-muted dark:text-notion-darkMuted">
+        ระดับประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.) ปีการศึกษา 2569 - 2572: คู่มือการฝึกซ้อมและขั้นตอนการปฏิบัติงานละเอียดทุกขั้นตอน 100 คะแนนเต็ม
+      </p>
+    </div>
+
+    <!-- Notion Page Properties Block -->
+    <div class="p-3.5 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded-lg text-xs space-y-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div class="flex items-center gap-2">
+          <span class="w-24 text-notion-muted dark:text-notion-darkMuted">Target Award:</span>
+          <span class="font-medium px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Gold Medal (&ge; 80 pts)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-24 text-notion-muted dark:text-notion-darkMuted">Team Size:</span>
+          <span class="font-medium">3 Competitors + 1 Coach</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-24 text-notion-muted dark:text-notion-darkMuted">Competition Time:</span>
+          <span class="font-medium">7 Hours (09:00 - 16:00 Day 2)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-24 text-notion-muted dark:text-notion-darkMuted">Internet Access:</span>
+          <span class="font-medium text-rose-600 dark:text-rose-400">First 2 Hours Only</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="border-notion-border dark:border-notion-darkBorder">
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 0: OVERVIEW & 7-HOUR RULES -->
+    <!-- ===================================================================== -->
+    <section id="overview" class="space-y-4">
+      <h2 class="text-xl font-bold text-notion-text dark:text-notion-darkText flex items-center gap-2">
+        <span>0. กำหนดการและกฎเหล็กการแข่งขัน (Rules & Constraints)</span>
+      </h2>
+      <!-- ================= PDF ORIGINAL PAGES VIEWER: กติกา เวลาการแข่งขัน 7 ชม. & กฎการใช้อินเทอร์เน็ต ================= -->
+      <div class="p-4 rounded-xl border-2 border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/30 dark:from-indigo-950/20 dark:via-notion-darkBg dark:to-blue-950/10 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 dark:border-indigo-950/60 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="font-bold text-xs uppercase tracking-wider text-indigo-900 dark:text-indigo-300">
+              ภาพแคปต้นฉบับจริงจาก PDF เกณฑ์ทางการ (กติกา เวลาการแข่งขัน 7 ชม. & กฎการใช้อินเทอร์เน็ต)
+            </span>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            เอกสาร: รายการที่ 58 (หน้า 1, 4/29)
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+          หน้า 1 แสดงวัตถุประสงค์และคุณสมบัติ และหน้า 4 ระบุกำหนดการ 4 วัน เวลาแข่ง 7 ชั่วโมง และการส่งเครื่องคอมพิวเตอร์
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 1 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_1.png', 'หน้า 1 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_1.png" alt="หน้า 1 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_1.png', 'หน้า 1 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 4 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_4.png', 'หน้า 4 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_4.png" alt="หน้า 4 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_4.png', 'หน้า 4 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        </div>
+      </div>
+
+
+      <!-- Notion Callout (Red Alert) -->
+      <div class="p-4 bg-notion-redBg dark:bg-notion-darkRedBg border border-red-200 dark:border-red-900/50 rounded-lg text-xs space-y-2">
+        <div class="font-semibold text-red-900 dark:text-red-200 uppercase tracking-wider">[ข้อบังคับวิกฤต: กฎการใช้อินเทอร์เน็ต]</div>
+        <p class="text-red-800 dark:text-red-300 leading-relaxed">
+          1. กรรมการจะเปิดระบบอินเทอร์เน็ตให้ใช้เฉพาะ <strong>2 ชั่วโมงแรกของการแข่งขัน (09:00 - 11:00)</strong> สำหรับติดตั้ง Packages, Docker Images, และ Base Templates เท่านั้น<br>
+          2. เมื่อครบ 2 ชั่วโมง ระบบจะตัดอินเทอร์เน็ตทันที การทำงานหลังจากนั้นจะเป็นระบบ Intranet แบบ Offline<br>
+          3. หากจำเป็นต้องใช้อินเทอร์เน็ตเพิ่มเติม ต้องส่งตัวแทนขอกรรมการควบคุม โดยอนุญาตได้ <strong>ไม่เกิน 3 ครั้ง ครั้งละไม่เกิน 20 นาที</strong> เท่านั้น<br>
+          4. กรรมการจะเตรียม <strong>Local Registry Server</strong> ในระบบ Intranet ไว้ให้เพื่อ Pull Images สำคัญ
+        </p>
+      </div>
+
+      <!-- 4 Days Schedule Table -->
+      <div class="space-y-2">
+        <h3 class="text-sm font-semibold">ตารางกิจกรรมตลอด 4 วันของการแข่งขัน</h3>
+        <div class="overflow-x-auto border border-notion-border dark:border-notion-darkBorder rounded-lg">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-notion-callout dark:bg-notion-darkCallout border-b border-notion-border dark:border-notion-darkBorder font-medium">
+              <tr>
+                <th class="p-2.5">วัน</th>
+                <th class="p-2.5">ช่วงเวลา</th>
+                <th class="p-2.5">กิจกรรมหลัก</th>
+                <th class="p-2.5">ข้อควรระวัง</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-notion-border dark:divide-notion-darkBorder text-notion-muted dark:text-notion-darkMuted">
+              <tr>
+                <td class="p-2.5 font-medium text-notion-text dark:text-notion-darkText">วันที่ 1</td>
+                <td class="p-2.5">เช้า - บ่าย</td>
+                <td class="p-2.5">ส่งมอบเครื่องคอมพิวเตอร์และจอภาพ (ก่อน 12:00) / ตรวจสอบความพร้อมเครื่อง 2 ชุดที่กรรมการเตรียมไว้ / ทดสอบเชื่อมต่อ Registry Server</td>
+                <td class="p-2.5">หลังการทดสอบ กรรมการจะ Reset ค่าเครื่องให้กลับสู่สภาพเดิม</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium text-notion-text dark:text-notion-darkText">วันที่ 2</td>
+                <td class="p-2.5">09:00 - 16:00 (7 ชม.)</td>
+                <td class="p-2.5"><strong>วันแข่งขันจริงเต็มรูปแบบ</strong> (ติดตั้งเครือข่าย, เซิร์ฟเวอร์, พัฒนาระบบ API, Frontend, CI/CD Pipeline, IoT)</td>
+                <td class="p-2.5">รวมเวลารับประทานอาหารใน 7 ชั่วโมง / ไม่อนุญาตให้ออกนอกห้องแข่งโดยไม่ได้รับอนุญาต</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium text-notion-text dark:text-notion-darkText">วันที่ 3</td>
+                <td class="p-2.5">ตามคิวที่จับสลาก</td>
+                <td class="p-2.5"><strong>นำเสนอผลงานและตอบคำถาม</strong> (นำเสนอไม่เกินทีมละ 30 นาที / ตอบคำถามกรรมการ 3 คำถาม ไม่เกิน 10 นาที)</td>
+                <td class="p-2.5">เน้นการสาธิต Workflow และอธิบายการแบ่งงานในทีม</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium text-notion-text dark:text-notion-darkText">วันที่ 4</td>
+                <td class="p-2.5">พิธีปิด</td>
+                <td class="p-2.5">ประกาศผลการแข่งขันและรับเหรียญรางวัล</td>
+                <td class="p-2.5">คะแนน 80+ ได้เหรียญทอง</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 1: 3-PERSON TEAM STRATEGY -->
+    <!-- ===================================================================== -->
+    <section id="team-strategy" class="space-y-4">
+      <h2 class="text-xl font-bold text-notion-text dark:text-notion-darkText">
+        <span>ยุทธศาสตร์การแบ่งงานทีม 3 คน (Workload Allocation)</span>
+      </h2>
+      <p class="text-xs text-notion-muted dark:text-notion-darkMuted leading-relaxed">
+        เนื่องจากเกณฑ์มีทั้งฮาร์ดแวร์เครือข่าย, ลินุกซ์เซิร์ฟเวอร์, โค้ด Backend, โค้ด Frontend, Automated Tests และ CI/CD Pipeline หากทำคนเดียวจะไม่ทันแน่นอน 100% ต้องแบ่งบทบาทดังนี้:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <!-- Role 1 -->
+        <div class="p-3.5 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded-lg space-y-2 text-xs">
+          <div class="font-bold text-blue-700 dark:text-blue-300">[Role 1: Network & Linux Admin]</div>
+          <ul class="space-y-1 text-notion-muted dark:text-notion-darkMuted list-disc list-inside">
+            <li>ตั้งค่า Switch L3 & Router (VLAN, SVI, DHCP, NAT, ACL)</li>
+            <li>ติดตั้ง Ubuntu VM บน Proxmox/VirtualBox</li>
+            <li>ตั้งค่า Static IP, SSH, 2 Users, Sudo NOPASSWD</li>
+            <li>รัน Technitium DNS บน Docker พร้อม ACL</li>
+            <li>รัน Nginx Proxy Manager / Caddy (HTTPS SSL)</li>
+          </ul>
+        </div>
+
+        <!-- Role 2 -->
+        <div class="p-3.5 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded-lg space-y-2 text-xs">
+          <div class="font-bold text-indigo-700 dark:text-indigo-300">[Role 2: Backend & CI/CD Engineer]</div>
+          <ul class="space-y-1 text-notion-muted dark:text-notion-darkMuted list-disc list-inside">
+            <li>ออกแบบฐานข้อมูล 3 ตาราง (Relational Schema)</li>
+            <li>เขียน Node.js REST API (JWT, Multer, MVC)</li>
+            <li>เขียน Unit Test & Integration Test (Supertest)</li>
+            <li>ติดตั้ง GitLab & ลงทะเบียน GitLab Runner</li>
+            <li>เขียน Dockerfile & .gitlab-ci.yml 4 Stages</li>
+          </ul>
+        </div>
+
+        <!-- Role 3 -->
+        <div class="p-3.5 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded-lg space-y-2 text-xs">
+          <div class="font-bold text-violet-700 dark:text-violet-300">[Role 3: Frontend & E2E Tester]</div>
+          <ul class="space-y-1 text-notion-muted dark:text-notion-darkMuted list-disc list-inside">
+            <li>วาด Flowchart 5 แผ่น & Wireframe 5 หน้าใน Draw.io</li>
+            <li>สร้าง Frontend UI (Responsive, JWT Login 3 Roles)</li>
+            <li>ทำ CRUD, แนบไฟล์, ค้นหา, Filter, Pagination</li>
+            <li>ทำ Modal ยืนยันก่อนลบ & จัดการ Error Message</li>
+            <li>เขียน Playwright E2E Test (E2E-001 & E2E-002)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODULE 1: NETWORK & CISCO L3 (13 PTS) -->
+    <!-- ===================================================================== -->
+    <section id="sec-network" class="space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-notion-border dark:border-notion-darkBorder">
+        <h2 class="text-xl font-bold text-notion-text dark:text-notion-darkText">
+          1. หมวดเครือข่าย Cisco Switch L3 & Router (เกณฑ์ข้อ 3.5.1: 13 คะแนน)
+        </h2>
+        <span class="text-xs font-mono font-bold text-blue-600 bg-blue-50 dark:bg-blue-950 px-2 py-0.5 rounded">13 คะแนนเต็ม</span>
+      </div>
+      <!-- ================= PDF ORIGINAL PAGES VIEWER: ส่วนที่ 1 การตั้งค่าอุปกรณ์เครือข่าย Cisco Switch L3 & Router (13 คะแนน) ================= -->
+      <div class="p-4 rounded-xl border-2 border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/30 dark:from-indigo-950/20 dark:via-notion-darkBg dark:to-blue-950/10 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 dark:border-indigo-950/60 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="font-bold text-xs uppercase tracking-wider text-indigo-900 dark:text-indigo-300">
+              ภาพแคปต้นฉบับจริงจาก PDF เกณฑ์ทางการ (ส่วนที่ 1 การตั้งค่าอุปกรณ์เครือข่าย Cisco Switch L3 & Router (13 คะแนน))
+            </span>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            เอกสาร: รายการที่ 58 (หน้า 9, 10/29)
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+          หน้า 9 ระบุเกณฑ์ข้อ 1.1 VLAN, 1.2 Inter-VLAN Routing, 1.3 DHCP และหน้า 10 ระบุเกณฑ์ข้อ 1.4 NAT, 1.5 ACL ควบคุมการสื่อสาร และ Loop Protection
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 9 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_9.png', 'หน้า 9 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_9.png" alt="หน้า 9 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_9.png', 'หน้า 9 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 10 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_10.png', 'หน้า 10 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_10.png" alt="หน้า 10 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_10.png', 'หน้า 10 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        </div>
+      </div>
+
+
+      <!-- Notion Callout -->
+      <div class="p-3.5 bg-notion-blueBg dark:bg-notion-darkBlueBg border border-blue-200 dark:border-blue-900/50 rounded-lg text-xs space-y-1">
+        <span class="font-semibold text-blue-900 dark:text-blue-200">[สรุปเกณฑ์คะแนนส่วนที่ 1]</span>
+        <p class="text-blue-800 dark:text-blue-300 leading-relaxed">
+          - 1.1 VLAN server, dev, guest (ห้ามใช้ VLAN 1): 1 คะแนน (วงละ 0.33)<br>
+          - 1.2 Inter-VLAN Routing (มี IP ทั้ง 3 วง และ Route ถึงกันได้): 3 คะแนน (ไม่ครบได้ 0)<br>
+          - 1.3 DHCP Server เครื่องเดียวแจก 3 วง + DHCP Snooping เฉพาะ Port ที่กำหนด: 3 คะแนน<br>
+          - 1.4 NAT ทุก VLAN เพื่อออกเครือข่ายกรรมการ: 1 คะแนน<br>
+          - 1.5 ACL ควบคุมการสื่อสาร (Standard, Extended, กั้น Server, Management) + Loop Protection: 5 คะแนน
+        </p>
+      </div>
+
+      <!-- Step by step details -->
+      <div class="space-y-3 text-xs">
+        <details open class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[ขั้นตอนที่ 1.1 - 1.2] การสร้าง VLAN และทำ Inter-VLAN Routing บน Cisco L3 Switch</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <p class="text-notion-muted dark:text-notion-darkMuted">รันคำสั่ง CLI ต่อไปนี้บน Cisco Switch L3 (เช่น Catalyst 3560/3750):</p>
+            <pre class="p-3 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded text-[11px] overflow-x-auto text-slate-800 dark:text-slate-200"><code>enable
+configure terminal
+
+! 1. สร้าง VLAN 3 วงตามเกณฑ์ (ห้ามใช้ Default VLAN 1)
+vlan 10
+ name server
+exit
+
+vlan 20
+ name dev
+exit
+
+vlan 30
+ name guest
+exit
+
+vlan 99
+ name mgmt
+exit
+
+! 2. เปิดใช้งาน Routing บน Switch L3
+ip routing
+
+! 3. ตั้งค่า Switch Virtual Interface (SVI) เป็น Default Gateway
+interface vlan 10
+ description Gateway Server Network
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+exit
+
+interface vlan 20
+ description Gateway Dev Network
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+exit
+
+interface vlan 30
+ description Gateway Guest Network
+ ip address 192.168.30.1 255.255.255.0
+ no shutdown
+exit
+
+interface vlan 99
+ description Gateway Mgmt Network
+ ip address 192.168.99.1 255.255.255.0
+ no shutdown
+exit</code></pre>
+          </div>
+        </details>
+
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[ขั้นตอนที่ 1.3] การตั้งค่า DHCP Server 3 เครือข่าย และ DHCP Snooping</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <p class="text-notion-muted dark:text-notion-darkMuted">ตั้งค่า DHCP Pool ให้แจก IP ทั้ง 3 วง และเปิด DHCP Snooping ให้เชื่อถือเฉพาะ Port ขา Uplink:</p>
+            <pre class="p-3 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded text-[11px] overflow-x-auto text-slate-800 dark:text-slate-200"><code>! กัน IP ไม่ให้แจกทับ Gateway และ Server
+ip dhcp excluded-address 192.168.10.1 192.168.10.50
+ip dhcp excluded-address 192.168.20.1 192.168.20.20
+ip dhcp excluded-address 192.168.30.1 192.168.30.20
+
+! Pool สำหรับ Server
+ip dhcp pool POOL_SERVER
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 192.168.10.10
+exit
+
+! Pool สำหรับ Dev
+ip dhcp pool POOL_DEV
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 192.168.10.10
+exit
+
+! Pool สำหรับ Guest
+ip dhcp pool POOL_GUEST
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+ dns-server 192.168.10.10
+exit
+
+! ตั้งค่า DHCP Snooping
+ip dhcp snooping
+ip dhcp snooping vlan 10,20,30
+no ip dhcp snooping information option
+
+! กำหนด Port Fa0/1 เป็น Trusted Port (ยอมรับ DHCP Server เฉพาะ Port นี้)
+interface FastEthernet 0/1
+ ip dhcp snooping trust
+exit
+
+! Port ลูกข่ายกำหนด Rate Limit ป้องกันการยิง DHCP DoS
+interface range FastEthernet 0/2 - 24
+ ip dhcp snooping limit rate 15
+exit</code></pre>
+          </div>
+        </details>
+
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[ขั้นตอนที่ 1.4 - 1.5] การตั้งค่า NAT, ACLs และ Loop Protection</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <pre class="p-3 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded text-[11px] overflow-x-auto text-slate-800 dark:text-slate-200"><code>! 1. ป้องกัน Loop บน Switch (STP BPDU Guard)
+spanning-tree mode rapid-pvst
+spanning-tree portfast default
+spanning-tree portfast bpduguard default
+
+! 2. Standard ACL: จำกัดสิทธิ์เข้า Management VLAN
+access-list 10 permit 192.168.20.0 0.0.0.255
+access-list 10 deny any
+
+line vty 0 4
+ transport input ssh
+ access-class 10 in
+exit
+
+! 3. Extended ACL: กั้น Guest เข้า Server ยกเว้น Web (80, 443) และ DNS (53)
+ip access-list extended ACL_PROTECT_SERVER
+ permit tcp 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 80
+ permit tcp 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 443
+ permit udp 192.168.30.0 0.0.0.255 host 192.168.10.10 eq 53
+ deny ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255
+ permit ip 192.168.30.0 0.0.0.255 any
+exit
+
+interface vlan 30
+ ip access-group ACL_PROTECT_SERVER in
+exit
+
+! 4. NAT Overload บน Router ออกไปหาเครือข่ายกรรมการ
+access-list 1 permit 192.168.10.0 0.0.0.255
+access-list 1 permit 192.168.20.0 0.0.0.255
+access-list 1 permit 192.168.30.0 0.0.0.255
+ip nat inside source list 1 interface GigabitEthernet 0/1 overload</code></pre>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODULE 2: SERVER & DEVOPS INFRA (24 PTS) -->
+    <!-- ===================================================================== -->
+    <section id="sec-server" class="space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-notion-border dark:border-notion-darkBorder">
+        <h2 class="text-xl font-bold text-notion-text dark:text-notion-darkText">
+          2. หมวดเซิร์ฟเวอร์และระบบ DevOps Infrastructure (เกณฑ์ข้อ 3.5.2: 24 คะแนน)
+        </h2>
+        <span class="text-xs font-mono font-bold text-amber-600 bg-amber-50 dark:bg-amber-950 px-2 py-0.5 rounded">24 คะแนนเต็ม</span>
+      </div>
+      <!-- ================= PDF ORIGINAL PAGES VIEWER: ส่วนที่ 2 เซิร์ฟเวอร์และระบบ DevOps Infrastructure (24 คะแนน) ================= -->
+      <div class="p-4 rounded-xl border-2 border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/30 dark:from-indigo-950/20 dark:via-notion-darkBg dark:to-blue-950/10 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 dark:border-indigo-950/60 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="font-bold text-xs uppercase tracking-wider text-indigo-900 dark:text-indigo-300">
+              ภาพแคปต้นฉบับจริงจาก PDF เกณฑ์ทางการ (ส่วนที่ 2 เซิร์ฟเวอร์และระบบ DevOps Infrastructure (24 คะแนน))
+            </span>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            เอกสาร: รายการที่ 58 (หน้า 11, 12/29)
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+          หน้า 11 ระบุเกณฑ์ข้อ 2.1 Virtualization, 2.2 Ubuntu Server & Technitium DNS บน Docker และหน้า 12 ระบุเกณฑ์ข้อ 2.3 SSH/UFW, 2.4 Docker+GitLab, 2.5 Reverse Proxy HTTPS, 2.6-2.7 CI/CD Pipeline 4 Stages
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 11 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_11.png', 'หน้า 11 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_11.png" alt="หน้า 11 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_11.png', 'หน้า 11 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 12 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_12.png', 'หน้า 12 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_12.png" alt="หน้า 12 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_12.png', 'หน้า 12 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        </div>
+      </div>
+
+
+      <div class="p-3.5 bg-notion-yellowBg dark:bg-notion-darkYellowBg border border-amber-200 dark:border-amber-900/50 rounded-lg text-xs space-y-1">
+        <span class="font-semibold text-amber-900 dark:text-amber-200">[จุดตัดคะแนนสำคัญที่ต้องระวัง]</span>
+        <p class="text-amber-800 dark:text-amber-300 leading-relaxed">
+          - <strong>DNS Server:</strong> ต้องรันบน Docker หรือ Linux Server เท่านั้น หากตั้งค่าบน Router, Switch หรือไฟล์ hosts <strong>จะไม่ได้คะแนน (0 คะแนน)</strong><br>
+          - <strong>Sudo NOPASSWD:</strong> ต้องกำหนดให้ user สามารถพิมพ์ `sudo -i` โดยไม่ต้องใส่รหัสผ่าน (1 คะแนน)<br>
+          - <strong>CI/CD Pipeline:</strong> ต้องมี 4 Stages (build, test, push, deploy) ทำงานสำเร็จทั้งหมด หากได้แค่อย่างใดอย่างหนึ่ง <strong>จะไม่ได้คะแนน ไม่มีการหารเฉลี่ย (2 คะแนนเต็มหรือ 0 ทันที)</strong>
+        </p>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <!-- Linux Setup -->
+        <details open class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[ขั้นตอนที่ 2.1 - 2.3] ตั้งค่า Ubuntu Server, Users, Sudo NOPASSWD และ UFW</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <p class="text-notion-muted dark:text-notion-darkMuted">รันสคริปต์นี้บน Ubuntu Server VM (`192.168.10.10`):</p>
+            <pre class="p-3 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded text-[11px] overflow-x-auto text-slate-800 dark:text-slate-200"><code># 1. ตั้ง Hostname
+sudo hostnamectl set-hostname server.competition.lab
+
+# 2. เพิ่ม 2 Users และให้สิทธิ์ sudo
+sudo useradd -m -s /bin/bash devops_admin
+sudo useradd -m -s /bin/bash app_deployer
+echo "devops_admin:Password123!" | sudo chpasswd
+echo "app_deployer:Password123!" | sudo chpasswd
+sudo usermod -aG sudo devops_admin
+sudo usermod -aG sudo app_deployer
+
+# 3. ตั้งค่า Sudo NOPASSWD (-i)
+echo "devops_admin ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/99-devops
+echo "app_deployer ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers.d/99-devops
+sudo chmod 0440 /etc/sudoers.d/99-devops
+
+# 4. ตั้งค่า UFW Firewall เปิดเฉพาะพอร์ตที่กำหนด
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp    # SSH
+sudo ufw allow 80/tcp    # HTTP
+sudo ufw allow 443/tcp   # HTTPS SSL
+sudo ufw allow 53        # DNS
+sudo ufw allow 5000/tcp  # Registry
+sudo ufw allow 8080/tcp  # GitLab
+sudo ufw --force enable</code></pre>
+          </div>
+        </details>
+
+        <!-- DNS Server on Docker -->
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[ขั้นตอนที่ 2.2] รัน Technitium DNS บน Docker พร้อมตั้ง ACL IP Restriction</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <pre class="p-3 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded text-[11px] overflow-x-auto text-slate-800 dark:text-slate-200"><code># คำสั่งรัน Technitium DNS Container
+docker run -d \
+  --name technitium-dns \
+  --restart always \
+  -p 53:53/udp \
+  -p 53:53/tcp \
+  -p 5380:5380/tcp \
+  -e DNS_SERVER_ADMIN_PASSWORD=AdminPassword123! \
+  -v technitium_data:/etc/dns \
+  technitium/dns-server:latest</code></pre>
+            <p class="text-notion-muted dark:text-notion-darkMuted leading-relaxed">
+              <strong>วิธีตั้งค่าใน Web GUI (http://192.168.10.10:5380):</strong><br>
+              1. เมนู <strong>Zones</strong> -> Add Zone ชนิด Primary Zone ชื่อ `competition.lab`<br>
+              2. เพิ่ม A Records ชี้ไปที่ `192.168.10.10` ได้แก่ `gitlab`, `registry`, `app`, `api`<br>
+              3. เมนู <strong>Settings</strong> -> <strong>Allowed Networks / Access Control</strong> -> เลือก <strong>Restricted</strong> ใส่เฉพาะ `192.168.10.0/24, 192.168.20.0/24` เพื่อผ่านเกณฑ์ ACL IP Restriction
+            </p>
+          </div>
+        </details>
+
+        <!-- Reverse Proxy & Registry Compose -->
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[ขั้นตอนที่ 2.5] Docker Compose: Reverse Proxy (HTTPS), Registry และ Database</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <p class="text-notion-muted dark:text-notion-darkMuted">ไฟล์ `docker-compose.infra.yml` รวมบริการมากกว่า 1 ตัว:</p>
+            <pre class="p-3 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded text-[11px] overflow-x-auto text-slate-800 dark:text-slate-200"><code>version: '3.8'
+services:
+  # 1. Reverse Proxy จัดการ HTTPS Domain (Nginx Proxy Manager)
+  reverse-proxy:
+    image: jc21/nginx-proxy-manager:latest
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81" # Admin UI
+    volumes:
+      - ./npm_data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+  # 2. Private Docker Registry
+  registry:
+    image: registry:2
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./registry_data:/var/lib/registry
+
+  # 3. Database Server
+  mariadb:
+    image: mariadb:10.11
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: RootPassword123!
+      MYSQL_DATABASE: competition_db
+    volumes:
+      - ./db_data:/var/lib/mysql</code></pre>
+          </div>
+        </details>
+
+        <!-- GitLab CI/CD Pipeline Reference -->
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[ขั้นตอนที่ 2.6 - 2.7] โครงสร้างไฟล์ .gitlab-ci.yml ครบทั้ง 4 Stages</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <pre class="p-3 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded text-[11px] overflow-x-auto text-slate-800 dark:text-slate-200"><code>stages:
+  - build
+  - test
+  - push
+  - deploy
+
+build_job:
+  stage: build
+  image: node:18-alpine
+  script:
+    - npm ci || npm install
+
+test_job:
+  stage: test
+  image: node:18-alpine
+  script:
+    - npm test
+
+push_job:
+  stage: push
+  image: docker:24-cli
+  services:
+    - docker:24-dind
+  script:
+    - docker build -t 192.168.10.10:5000/app:latest .
+    - docker push 192.168.10.10:5000/app:latest
+
+deploy_job:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - echo "Deploying image to Production Server..."
+    - echo "Application online at https://app.competition.lab"
+  only:
+    - main</code></pre>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODULE 3: SYSTEM DESIGN & API SPEC (20 PTS) -->
+    <!-- ===================================================================== -->
+    <section id="sec-design" class="space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-notion-border dark:border-notion-darkBorder">
+        <h2 class="text-xl font-bold text-notion-text dark:text-notion-darkText">
+          3. การออกแบบระบบ ผังงาน และ API Specification (เกณฑ์ข้อ 4.1 - 4.4: 20 คะแนน)
+        </h2>
+        <span class="text-xs font-mono font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded">20 คะแนนเต็ม</span>
+      </div>
+      <!-- ================= PDF ORIGINAL PAGES VIEWER: ส่วนที่ 4 ซอฟต์แวร์: ผังงาน Flowchart, Database, Wireframe Draw.io & API Spec (20 คะแนน) ================= -->
+      <div class="p-4 rounded-xl border-2 border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/30 dark:from-indigo-950/20 dark:via-notion-darkBg dark:to-blue-950/10 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 dark:border-indigo-950/60 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="font-bold text-xs uppercase tracking-wider text-indigo-900 dark:text-indigo-300">
+              ภาพแคปต้นฉบับจริงจาก PDF เกณฑ์ทางการ (ส่วนที่ 4 ซอฟต์แวร์: ผังงาน Flowchart, Database, Wireframe Draw.io & API Spec (20 คะแนน))
+            </span>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            เอกสาร: รายการที่ 58 (หน้า 13, 14/29)
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+          หน้า 13 ระบุเกณฑ์ข้อ 4.1 ผังงาน Flowchart 5 รูป, ข้อ 4.2 ฐานข้อมูลเชิงสัมพันธ์ 3 ตาราง และหน้า 14 ระบุเกณฑ์ข้อ 4.3 ผังหน้าจอ Draw.io 5 หน้า, ข้อ 4.4 RESTful API README.md
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 13 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_13.png', 'หน้า 13 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_13.png" alt="หน้า 13 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_13.png', 'หน้า 13 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 14 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_14.png', 'หน้า 14 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_14.png" alt="หน้า 14 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_14.png', 'หน้า 14 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        </div>
+      </div>
+
+
+      <div class="space-y-3 text-xs">
+        <!-- Flowcharts Checklist -->
+        <details open class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[เกณฑ์ 4.1] ผังงาน 5 รูปแบบที่ต้องส่ง (5 คะแนน)</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2 text-notion-muted dark:text-notion-darkMuted leading-relaxed">
+            <p>ดูแผนผัง Mermaid ฉบับสมบูรณ์ได้ที่ไฟล์ <a href="file:///c:/Users/Woradech/Desktop/yypp/01_System_Design/FLOWCHARTS_AND_DIAGRAMS.md" class="underline text-indigo-600 font-mono">01_System_Design/FLOWCHARTS_AND_DIAGRAMS.md</a>:</p>
+            <ol class="list-decimal list-inside space-y-1">
+              <li><strong>Login Flow:</strong> รับ Username/Password -> ตรวจสอบข้อมูล -> Hash Check (bcrypt) -> สร้าง JWT Token -> แยก Role นำทาง</li>
+              <li><strong>Admin Process:</strong> จัดการผู้ใช้งาน (เพิ่ม/แก้ไข/ลบ/กำหนด Role) -> จัดการ Categories -> ตรวจสอบ Logs</li>
+              <li><strong>User Level 1 Process (Officer):</strong> แสดงตารางข้อมูล -> ค้นหา/กรอง -> เพิ่มรายการ + แนบไฟล์ -> แก้ไขข้อมูล/ไฟล์</li>
+              <li><strong>User Level 2 Process (Member):</strong> คลังข้อมูลสำหรับสืบค้น (Read-Only) -> ค้นหา -> ดูรายละเอียด -> ดาวน์โหลดไฟล์แนบ</li>
+              <li><strong>Use Case Diagram:</strong> แสดงความสัมพันธ์ระหว่าง Actor (Admin, Officer, Member) กับ 10 Use Cases ในระบบ</li>
+            </ol>
+          </div>
+        </details>
+
+        <!-- Database Schema -->
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[เกณฑ์ 4.2] โครงสร้างฐานข้อมูลเชิงสัมพันธ์ 3 ตาราง (5 คะแนน)</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <p class="text-notion-muted dark:text-notion-darkMuted">ตารางทั้ง 3 ต้องมี Foreign Keys เชื่อมโยงกันอย่างถูกต้อง (Relational Design):</p>
+            <div class="p-3 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded font-mono text-[11px] space-y-2">
+              <div><strong>1. users:</strong> id (PK), username (UQ), password_hash, full_name, email (UQ), role ('admin','user1','user2'), created_at</div>
+              <div><strong>2. categories:</strong> id (PK), code (UQ), name, description, created_at</div>
+              <div><strong>3. items:</strong> id (PK), category_id (FK &rarr; categories.id), created_by (FK &rarr; users.id), item_code (UQ), title, value_amount, status, attachment_name, attachment_path, created_at, updated_at</div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Draw.io Wireframes -->
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[เกณฑ์ 4.3] ผังหน้าจอ 5 หน้าใน Draw.io (5 คะแนน)</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-1 text-notion-muted dark:text-notion-darkMuted">
+            <p>วาดใน Draw.io แบบ Offline ให้ครบทั้ง 5 รูปแบบ (ดูไกด์ที่ <a href="file:///c:/Users/Woradech/Desktop/yypp/01_System_Design/WIREFRAMES_DRAWIO_GUIDE.md" class="underline text-indigo-600 font-mono">WIREFRAMES_DRAWIO_GUIDE.md</a>):</p>
+            <ul class="list-disc list-inside space-y-0.5">
+              <li>Template 1: หน้าจอเข้าสู่ระบบ (Login Screen) มีกล่องการ์ดกึ่งกลางและแจ้งเตือนสิทธิ์</li>
+              <li>Template 2: หน้าจอหลักของระบบ (Overview Dashboard) มี 4 KPI Stat Cards, กราฟ และกิจกรรมล่าสุด</li>
+              <li>Template 3: หน้าจอผู้ดูแลระบบ (Admin) มีตาราง User Management, ปุ่มเพิ่มผู้ใช้, Modal แก้ไขสิทธิ์ และ Modal ยืนยันการลบ</li>
+              <li>Template 4: หน้าจอผู้ใช้งานระดับ 1 (Officer) มี Search, Category Filter, ตาราง CRUD, ปุ่มเพิ่มข้อมูลพร้อมแนบไฟล์</li>
+              <li>Template 5: หน้าจอผู้ใช้งานระดับ 2 (Member) แสดงแบบ Read-Only Grid Cards สำหรับค้นหาและดาวน์โหลดเอกสาร (ไม่มีปุ่มลบ/แก้ไข)</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- RESTful API README -->
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[เกณฑ์ 4.4] การออกแบบ RESTful API Specification (README.md) (5 คะแนน)</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <p class="text-notion-muted dark:text-notion-darkMuted">ตรวจสอบไฟล์ <a href="file:///c:/Users/Woradech/Desktop/yypp/01_System_Design/README_API_SPECIFICATION.md" class="underline text-indigo-600 font-mono">README_API_SPECIFICATION.md</a> ซึ่งระบุคุณสมบัติต่อไปนี้ครบถ้วน:</p>
+            <ul class="list-disc list-inside space-y-1 text-notion-muted dark:text-notion-darkMuted">
+              <li>ใช้ HTTP Methods ตามมาตรฐานสากล: GET (ดึง), POST (สร้าง), PUT/PATCH (แก้ไข), DELETE (ลบ)</li>
+              <li>ตั้งชื่อ Endpoint สื่อความหมาย เช่น `/api/items`, `/api/items/:id`, `/api/auth/login`</li>
+              <li>โครงสร้าง JSON สม่ำเสมอ `{ status, message, data }`</li>
+              <li>ระบุ HTTP Status Codes: 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Server Error</li>
+              <li>มีคำอธิบายระบบรักษาความปลอดภัยด้วย Bearer JWT Token</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODULE 4: BACKEND & FULL-STACK APP (33 PTS) -->
+    <!-- ===================================================================== -->
+    <section id="sec-backend" class="space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-notion-border dark:border-notion-darkBorder">
+        <h2 class="text-xl font-bold text-notion-text dark:text-notion-darkText">
+          4. การพัฒนาระบบ Backend Node.js และ Frontend (เกณฑ์ 4.5 & 4.6: 33 คะแนน)
+        </h2>
+        <span class="text-xs font-mono font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2 py-0.5 rounded">33 คะแนนเต็ม</span>
+      </div>
+      <!-- ================= PDF ORIGINAL PAGES VIEWER: ส่วนที่ 4 ซอฟต์แวร์: Backend API Node.js, Frontend UI & Automated Test (33 คะแนน) ================= -->
+      <div class="p-4 rounded-xl border-2 border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/30 dark:from-indigo-950/20 dark:via-notion-darkBg dark:to-blue-950/10 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 dark:border-indigo-950/60 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="font-bold text-xs uppercase tracking-wider text-indigo-900 dark:text-indigo-300">
+              ภาพแคปต้นฉบับจริงจาก PDF เกณฑ์ทางการ (ส่วนที่ 4 ซอฟต์แวร์: Backend API Node.js, Frontend UI & Automated Test (33 คะแนน))
+            </span>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            เอกสาร: รายการที่ 58 (หน้า 15, 16, 17, 18/29)
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+          หน้า 15 ระบุเกณฑ์ข้อ 4.5 Backend 10 ข้อย่อย, หน้า 16 ระบุเกณฑ์ข้อ 4.6 Frontend UI 3 Roles & CRUD, หน้า 17 ระบุ Auto Test Pipeline + Playwright E2E-001, หน้า 18 ระบุ E2E-002, Git Branching & ความสมบูรณ์ระบบ
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 15 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_15.png', 'หน้า 15 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_15.png" alt="หน้า 15 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_15.png', 'หน้า 15 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 16 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_16.png', 'หน้า 16 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_16.png" alt="หน้า 16 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_16.png', 'หน้า 16 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 17 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_17.png', 'หน้า 17 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_17.png" alt="หน้า 17 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_17.png', 'หน้า 17 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 18 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_18.png', 'หน้า 18 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_18.png" alt="หน้า 18 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_18.png', 'หน้า 18 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        </div>
+      </div>
+
+
+      <div class="space-y-3 text-xs">
+        <!-- Backend API Checklist -->
+        <details open class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[เกณฑ์ 4.5] ข้อกำหนด Backend API 10 ข้อย่อย (10 คะแนนเต็ม)</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[1] GET พร้อมรับค่า:</strong> รองรับ Query (`?search=...&page=1`) และ Path (`/api/items/:id`)
+              </div>
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[2] POST รับ Body:</strong> ตรวจสอบความถูกต้องของข้อมูลใน req.body
+              </div>
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[3] Upload File API:</strong> ใช้ Multer จัดการจัดเก็บไฟล์ลงโฟลเดอร์ uploads
+              </div>
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[4] JWT Login:</strong> Signing ด้วย Secret Key และตรวจสอบสิทธิ์ผ่าน Header Bearer
+              </div>
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[5] Exception Handling:</strong> ดักจับ 404, ข้อมูลไม่ครบ, Error ด้วย Error Middleware
+              </div>
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[6] Response JSON มาตรฐาน:</strong> ส่งรูปแบบ `{ status, message, data }`
+              </div>
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[7] มี Comment อธิบาย:</strong> เขียน JSDoc Comments อธิบายครบทุก Method (GET, POST, PUT, DELETE)
+              </div>
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[8] ระบุข้อมูล Query, Path, Body:</strong> ชี้แจงไว้ในโค้ดชัดเจน
+              </div>
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[9] โครงสร้างอ่านง่าย:</strong> แยก Router, Controller, Middleware, async/await
+              </div>
+              <div class="p-2 border border-notion-border dark:border-notion-darkBorder rounded bg-notion-callout dark:bg-notion-darkCallout">
+                <strong>[10] ความปลอดภัยของ API:</strong> Role Middleware ป้องกันการเข้าถึงข้อมูลข้ามสิทธิ์
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Frontend UI Checklist -->
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[เกณฑ์ 4.6] ข้อกำหนด Frontend UI และความสมบูรณ์ (15 คะแนน)</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2 text-notion-muted dark:text-notion-darkMuted leading-relaxed">
+            <p>ตรวจสอบหน้าเว็บจริงที่รันอยู่ในเครื่องของคุณ (<a href="http://localhost:3000" target="_blank" class="underline text-indigo-600 font-mono">http://localhost:3000</a>):</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li><strong>Responsive Layout:</strong> ใช้งานง่าย รองรับทั้งจอมือถือและเดสก์ท็อป</li>
+              <li><strong>JWT Login & 3 Roles:</strong> เข้าสู่ระบบด้วย JWT และแยกมุมมอง Admin, User 1 (Officer), User 2 (Member)</li>
+              <li><strong>CRUD & File Upload:</strong> เพิ่มข้อมูล, แนบรูป/เอกสาร, แก้ไขข้อมูล และเปลี่ยนไฟล์แนบแทนที่ไฟล์เดิมได้</li>
+              <li><strong>Delete Confirmation:</strong> มีหน้าต่าง Modal แจ้งเตือนยืนยันก่อนลบข้อมูลเสมอ (ป้องกันลบผิดพลาด)</li>
+              <li><strong>Search, Filter & Pagination:</strong> มีช่องค้นหาแบบ Real-time, ดรอปดาวน์กรองหมวดหมู่ และปุ่มเปลี่ยนหน้า Pagination</li>
+              <li><strong>Form Validation:</strong> ตรวจสอบฟอร์มฝั่ง Frontend ก่อนส่งข้อมูลออกไป</li>
+              <li><strong>Error Handling:</strong> แปลงรหัส Error จาก Backend เป็นข้อความที่เข้าใจง่าย (Friendly Message)</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Automated Testing & E2E -->
+        <details class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>[เกณฑ์ 4.6] Automated Tests & Playwright E2E Workflows (4 คะแนน)</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2">
+            <p class="text-notion-muted dark:text-notion-darkMuted">เกณฑ์ระบุให้มี Unit/Integration Test อย่างละ 1 Case และ E2E Test 2 Scenarios:</p>
+            <div class="p-3 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded font-mono text-[11px] space-y-2">
+              <div><strong>E2E-001 (ผู้ใช้เข้าสู่ระบบสำเร็จ):</strong> เปิดหน้า Login &rarr; กรอก Username/Password &rarr; กดปุ่ม Login &rarr; ระบบพาไปหน้า Dashboard และแสดงชื่อผู้ใช้</div>
+              <div><strong>E2E-002 (ผู้ใช้ส่งข้อมูลสำเร็จ):</strong> Login &rarr; เปิดหน้าเพิ่มข้อมูล &rarr; กรอกฟอร์ม &rarr; กดบันทึก &rarr; แสดงข้อความ Toast 'บันทึกข้อมูลสำเร็จ' และปรากฏในตาราง</div>
+            </div>
+            <p class="text-notion-muted dark:text-notion-darkMuted">รันการทดสอบ Unit & Integration Test ในเทอร์มินัล:</p>
+            <pre class="p-2 bg-black text-emerald-400 rounded text-[11px]"><code>npm test # รันผ่าน 5/5 tests 100%</code></pre>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODULE 5: IOT & MQTT (10 PTS - OPTION) -->
+    <!-- ===================================================================== -->
+    <section id="sec-iot" class="space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-notion-border dark:border-notion-darkBorder">
+        <h2 class="text-xl font-bold text-notion-text dark:text-notion-darkText">
+          5. หมวดระบบ IoT และ MQTT Broker (เกณฑ์ส่วนที่ 3: 10 คะแนน)
+        </h2>
+        <span class="text-xs font-mono font-bold text-sky-600 bg-sky-50 dark:bg-sky-950 px-2 py-0.5 rounded">10 คะแนน</span>
+      </div>
+      <!-- ================= PDF ORIGINAL PAGES VIEWER: ส่วนที่ 3 หมวดระบบ IoT, Mosquitto MQTT & Node-RED Dashboard (10 คะแนน) ================= -->
+      <div class="p-4 rounded-xl border-2 border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/30 dark:from-indigo-950/20 dark:via-notion-darkBg dark:to-blue-950/10 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 dark:border-indigo-950/60 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="font-bold text-xs uppercase tracking-wider text-indigo-900 dark:text-indigo-300">
+              ภาพแคปต้นฉบับจริงจาก PDF เกณฑ์ทางการ (ส่วนที่ 3 หมวดระบบ IoT, Mosquitto MQTT & Node-RED Dashboard (10 คะแนน))
+            </span>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            เอกสาร: รายการที่ 58 (หน้า 22/29)
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+          หน้า 22 ระบุเกณฑ์การติดตั้ง MQTT Server, ทดสอบ MQTT Client, เชื่อมต่อ ESP32 ส่งค่าเซนเซอร์ และทำ Dashboard แสดงผล 5 รูปแบบ
+        </p>
+        <div class="grid grid-cols-1 gap-3 max-w-xl mx-auto">
+          
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 22 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_22.png', 'หน้า 22 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_22.png" alt="หน้า 22 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_22.png', 'หน้า 22 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        </div>
+      </div>
+
+
+      <div class="space-y-3 text-xs">
+        <details open class="border border-notion-border dark:border-notion-darkBorder rounded-lg p-3 bg-white dark:bg-notion-darkBg">
+          <summary class="font-bold text-sm text-notion-text dark:text-notion-darkText flex items-center justify-between">
+            <span>การเชื่อมต่อ ESP32, Mosquitto MQTT และ Node-RED Sub ลง DB</span>
+            <span class="arrow-icon text-notion-muted">▶</span>
+          </summary>
+          <div class="mt-3 space-y-2 text-notion-muted dark:text-notion-darkMuted leading-relaxed">
+            <p>ดูโค้ดเฟิร์มแวร์ Arduino ฉบับเต็มได้ที่ <a href="file:///c:/Users/Woradech/Desktop/yypp/05_IoT_MQTT_NodeRED/esp32_firmware.ino" class="underline text-indigo-600 font-mono">05_IoT_MQTT_NodeRED/esp32_firmware.ino</a>:</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li><strong>MQTT Server:</strong> ใช้ Eclipse Mosquitto บน Docker เปิดพอร์ต 1883 พร้อมตั้ง Username/Password และไฟล์ ACL</li>
+              <li><strong>Hardware Pub:</strong> ESP32 อ่านค่าจากเซนเซอร์ BME280/BMP280 (อุณหภูมิ, ความชื้น, ความกดอากาศ) แล้ว Publish JSON Payload ไปที่ Topic `sensors/competition/bme280`</li>
+              <li><strong>Hardware Sub:</strong> ESP32 Subscribe Topic `actuators/competition/relay` เพื่อรับคำสั่งเปิด/ปิด Relay และส่งสถานะตอบกลับ</li>
+              <li><strong>Node-RED Database Logging:</strong> Node-RED Sub ข้อมูลจาก Topic แล้วแปลงเป็นคำสั่ง SQL INSERT ลงตาราง MariaDB/MySQL อัตโนมัติ</li>
+              <li><strong>5 รูปแบบ Dashboard:</strong> 1. Gauge วัดอุณหภูมิ 2. Real-time Line Chart 3. KPI Stat Cards 4. Status LED Indicator 5. Historical Data Table</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODULE 6: PRESENTATION & 3 ORAL QUESTIONS (10 PTS) -->
+    <!-- ===================================================================== -->
+    <section id="sec-presentation" class="space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-notion-border dark:border-notion-darkBorder">
+        <h2 class="text-xl font-bold text-notion-text dark:text-notion-darkText">
+          6. การนำเสนอผลงานและเฉลยแนวคำถามกรรมการ 3 ข้อ (เกณฑ์ส่วนที่ 5: 10 คะแนน)
+        </h2>
+        <span class="text-xs font-mono font-bold text-rose-600 bg-rose-50 dark:bg-rose-950 px-2 py-0.5 rounded">10 คะแนนเต็ม</span>
+      </div>
+      <!-- ================= PDF ORIGINAL PAGES VIEWER: ส่วนที่ 5 การนำเสนอผลงาน และเกณฑ์เหรียญรางวัล (10 คะแนน) ================= -->
+      <div class="p-4 rounded-xl border-2 border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/30 dark:from-indigo-950/20 dark:via-notion-darkBg dark:to-blue-950/10 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 dark:border-indigo-950/60 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="font-bold text-xs uppercase tracking-wider text-indigo-900 dark:text-indigo-300">
+              ภาพแคปต้นฉบับจริงจาก PDF เกณฑ์ทางการ (ส่วนที่ 5 การนำเสนอผลงาน และเกณฑ์เหรียญรางวัล (10 คะแนน))
+            </span>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            เอกสาร: รายการที่ 58 (หน้า 28, 29/29)
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+          หน้า 28 ระบุระเบียบคณะกรรมการตัดสิน และหน้า 29 ระบุเกณฑ์เหรียญรางวัล (เหรียญทอง 80 คะแนนขึ้นไป, เหรียญเงิน 70-79, เหรียญทองแดง 60-69)
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 28 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_28.png', 'หน้า 28 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_28.png" alt="หน้า 28 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_28.png', 'หน้า 28 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        <div class="relative group rounded-lg overflow-hidden border border-notion-border dark:border-notion-darkBorder bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
+          <div class="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-notion-border dark:border-notion-darkBorder flex items-center justify-between text-[11px]">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">หน้า 29 จาก PDF เกณฑ์ทางการ</span>
+            <button type="button" onclick="openPdfModal('pdf_pages/page_29.png', 'หน้า 29 - เกณฑ์การแข่งขันทางการ')" class="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+              ขยายภาพเต็มจอ
+            </button>
+          </div>
+          <img src="pdf_pages/page_29.png" alt="หน้า 29 จาก PDF รายการที่ 58" class="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" onclick="openPdfModal('pdf_pages/page_29.png', 'หน้า 29 - เกณฑ์การแข่งขันทางการ')" loading="lazy" />
+        </div>
+        </div>
+      </div>
+
+
+      <div class="space-y-3 text-xs">
+        <!-- Q&A 1: Backend -->
+        <div class="p-3.5 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded-lg space-y-2">
+          <div class="font-bold text-rose-700 dark:text-rose-300">[คำถามข้อที่ 1: ด้าน Backend & Security] (3 คะแนน)</div>
+          <div class="text-notion-text dark:text-notion-darkText font-medium italic">
+            "ทำไมถึงเลือกใช้ JWT ในการยืนยันตัวตน และถ้าผู้ใช้ทำการ Logout หรือต้องการระงับสิทธิ์ทันที จะทำให้ Token ใช้งานไม่ได้อย่างไร?"
+          </div>
+          <div class="p-3 bg-white dark:bg-notion-darkBg border border-notion-border dark:border-notion-darkBorder rounded text-notion-muted dark:text-notion-darkMuted leading-relaxed">
+            <strong>แนวทางการตอบ:</strong><br>
+            "เราเลือกใช้ JWT เพราะเป็น Stateless Authentication เหมาะกับ Web App ยุคใหม่ ไม่ต้องเก็บ Session ลง RAM ใน Server ทำให้รองรับโหลดได้สูงและมีความปลอดภัยด้วย Digital Signature (HMAC-SHA256)<br>
+            กรณีต้องการ Revoke หรือตัดสิทธิ์ Token ทันที สามารถทำได้ 2 วิธี:<br>
+            1. <strong>Token Blacklist ใน Redis:</strong> เก็บ Token ที่ถูกยกเลิกไว้ใน Redis พร้อมตั้งค่า TTL ตามเวลาหมดอายุเดิมของ Token เมื่อมี Request เข้ามา ให้ Middleware เช็ค Blacklist ก่อน<br>
+            2. <strong>Token Versioning:</strong> เพิ่มฟิลด์ `token_version` ในตาราง Users และใน Payload ของ Token เมื่อต้องการตัดสิทธิ์ ให้บวกเลข version ในตารางเพิ่มขึ้น เมื่อ Token เก่าส่งมา version จะไม่ตรง และถูกปฏิเสธทันทีครับ"
+          </div>
+        </div>
+
+        <!-- Q&A 2: Frontend -->
+        <div class="p-3.5 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded-lg space-y-2">
+          <div class="font-bold text-rose-700 dark:text-rose-300">[คำถามข้อที่ 2: ด้าน Frontend & UX/UI] (3 คะแนน)</div>
+          <div class="text-notion-text dark:text-notion-darkText font-medium italic">
+            "ระบบของคุณมีการจัดการ Error Handling ระหว่าง Frontend กับ Backend อย่างไร เพื่อไม่ให้หน้าเว็บค้าง หรือทำให้ผู้ใช้งานสับสน?"
+          </div>
+          <div class="p-3 bg-white dark:bg-notion-darkBg border border-notion-border dark:border-notion-darkBorder rounded text-notion-muted dark:text-notion-darkMuted leading-relaxed">
+            <strong>แนวทางการตอบ:</strong><br>
+            "เราใช้สถาปัตยกรรมแบบสองชั้น (Two-tier Error Handling):<br>
+            1. <strong>ฝั่ง Frontend (Client Validation):</strong> มีการดักจับข้อมูลเบื้องต้นก่อนส่ง (เช่น ช่องที่จำเป็นต้องกรอก, มูลค่าต้องไม่ติดลบ) ทำให้ผู้ใช้ทราบทันทีโดยไม่ต้องรอ Round-trip ไปยัง Server<br>
+            2. <strong>การสื่อสาร JSON มาตรฐาน:</strong> ฝั่ง Backend ดักจับ Exception ด้วย Error Middleware และส่ง HTTP Status Code ที่ตรงตามมาตรฐาน (400, 401, 403, 404, 500) พร้อม JSON รูปแบบ `{ status, message, data }`<br>
+            3. <strong>Frontend Error Translation:</strong> ฝั่ง Frontend นำ error message หรือ code มาแปลงเป็นข้อความภาษาไทยที่เข้าใจง่าย (Friendly Message) ผ่าน Toast Notification และ Error Box ใต้ฟอร์ม โดยไม่มีการปล่อยให้หน้าจอค้าง หรือแสดง Error ดิบทางเทคนิคครับ"
+          </div>
+        </div>
+
+        <!-- Q&A 3: DevOps -->
+        <div class="p-3.5 bg-notion-callout dark:bg-notion-darkCallout border border-notion-border dark:border-notion-darkBorder rounded-lg space-y-2">
+          <div class="font-bold text-rose-700 dark:text-rose-300">[คำถามข้อที่ 3: ด้าน DevOps, Network & Troubleshooting] (3 คะแนน)</div>
+          <div class="text-notion-text dark:text-notion-darkText font-medium italic">
+            "ถ้าในขั้นตอน CI/CD Pipeline ขั้นตอนที่ 4 (Deploy) เกิดข้อผิดพลาด Failed ขึ้นมา คุณมีกระบวนการตรวจสอบและ Rollback อย่างไร และทำไมจึงต้องแยก VLAN และมี Reverse Proxy?"
+          </div>
+          <div class="p-3 bg-white dark:bg-notion-darkBg border border-notion-border dark:border-notion-darkBorder rounded text-notion-muted dark:text-notion-darkMuted leading-relaxed">
+            <strong>แนวทางการตอบ:</strong><br>
+            "กระบวนการตรวจสอบและกู้คืน (Rollback):<br>
+            1. เข้าไปดูที่ GitLab CI/CD Job Logs เพื่อหาสาเหตุ เช่น ปัญหา Port Conflict, Database Migration ไม่ผ่าน หรือ Container Healthcheck Fail<br>
+            2. ใช้คำสั่ง `docker logs` บนเซิร์ฟเวอร์เพื่อดู runtime log เชิงลึก<br>
+            3. หากเป็นปัญหาของโค้ดใหม่ ให้ใช้ฟังก์ชัน Rollback ของ GitLab เพื่อ Redeploy Docker Image Tag เวอร์ชั่นก่อนหน้าจาก Private Registry ทันที ซึ่งใช้เวลาเพียงไม่กี่วินาที<br>
+            เหตุผลที่ต้องแยก VLAN และใช้ Reverse Proxy:<br>
+            - <strong>การแยก VLAN (Server, Dev, Guest):</strong> เพื่อจำกัด Broadcast Domain และเพิ่มความปลอดภัย โดยใช้ ACL กั้นไม่ให้เครื่องภายนอกเข้าถึงวง Server ได้โดยตรง<br>
+            - <strong>Reverse Proxy (NPM/Caddy):</strong> ทำหน้าที่เป็น Single Entry Point สำหรับจัดการ SSL/HTTPS รวมศูนย์, ซ่อนพอร์ตจริงของคอนเทนเนอร์ภายใน, ป้องกันการโจมตีโดยตรง และช่วยทำ Load Balancing ครับ"
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODULE 7: 100-POINT AUDIT CHECKLIST -->
+    <!-- ===================================================================== -->
+    <section id="sec-audit" class="space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-notion-border dark:border-notion-darkBorder">
+        <h2 class="text-xl font-bold text-notion-text dark:text-notion-darkText">
+          7. ตารางตรวจสอบความพร้อม 100 คะแนนเต็ม (Interactive Audit Checklist)
+        </h2>
+        <span class="text-xs font-mono font-bold text-teal-600 bg-teal-50 dark:bg-teal-950 px-2 py-0.5 rounded">คะแนนสะสม: <span id="score-counter">0</span> / 100</span>
+      </div>
+
+      <p class="text-xs text-notion-muted dark:text-notion-darkMuted">
+        ติ๊กเครื่องหมายถูกเพื่อตรวจสอบความพร้อมของทีมในแต่ละหัวข้อ ยิ่งฝึกซ้อมจนติ๊กครบ 100% ยิ่งการันตีเหรียญทอง:
+      </p>
+
+      <div class="space-y-2 text-xs" id="checklist-container">
+        <!-- Checklist items will be generated by script -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-8 pb-16 border-t border-notion-border dark:border-notion-darkBorder text-center text-xs text-notion-muted dark:text-notion-darkMuted space-y-1">
+      <div>DevOps Skills Competition Interactive Preparation Guidebook</div>
+      <div class="font-mono">รายการที่ 58 ระดับ ปวส. | อัปเดตล่าสุด: ตุลาคม 2569</div>
+    </footer>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT: NOTION INTERACTIONS & CHECKLIST LOGIC -->
+  <!-- ========================================================================= -->
+  <script>
+    // Checklist Rubric Data matching PDF 100%
+    const rubricItems = [
+      // Network (13 pts)
+      { id: 'c1', cat: 'Network', text: 'VLAN server, dev, guest (ไม่ใช่ Default VLAN 1)', pts: 1 },
+      { id: 'c2', cat: 'Network', text: 'Inter-VLAN Routing มี IP ครบ 3 วง และ Route ถึงกันได้', pts: 3 },
+      { id: 'c3', cat: 'Network', text: 'DHCP Server เครื่องเดียวแจก 3 วง + DHCP Snooping Trust Port', pts: 3 },
+      { id: 'c4', cat: 'Network', text: 'NAT ออกเน็ตและต่อเข้าเครื่องกรรมการได้ทุก VLAN', pts: 1 },
+      { id: 'c5', cat: 'Network', text: 'Standard & Extended ACL กั้น Service และ Server + Loop Protection', pts: 5 },
+      
+      // Server & DevOps Infra (24 pts)
+      { id: 'c6', cat: 'Server', text: 'Virtualization มี GUI, โครงสร้างตามผัง, IP ถูกต้อง', pts: 3 },
+      { id: 'c7', cat: 'Server', text: 'Ubuntu Server บูตอัตโนมัติ, Static IP, Hostname ถูกต้อง', pts: 3 },
+      { id: 'c8', cat: 'Server', text: 'Technitium DNS บน Docker พร้อม ACL จำกัด IP (ห้ามตั้งบน Router/hosts)', pts: 2 },
+      { id: 'c9', cat: 'Server', text: 'SSH รีโมตได้, เพิ่ม 2 Users, Sudo NOPASSWD (-i), UFW Firewall', pts: 5 },
+      { id: 'c10', cat: 'Server', text: 'ติดตั้ง Docker & GitLab ใน Container/VM, สร้าง User ใน UI', pts: 3 },
+      { id: 'c11', cat: 'Server', text: 'Dockerfile แอป และ Compose Reverse Proxy HTTPS (NPM/Caddy) + App+DB', pts: 4 },
+      { id: 'c12', cat: 'Server', text: 'GitLab CI/CD Pipeline (.gitlab-ci.yml) 4 Stages (build, test, push, deploy)', pts: 4 },
+
+      // Software & Application (53 pts)
+      { id: 'c13', cat: 'Software', text: 'Flowchart 5 รูป (Login, Admin, User 1, User 2, Use Case)', pts: 5 },
+      { id: 'c14', cat: 'Software', text: 'Database Relational 3 ตาราง (PK/FK) + Class Diagram', pts: 5 },
+      { id: 'c15', cat: 'Software', text: 'Draw.io Wireframes 5 รูปแบบ (Login, Overview, Admin, User1, User2)', pts: 5 },
+      { id: 'c16', cat: 'Software', text: 'RESTful API README.md (Status Code, Endpoints, Error, JWT)', pts: 5 },
+      { id: 'c17', cat: 'Software', text: 'Backend REST API (GET, POST, PUT, DELETE, Upload, JWT, Exceptions, Comments)', pts: 10 },
+      { id: 'c18', cat: 'Software', text: 'Frontend UI Responsive, JWT Login 3 Roles, CRUD, File Upload, Pagination, Filter', pts: 15 },
+      { id: 'c19', cat: 'Software', text: 'Automated Unit & Integration Test ใน Pipeline อย่างละ 1 Case', pts: 2 },
+      { id: 'c20', cat: 'Software', text: 'Playwright E2E Tests (E2E-001 Login, E2E-002 Create Data)', pts: 2 },
+      { id: 'c21', cat: 'Software', text: 'Git Branch Strategy (Backend/Frontend/DevOps merge)', pts: 1 },
+      { id: 'c22', cat: 'Software', text: 'ความสมบูรณ์ของระบบ Application ทั้งหมด', pts: 3 },
+
+      // Presentation & QA (10 pts)
+      { id: 'c23', cat: 'Present', text: 'ตอบคำถามกรรมการ 3 ข้อ (Backend, Frontend, DevOps Troubleshooting)', pts: 3 },
+      { id: 'c24', cat: 'Present', text: 'นำเสนอการกระจายงานในทีม (Kanban Board, Git Branching)', pts: 3 },
+      { id: 'c25', cat: 'Present', text: 'บุคลิกภาพ และความตรงต่อเวลา (ไม่เกิน 30 นาที)', pts: 4 }
+    ];
+
+    // Render Checklist
+    function renderChecklist() {
+      const container = document.getElementById('checklist-container');
+      container.innerHTML = '';
+      const savedChecks = JSON.parse(localStorage.getItem('devops_audit_checks') || '{}');
+
+      let currentScore = 0;
+
+      rubricItems.forEach(item => {
+        const isChecked = !!savedChecks[item.id];
+        if (isChecked) currentScore += item.pts;
+
+        const div = document.createElement('div');
+        div.className = `p-2.5 rounded border transition flex items-center justify-between gap-3 ${
+          isChecked 
+            ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800' 
+            : 'bg-white dark:bg-notion-darkBg border-notion-border dark:border-notion-darkBorder'
+        }`;
+
+        div.innerHTML = `
+          <label class="flex items-center gap-2.5 cursor-pointer flex-1 select-none">
+            <input type="checkbox" id="${item.id}" onchange="toggleCheck('${item.id}', ${item.pts})" ${isChecked ? 'checked' : ''}
+              class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-gray-300">
+            <span class="${isChecked ? 'line-through text-notion-muted dark:text-notion-darkMuted' : 'text-notion-text dark:text-notion-darkText font-medium'}">[${item.cat}] ${item.text}</span>
+          </label>
+          <span class="font-mono text-[11px] px-1.5 py-0.5 rounded font-semibold shrink-0 ${isChecked ? 'bg-emerald-200 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">+${item.pts} คะแนน</span>
+        `;
+        container.appendChild(div);
+      });
+
+      document.getElementById('score-counter').innerText = currentScore;
+    }
+
+    function toggleCheck(id, pts) {
+      const savedChecks = JSON.parse(localStorage.getItem('devops_audit_checks') || '{}');
+      savedChecks[id] = !savedChecks[id];
+      localStorage.setItem('devops_audit_checks', JSON.stringify(savedChecks));
+      renderChecklist();
+    }
+
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('devops_dark_mode', isDark ? 'dark' : 'light');
+    }
+
+    // Filter Navigation Items
+    function filterNavItems() {
+      const q = document.getElementById('sidebar-search').value.toLowerCase().trim();
+      const items = document.querySelectorAll('.nav-item');
+      items.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        if (text.includes(q)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Init
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('devops_dark_mode');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+      renderChecklist();
+    });
+  </script>
+
+  <!-- ========================================================================= -->
+  <!-- FULLSCREEN IMAGE ZOOM MODAL -->
+  <!-- ========================================================================= -->
+  <div id="pdf-zoom-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex-col items-center justify-center p-2 sm:p-4 transition-opacity duration-200" onclick="closePdfModal(event)">
+    <div class="w-full max-w-5xl bg-white dark:bg-[#202020] rounded-xl overflow-hidden shadow-2xl border border-slate-700 flex flex-col max-h-[96vh]" onclick="event.stopPropagation()">
+      <div class="px-4 py-3 bg-slate-100 dark:bg-[#191919] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+          <span id="modal-title" class="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-sans">หน้าเอกสารจริงจาก PDF เกณฑ์ทางการ</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <a id="modal-download" href="#" target="_blank" class="px-2.5 py-1 text-xs rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition">
+            เปิดแท็บใหม่
+          </a>
+          <button onclick="closePdfModalDirect()" class="p-1 rounded-md text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+      <div class="p-2 sm:p-4 overflow-y-auto flex-1 flex justify-center bg-slate-900/10 dark:bg-black/40">
+        <img id="modal-img" src="" alt="PDF Original Page" class="max-h-[82vh] w-auto object-contain rounded shadow-lg border border-slate-300 dark:border-slate-800" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openPdfModal(imgSrc, title) {
+      const modal = document.getElementById('pdf-zoom-modal');
+      const img = document.getElementById('modal-img');
+      const titleEl = document.getElementById('modal-title');
+      const downloadLink = document.getElementById('modal-download');
+      
+      img.src = imgSrc;
+      titleEl.innerText = title || 'ภาพแคปหน้าจริงจาก PDF เกณฑ์การแข่งขัน';
+      downloadLink.href = imgSrc;
+      
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePdfModal(e) {
+      if (e.target.id === 'pdf-zoom-modal') {
+        closePdfModalDirect();
+      }
+    }
+
+    function closePdfModalDirect() {
+      const modal = document.getElementById('pdf-zoom-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePdfModalDirect();
+    });
+  </script>
+
+</body>
+</html>

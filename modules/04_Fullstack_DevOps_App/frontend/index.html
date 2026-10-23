@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบบริหารจัดการเทคโนโลยีสารสนเทศ (DevOps Competition Platform)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Prompt & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Prompt', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+    .glassmorphism {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <!-- ========================================================================= -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 1: AUTHENTICATION / LOGIN SCREEN -->
+  <!-- ========================================================================= -->
+  <div id="view-login" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
+    <div class="glassmorphism w-full max-w-md p-8 rounded-2xl shadow-2xl space-y-6">
+      
+      <!-- Brand Header -->
+      <div class="text-center space-y-2">
+        <div class="inline-flex p-3 bg-indigo-500/10 text-indigo-400 rounded-xl ring-1 ring-indigo-500/20">
+          <i data-lucide="layers" class="w-8 h-8"></i>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight text-white">DevOps Platform</h1>
+        <p class="text-sm text-slate-400">การแข่งขันทักษะเทคโนโลยีสารสนเทศด้านโปรแกรมและเครือข่าย</p>
+      </div>
+
+      <!-- Quick Role Login (ตัวช่วยสาธิตสำหรับกรรมการ) -->
+      <div class="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60 space-y-2">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">⚡ ปุ่มลัดเข้าสู่ระบบตามสิทธิ์ (Demo Roles):</span>
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <button type="button" id="btn-quick-admin" onclick="fillAndLogin('admin')" class="py-1.5 px-2 bg-indigo-600/30 hover:bg-indigo-600 text-indigo-200 hover:text-white rounded-lg border border-indigo-500/40 transition text-center font-medium">👑 Admin</button>
+          <button type="button" id="btn-quick-officer" onclick="fillAndLogin('officer1')" class="py-1.5 px-2 bg-emerald-600/30 hover:bg-emerald-600 text-emerald-200 hover:text-white rounded-lg border border-emerald-500/40 transition text-center font-medium">👤 User 1</button>
+          <button type="button" id="btn-quick-member" onclick="fillAndLogin('member1')" class="py-1.5 px-2 bg-amber-600/30 hover:bg-amber-600 text-amber-200 hover:text-white rounded-lg border border-amber-500/40 transition text-center font-medium">👥 User 2</button>
+        </div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+        <div>
+          <label for="input-username" class="block text-sm font-medium text-slate-300 mb-1">ชื่อผู้ใช้งาน (Username)</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i data-lucide="user" class="w-4 h-4"></i></span>
+            <input type="text" id="input-username" required placeholder="admin, officer1 หรือ member1"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-800/60 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+          </div>
+        </div>
+
+        <div>
+          <label for="input-password" class="block text-sm font-medium text-slate-300 mb-1">รหัสผ่าน (Password)</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i data-lucide="lock" class="w-4 h-4"></i></span>
+            <input type="password" id="input-password" required placeholder="••••••••"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-800/60 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+          </div>
+        </div>
+
+        <!-- Frontend Error Box -->
+        <div id="login-error-box" class="hidden p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-300 flex items-center gap-2">
+          <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+          <span id="login-error-text">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</span>
+        </div>
+
+        <button type="submit" id="btn-login"
+          class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-500/50 transition flex items-center justify-center gap-2">
+          <span>เข้าสู่ระบบ (Sign In)</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 2: MAIN DASHBOARD & APPLICATION SHELL -->
+  <!-- ========================================================================= -->
+  <div id="view-app" class="hidden min-h-screen flex flex-col bg-slate-950">
+    
+    <!-- Top Navigation Header -->
+    <header class="h-16 border-b border-slate-800 bg-slate-900/90 backdrop-blur px-4 lg:px-8 flex items-center justify-between sticky top-0 z-30">
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-indigo-600/20 text-indigo-400 rounded-lg">
+          <i data-lucide="cpu" class="w-5 h-5"></i>
+        </div>
+        <span class="font-bold text-lg text-white hidden sm:inline">IT DevOps Asset Center</span>
+      </div>
+
+      <!-- Current User Profile & Role Info -->
+      <div class="flex items-center gap-4">
+        <div class="text-right hidden sm:block">
+          <div id="badge-user-name" class="font-semibold text-sm text-slate-200">Administrator</div>
+          <div id="badge-user-role" class="text-xs px-2 py-0.5 rounded-full inline-block font-mono bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">admin</div>
+        </div>
+        <button id="btn-logout" onclick="logout()" class="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition" title="ออกจากระบบ">
+          <i data-lucide="log-out" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- App Body: Sidebar + Main Content -->
+    <div class="flex-1 flex overflow-hidden">
+      
+      <!-- Sidebar -->
+      <aside class="w-64 border-r border-slate-800 bg-slate-900/40 p-4 space-y-2 hidden md:block">
+        <div class="text-xs font-semibold text-slate-500 px-3 uppercase tracking-wider mb-2">เมนูการใช้งาน</div>
+        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition bg-indigo-600 text-white">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>แดชบอร์ดภาพรวม</span>
+        </button>
+        <button onclick="switchTab('inventory')" id="tab-inventory" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800/60">
+          <i data-lucide="box" class="w-4 h-4"></i>
+          <span>รายการอุปกรณ์/ข้อมูล</span>
+        </button>
+        <button onclick="switchTab('system-info')" id="tab-system-info" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800/60">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>สิทธิ์และเกณฑ์การตรวจ</span>
+        </button>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+        
+        <!-- SECTION A: DASHBOARD OVERVIEW -->
+        <div id="section-dashboard" class="space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-white">ภาพรวมระบบ (Overview Dashboard)</h2>
+              <p class="text-sm text-slate-400">สถิติและสถานะการทำงานของโครงสร้างระบบเทคโนโลยีสารสนเทศ</p>
+            </div>
+          </div>
+
+          <!-- KPI Summary Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="p-5 bg-slate-900/60 border border-slate-800 rounded-2xl">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-medium uppercase">รายการทั้งหมด</span>
+                <i data-lucide="package" class="w-5 h-5 text-indigo-400"></i>
+              </div>
+              <div id="kpi-total-items" class="text-2xl font-bold text-white font-mono">0</div>
+            </div>
+
+            <div class="p-5 bg-slate-900/60 border border-slate-800 rounded-2xl">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-medium uppercase">หมวดหมู่ระบบ</span>
+                <i data-lucide="folder" class="w-5 h-5 text-emerald-400"></i>
+              </div>
+              <div id="kpi-categories" class="text-2xl font-bold text-white font-mono">3</div>
+            </div>
+
+            <div class="p-5 bg-slate-900/60 border border-slate-800 rounded-2xl">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-medium uppercase">สถานะพร้อมใช้งาน</span>
+                <i data-lucide="check-circle" class="w-5 h-5 text-sky-400"></i>
+              </div>
+              <div id="kpi-active-items" class="text-2xl font-bold text-white font-mono">0</div>
+            </div>
+
+            <div class="p-5 bg-slate-900/60 border border-slate-800 rounded-2xl">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-medium uppercase">มูลค่าทรัพย์สินรวม</span>
+                <i data-lucide="dollar-sign" class="w-5 h-5 text-amber-400"></i>
+              </div>
+              <div id="kpi-total-value" class="text-2xl font-bold text-white font-mono">฿0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION B: INVENTORY MANAGEMENT TABLE (CRUD + SEARCH + FILTER + PAGINATION) -->
+        <div id="section-inventory" class="hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-white">ตารางรายการข้อมูลและอุปกรณ์</h2>
+              <p class="text-sm text-slate-400">จัดการข้อมูล ค้นหา แนบไฟล์ และกำหนดสิทธิ์ตามกลุ่มผู้ใช้</p>
+            </div>
+            <!-- ปุ่มเพิ่มข้อมูล: อนุญาตเฉพาะ admin และ user1 -->
+            <button id="btn-open-create-modal" onclick="openCreateModal()"
+              class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-medium shadow-lg shadow-emerald-600/30 transition flex items-center gap-2">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>+ เพิ่มรายการใหม่</span>
+            </button>
+          </div>
+
+          <!-- Filter & Search Toolbar -->
+          <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl flex flex-wrap items-center gap-3">
+            <div class="relative flex-1 min-w-[200px]">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i data-lucide="search" class="w-4 h-4"></i></span>
+              <input type="text" id="input-search" oninput="handleSearchInput()" placeholder="ค้นหาตามรหัส หรือชื่อรายการ..."
+                class="w-full pl-9 pr-3 py-2 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <select id="select-category-filter" onchange="loadItems(1)"
+              class="bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="">ทุกหมวดหมู่ (All Categories)</option>
+              <option value="1">Network Equipment</option>
+              <option value="2">Server & Storage</option>
+              <option value="3">IoT Devices</option>
+            </select>
+
+            <button onclick="resetFilters()" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition" title="ล้างการค้นหา">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Data Table -->
+          <div class="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden shadow">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm">
+                <thead class="bg-slate-800/80 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  <tr>
+                    <th class="py-3 px-4">รหัส</th>
+                    <th class="py-3 px-4">ชื่อรายการ</th>
+                    <th class="py-3 px-4">หมวดหมู่</th>
+                    <th class="py-3 px-4">มูลค่า</th>
+                    <th class="py-3 px-4">ไฟล์แนบ</th>
+                    <th class="py-3 px-4 text-right">การจัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="table-items-body" class="divide-y divide-slate-800 text-slate-300">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination Toolbar -->
+            <div class="p-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+              <span id="span-page-info">กำลังแสดง 0 รายการ</span>
+              <div class="flex items-center gap-2">
+                <button id="btn-prev-page" onclick="prevPage()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 rounded-lg text-white font-medium transition">ย้อนกลับ</button>
+                <span id="span-current-page" class="font-mono text-indigo-400 font-semibold px-2">1</span>
+                <button id="btn-next-page" onclick="nextPage()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 rounded-lg text-white font-medium transition">ถัดไป</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION C: SYSTEM INFO & RUBRIC DETAILS -->
+        <div id="section-system-info" class="hidden space-y-6">
+          <div class="p-6 bg-slate-900/60 border border-slate-800 rounded-2xl space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="check-square" class="w-5 h-5 text-indigo-400"></i>
+              <span>เกณฑ์การตรวจและการแยกระดับสิทธิ์ (RBAC Matrix)</span>
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border border-slate-800">
+                <thead class="bg-slate-800 text-slate-300 font-semibold uppercase">
+                  <tr>
+                    <th class="p-2.5">บทบาท (Role)</th>
+                    <th class="p-2.5">สิทธิ์การดูข้อมูล (GET)</th>
+                    <th class="p-2.5">สิทธิ์การเพิ่มและแนบไฟล์ (POST)</th>
+                    <th class="p-2.5">สิทธิ์การแก้ไขข้อมูล/ไฟล์ (PUT)</th>
+                    <th class="p-2.5">สิทธิ์การลบข้อมูล (DELETE)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800">
+                  <tr class="hover:bg-slate-800/40">
+                    <td class="p-2.5 font-bold text-indigo-400">Admin</td>
+                    <td class="p-2.5 text-emerald-400">✔ อนุญาต</td>
+                    <td class="p-2.5 text-emerald-400">✔ อนุญาต</td>
+                    <td class="p-2.5 text-emerald-400">✔ อนุญาต</td>
+                    <td class="p-2.5 text-emerald-400">✔ อนุญาต</td>
+                  </tr>
+                  <tr class="hover:bg-slate-800/40">
+                    <td class="p-2.5 font-bold text-emerald-400">User Level 1 (Officer)</td>
+                    <td class="p-2.5 text-emerald-400">✔ อนุญาต</td>
+                    <td class="p-2.5 text-emerald-400">✔ อนุญาต</td>
+                    <td class="p-2.5 text-emerald-400">✔ อนุญาต</td>
+                    <td class="p-2.5 text-rose-400">❌ ปฏิเสธ (403)</td>
+                  </tr>
+                  <tr class="hover:bg-slate-800/40">
+                    <td class="p-2.5 font-bold text-amber-400">User Level 2 (Member)</td>
+                    <td class="p-2.5 text-emerald-400">✔ อนุญาต</td>
+                    <td class="p-2.5 text-rose-400">❌ ปฏิเสธ (403)</td>
+                    <td class="p-2.5 text-rose-400">❌ ปฏิเสธ (403)</td>
+                    <td class="p-2.5 text-rose-400">❌ ปฏิเสธ (403)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: ADD / EDIT ITEM (WITH FILE ATTACHMENT & CLIENT VALIDATION) -->
+  <!-- ========================================================================= -->
+  <div id="modal-item" class="fixed inset-0 z-40 hidden flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+    <div class="glassmorphism w-full max-w-lg p-6 rounded-2xl shadow-2xl space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-700">
+        <h3 id="modal-title" class="font-bold text-lg text-white">เพิ่มรายการใหม่</h3>
+        <button onclick="closeItemModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <form id="form-item" onsubmit="handleItemFormSubmit(event)" class="space-y-4">
+        <input type="hidden" id="item-form-id">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">รหัสอุปกรณ์ (Item Code) *</label>
+            <input type="text" id="input-item-code" required placeholder="เช่น NET-002"
+              class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">หมวดหมู่ (Category) *</label>
+            <select id="select-item-category" required class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:ring-2 focus:ring-indigo-500">
+              <option value="1">Network Equipment</option>
+              <option value="2">Server & Storage</option>
+              <option value="3">IoT Devices</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">ชื่อรายการ (Title) *</label>
+          <input type="text" id="input-item-title" required placeholder="เช่น Cisco 2960 Switch 24 Port"
+            class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">มูลค่า / ราคา (บาท) *</label>
+            <input type="number" step="0.01" id="input-item-value" required placeholder="0.00"
+              class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">ไฟล์แนบ (เอกสาร/รูปภาพ)</label>
+            <input type="file" id="input-item-file"
+              class="w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-slate-700 file:text-slate-200 hover:file:bg-slate-600">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">รายละเอียด (Description)</label>
+          <textarea id="input-item-desc" rows="2" placeholder="รายละเอียดคุณสมบัติ หรือสถานที่จัดเก็บ..."
+            class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:ring-2 focus:ring-indigo-500"></textarea>
+        </div>
+
+        <!-- Form Error Alert -->
+        <div id="form-error-box" class="hidden p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-300 flex items-center gap-2">
+          <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0"></i>
+          <span id="form-error-text"></span>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeItemModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm transition">ยกเลิก</button>
+          <button type="submit" id="btn-submit-item" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-medium transition shadow-lg shadow-indigo-600/30">บันทึกข้อมูล</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: CONFIRM DELETE (เกณฑ์ข้อ 4.6: มีแจ้งเตือนการลบข้อมูลได้) -->
+  <!-- ========================================================================= -->
+  <div id="modal-confirm-delete" class="fixed inset-0 z-40 hidden flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+    <div class="glassmorphism w-full max-w-sm p-6 rounded-2xl shadow-2xl space-y-4 text-center">
+      <div class="inline-flex p-3 bg-rose-500/20 text-rose-400 rounded-full">
+        <i data-lucide="trash-2" class="w-6 h-6"></i>
+      </div>
+      <h3 class="font-bold text-lg text-white">ยืนยันการลบข้อมูล?</h3>
+      <p class="text-xs text-slate-400" id="delete-confirm-text">คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้ การกระทำนี้ไม่สามารถย้อนกลับได้</p>
+      
+      <div class="flex justify-center gap-3 pt-2">
+        <button onclick="closeDeleteModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs transition">ยกเลิก</button>
+        <button id="btn-confirm-delete" onclick="executeDelete()" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold transition shadow-lg shadow-rose-600/30">ยืนยันการลบ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT FRONTEND APPLICATION LOGIC -->
+  <!-- ========================================================================= -->
+  <script>
+    // State Application
+    let currentUser = null;
+    let currentToken = localStorage.getItem('devops_token') || null;
+    let currentPage = 1;
+    let deleteTargetId = null;
+    let cachedItems = [];
+
+    // Helper: Toast Notifications
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `p-3.5 px-5 rounded-xl shadow-xl text-xs font-medium pointer-events-auto flex items-center gap-2 transition-all transform duration-300 ease-out border ${
+        type === 'success' 
+          ? 'bg-emerald-950/90 text-emerald-200 border-emerald-500/40 shadow-emerald-900/30' 
+          : 'bg-rose-950/90 text-rose-200 border-rose-500/40 shadow-rose-900/30'
+      }`;
+      toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle-2' : 'alert-circle'}" class="w-4 h-4 shrink-0"></i><span>${message}</span>`;
+      container.appendChild(toast);
+      lucide.createIcons();
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Quick Login Demo Helper
+    function fillAndLogin(role) {
+      const map = {
+        'admin': { u: 'admin', p: 'Password123!' },
+        'officer1': { u: 'officer1', p: 'Password123!' },
+        'member1': { u: 'member1', p: 'Password123!' }
+      };
+      document.getElementById('input-username').value = map[role].u;
+      document.getElementById('input-password').value = map[role].p;
+      document.getElementById('form-login').dispatchEvent(new Event('submit'));
+    }
+
+    // Login Form Submit
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const errBox = document.getElementById('login-error-box');
+      const errText = document.getElementById('login-error-text');
+      errBox.classList.add('hidden');
+
+      const username = document.getElementById('input-username').value.trim();
+      const password = document.getElementById('input-password').value;
+
+      // Frontend Validation
+      if (!username || !password) {
+        errText.innerText = "กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน";
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.status === 'success') {
+          currentToken = data.data.token;
+          currentUser = data.data.user;
+          localStorage.setItem('devops_token', currentToken);
+          localStorage.setItem('devops_user', JSON.stringify(currentUser));
+          showToast(data.message || 'เข้าสู่ระบบสำเร็จ');
+          initApp();
+        } else {
+          // Backend Error Mapping to User-friendly message
+          errText.innerText = data.message || "การเข้าสู่ระบบล้มเหลว กรุณาตรวจสอบข้อมูล";
+          errBox.classList.remove('hidden');
+        }
+      } catch (err) {
+        errText.innerText = "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ Backend ได้ กรุณาลองใหม่";
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    // Logout
+    function logout() {
+      localStorage.removeItem('devops_token');
+      localStorage.removeItem('devops_user');
+      currentToken = null;
+      currentUser = null;
+      document.getElementById('view-app').classList.add('hidden');
+      document.getElementById('view-login').classList.remove('hidden');
+      showToast('ออกจากระบบเรียบร้อยแล้ว');
+    }
+
+    // Tab Navigation
+    function switchTab(tabId) {
+      ['dashboard', 'inventory', 'system-info'].forEach(t => {
+        document.getElementById(`section-${t}`).classList.add('hidden');
+        document.getElementById(`tab-${t}`).className = 'nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800/60';
+      });
+      document.getElementById(`section-${tabId}`).classList.remove('hidden');
+      document.getElementById(`tab-${tabId}`).className = 'nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition bg-indigo-600 text-white';
+      lucide.createIcons();
+    }
+
+    // Initialize App after Login
+    function initApp() {
+      document.getElementById('view-login').classList.add('hidden');
+      document.getElementById('view-app').classList.remove('hidden');
+
+      document.getElementById('badge-user-name').innerText = currentUser.full_name;
+      document.getElementById('badge-user-role').innerText = currentUser.role.toUpperCase();
+
+      // Role Permission Matrix on UI
+      const btnCreate = document.getElementById('btn-open-create-modal');
+      if (currentUser.role === 'user2') {
+        btnCreate.classList.add('hidden'); // Level 2 can only view
+      } else {
+        btnCreate.classList.remove('hidden');
+      }
+
+      switchTab('inventory');
+      loadItems(1);
+    }
+
+    // Load Items with Search, Filter & Pagination
+    async function loadItems(page = 1) {
+      currentPage = page;
+      const search = document.getElementById('input-search').value.trim();
+      const categoryId = document.getElementById('select-category-filter').value;
+
+      let url = `/api/items?page=${page}&limit=5`;
+      if (search) url += `&search=${encodeURIComponent(search)}`;
+      if (categoryId) url += `&category_id=${categoryId}`;
+
+      try {
+        const res = await fetch(url, {
+          headers: { 'Authorization': `Bearer ${currentToken}` }
+        });
+        const result = await res.json();
+
+        if (res.ok && result.status === 'success') {
+          cachedItems = result.data.items;
+          renderTable(cachedItems);
+          renderPagination(result.data.pagination);
+          updateKPIs();
+        } else if (res.status === 401) {
+          logout();
+        }
+      } catch (err) {
+        showToast('เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + err.message, 'error');
+      }
+    }
+
+    let searchDebounce = null;
+    function handleSearchInput() {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(() => loadItems(1), 300);
+    }
+
+    function resetFilters() {
+      document.getElementById('input-search').value = '';
+      document.getElementById('select-category-filter').value = '';
+      loadItems(1);
+    }
+
+    // Render Table based on Role
+    function renderTable(items) {
+      const tbody = document.getElementById('table-items-body');
+      tbody.innerHTML = '';
+
+      if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500 text-xs">ไม่พบรายการข้อมูลที่ตรงกับเงื่อนไข</td></tr>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-800/40 transition';
+
+        const fileBadge = item.attachment_name
+          ? `<a href="${item.attachment_path}" target="_blank" class="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 underline font-mono">
+               <i data-lucide="paperclip" class="w-3.5 h-3.5"></i>
+               <span>${item.attachment_name.length > 15 ? item.attachment_name.substring(0, 15) + '...' : item.attachment_name}</span>
+             </a>`
+          : `<span class="text-xs text-slate-600">- ไม่มี -</span>`;
+
+        let actionButtons = '';
+        if (currentUser.role === 'admin') {
+          actionButtons = `
+            <div class="flex justify-end gap-1.5">
+              <button onclick="openEditModal(${item.id})" class="p-1.5 text-amber-400 hover:bg-slate-800 rounded-lg transition" title="แก้ไข"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+              <button onclick="openDeleteModal(${item.id}, '${item.item_code}')" class="p-1.5 text-rose-400 hover:bg-slate-800 rounded-lg transition" title="ลบ"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          `;
+        } else if (currentUser.role === 'user1') {
+          actionButtons = `
+            <div class="flex justify-end gap-1.5">
+              <button onclick="openEditModal(${item.id})" class="p-1.5 text-amber-400 hover:bg-slate-800 rounded-lg transition" title="แก้ไข"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+              <span class="text-xs text-slate-600 self-center">(ไม่มีสิทธิ์ลบ)</span>
+            </div>
+          `;
+        } else {
+          actionButtons = `<span class="text-xs text-slate-500">(ดูได้อย่างเดียว)</span>`;
+        }
+
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-mono font-medium text-slate-200">${item.item_code}</td>
+          <td class="py-3 px-4 font-medium text-white">${item.title}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">${item.category_name}</span></td>
+          <td class="py-3 px-4 font-mono text-emerald-400">฿${parseFloat(item.value_amount).toLocaleString('th-TH', { minimumFractionDigits: 2 })}</td>
+          <td class="py-3 px-4">${fileBadge}</td>
+          <td class="py-3 px-4 text-right">${actionButtons}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Render Pagination
+    function renderPagination(pg) {
+      document.getElementById('span-page-info').innerText = `หน้า ${pg.currentPage} จาก ${pg.totalPages} (ทั้งหมด ${pg.totalItems} รายการ)`;
+      document.getElementById('span-current-page').innerText = pg.currentPage;
+      document.getElementById('btn-prev-page').disabled = pg.currentPage <= 1;
+      document.getElementById('btn-next-page').disabled = pg.currentPage >= pg.totalPages;
+    }
+
+    function prevPage() { if (currentPage > 1) loadItems(currentPage - 1); }
+    function nextPage() { loadItems(currentPage + 1); }
+
+    // Update KPI Dashboard Cards
+    function updateKPIs() {
+      document.getElementById('kpi-total-items').innerText = cachedItems.length;
+      document.getElementById('kpi-active-items').innerText = cachedItems.filter(i => i.status === 'active').length;
+      const sum = cachedItems.reduce((acc, curr) => acc + (parseFloat(curr.value_amount) || 0), 0);
+      document.getElementById('kpi-total-value').innerText = `฿${sum.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+    }
+
+    // Open Create Modal
+    function openCreateModal() {
+      document.getElementById('form-item').reset();
+      document.getElementById('item-form-id').value = '';
+      document.getElementById('input-item-code').disabled = false;
+      document.getElementById('modal-title').innerText = '+ เพิ่มรายการใหม่';
+      document.getElementById('form-error-box').classList.add('hidden');
+      document.getElementById('modal-item').classList.remove('hidden');
+    }
+
+    // Open Edit Modal
+    function openEditModal(id) {
+      const item = cachedItems.find(i => i.id === id);
+      if (!item) return;
+
+      document.getElementById('form-item').reset();
+      document.getElementById('item-form-id').value = item.id;
+      document.getElementById('input-item-code').value = item.item_code;
+      document.getElementById('input-item-code').disabled = true; // Code cannot be altered
+      document.getElementById('select-item-category').value = item.category_id;
+      document.getElementById('input-item-title').value = item.title;
+      document.getElementById('input-item-value').value = item.value_amount;
+      document.getElementById('input-item-desc').value = item.description || '';
+      document.getElementById('modal-title').innerText = `แก้ไขรายการ: ${item.item_code}`;
+      document.getElementById('form-error-box').classList.add('hidden');
+      document.getElementById('modal-item').classList.remove('hidden');
+    }
+
+    function closeItemModal() {
+      document.getElementById('modal-item').classList.add('hidden');
+    }
+
+    // Handle Form Submit (Add / Edit) with Frontend Validation
+    async function handleItemFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('item-form-id').value;
+      const item_code = document.getElementById('input-item-code').value.trim();
+      const category_id = document.getElementById('select-item-category').value;
+      const title = document.getElementById('input-item-title').value.trim();
+      const value_amount = document.getElementById('input-item-value').value;
+      const description = document.getElementById('input-item-desc').value.trim();
+      const fileInput = document.getElementById('input-item-file');
+
+      const errBox = document.getElementById('form-error-box');
+      const errText = document.getElementById('form-error-text');
+      errBox.classList.add('hidden');
+
+      // Frontend Form Validation (เกณฑ์ข้อ 4.6)
+      if (!title || !category_id || (!id && !item_code)) {
+        errText.innerText = "กรุณากรอกข้อมูลที่มีเครื่องหมาย * ให้ครบถ้วน";
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      if (parseFloat(value_amount) < 0) {
+        errText.innerText = "มูลค่าหรือราคาต้องเป็นค่าบวกเท่านั้น";
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      // FormData for Multipart File Upload
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('category_id', category_id);
+      formData.append('value_amount', value_amount);
+      formData.append('description', description);
+      if (!id) formData.append('item_code', item_code);
+      if (fileInput.files.length > 0) {
+        formData.append('file', fileInput.files[0]);
+      }
+
+      const method = id ? 'PUT' : 'POST';
+      const endpoint = id ? `/api/items/${id}` : '/api/items';
+
+      try {
+        const res = await fetch(endpoint, {
+          method: method,
+          headers: { 'Authorization': `Bearer ${currentToken}` },
+          body: formData
+        });
+        const result = await res.json();
+
+        if (res.ok && result.status === 'success') {
+          closeItemModal();
+          showToast(id ? 'บันทึกการแก้ไขข้อมูลสำเร็จ' : 'บันทึกข้อมูลสำเร็จ', 'success');
+          loadItems(currentPage);
+        } else {
+          // Frontend Error Display with Backend message
+          errText.innerText = result.message || "ไม่สามารถบันทึกข้อมูลได้";
+          errBox.classList.remove('hidden');
+        }
+      } catch (err) {
+        errText.innerText = "เกิดข้อผิดพลาดในการเชื่อมต่อ: " + err.message;
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    // Modal Delete Handlers (เกณฑ์ข้อ 4.6: มีแจ้งเตือนการลบข้อมูลได้)
+    function openDeleteModal(id, code) {
+      deleteTargetId = id;
+      document.getElementById('delete-confirm-text').innerText = `คุณแน่ใจหรือไม่ว่าต้องการลบรายการรหัส '${code}'?`;
+      document.getElementById('modal-confirm-delete').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+      deleteTargetId = null;
+      document.getElementById('modal-confirm-delete').classList.add('hidden');
+    }
+
+    async function executeDelete() {
+      if (!deleteTargetId) return;
+      try {
+        const res = await fetch(`/api/items/${deleteTargetId}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${currentToken}` }
+        });
+        const result = await res.json();
+
+        if (res.ok && result.status === 'success') {
+          closeDeleteModal();
+          showToast(result.message || 'ลบข้อมูลสำเร็จ', 'success');
+          loadItems(currentPage);
+        } else {
+          showToast(result.message || 'ไม่มีสิทธิ์ในการลบข้อมูล', 'error');
+          closeDeleteModal();
+        }
+      } catch (err) {
+        showToast('เกิดข้อผิดพลาด: ' + err.message, 'error');
+        closeDeleteModal();
+      }
+    }
+
+    // Auto-check existing session on load
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      if (currentToken) {
+        const savedUser = localStorage.getItem('devops_user');
+        if (savedUser) {
+          currentUser = JSON.parse(savedUser);
+          initApp();
+        }
+      }
+    });
+  </script>
+</body>
+</html>

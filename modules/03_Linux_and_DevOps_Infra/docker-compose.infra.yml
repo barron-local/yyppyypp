@@ -1,0 +1,93 @@
+# ==============================================================================
+# DOCKER COMPOSE: DEVOPS INFRASTRUCTURE & REVERSE PROXY (HTTPS SSL)
+# เกณฑ์ข้อ 2.5:
+# - Reverse Proxy เพื่อบริการ HTTPS (NPM / Caddy)
+# - รองรับโดเมนเสมือน https://gitlab.competition.lab, https://app.competition.lab, ฯลฯ
+# - รวมบริการมากกว่า 1 ตัว (Reverse Proxy + DB + Registry + UI) ในไฟล์เดียว
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. Reverse Proxy: Nginx Proxy Manager (NPM) สำหรับจัดการ HTTPS & Virtual Hosts
+  # ----------------------------------------------------------------------------
+  reverse-proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: reverse-proxy
+    restart: unless-stopped
+    ports:
+      - '80:80'      # HTTP Traffic
+      - '443:443'    # HTTPS Traffic (SSL)
+      - '81:81'      # NPM Web Admin Console
+    environment:
+      DB_MYSQL_HOST: "infra-mariadb"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "npm"
+      DB_MYSQL_PASSWORD: "npm_password123"
+      DB_MYSQL_NAME: "npm_db"
+    volumes:
+      - ./npm-data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - infra-mariadb
+    networks:
+      - devops-net
+
+  # ----------------------------------------------------------------------------
+  # 2. Database Server: MariaDB / MySQL
+  # ----------------------------------------------------------------------------
+  infra-mariadb:
+    image: 'mariadb:10.11'
+    container_name: infra-mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'RootPassword123!'
+      MYSQL_DATABASE: 'npm_db'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: 'npm_password123'
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    networks:
+      - devops-net
+
+  # ----------------------------------------------------------------------------
+  # 3. Docker Private Registry: สำหรับเก็บและแจกจ่าย Docker Images (เกณฑ์ 3.2.10)
+  # ----------------------------------------------------------------------------
+  docker-registry:
+    image: 'registry:2'
+    container_name: docker-registry
+    restart: unless-stopped
+    ports:
+      - '5000:5000'
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+    volumes:
+      - registry-data:/var/lib/registry
+    networks:
+      - devops-net
+
+  # ----------------------------------------------------------------------------
+  # 4. Docker Registry Web UI: แสดง Image ให้กรรมการดูได้ง่าย (joxit/docker-registry-ui)
+  # ----------------------------------------------------------------------------
+  registry-ui:
+    image: 'joxit/docker-registry-ui:latest'
+    container_name: registry-ui
+    restart: unless-stopped
+    environment:
+      - SINGLE_REGISTRY=true
+      - REGISTRY_TITLE=DevOps Competition Private Registry
+      - REGISTRY_URL=http://docker-registry:5000
+    depends_on:
+      - docker-registry
+    networks:
+      - devops-net
+
+networks:
+  devops-net:
+    name: devops-network
+    driver: bridge
+
+volumes:
+  mariadb-data:
+  registry-data:

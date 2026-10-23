@@ -1,0 +1,57 @@
+# ==============================================================================
+# DOCKER COMPOSE: Application & Database
+# เกณฑ์ข้อ 2.5: "ใช้ docker-compose.yaml สำหรับบริการมากกว่า 1 (เช่น app + db) ใน 1 compose"
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # บริการที่ 1: Full-stack Node.js Web & API Application
+  # ----------------------------------------------------------------------------
+  devops-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: devops-competition-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - JWT_SECRET=competition_super_secret_jwt_key_2026
+      - DB_HOST=devops-db
+      - DB_USER=root
+      - DB_PASSWORD=RootPassword123!
+      - DB_NAME=competition_db
+    volumes:
+      - ./backend/uploads:/app/backend/uploads
+    depends_on:
+      - devops-db
+    networks:
+      - app-net
+
+  # ----------------------------------------------------------------------------
+  # บริการที่ 2: Database Server (MariaDB / MySQL)
+  # ----------------------------------------------------------------------------
+  devops-db:
+    image: mariadb:10.11
+    container_name: devops-competition-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=RootPassword123!
+      - MYSQL_DATABASE=competition_db
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  db_data:

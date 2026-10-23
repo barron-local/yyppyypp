@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="th" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevOps Skills Competition Master Guide - IT Program & Network</title>
+    <!-- Google Fonts: Inter, Sarabun, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'Sarabun', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              notion: {
+                bg: '#ffffff',
+                darkBg: '#191919',
+                sidebar: '#fbfbfa',
+                darkSidebar: '#202020',
+                border: '#edece9',
+                darkBorder: '#2e2e2e',
+                text: '#37352f',
+                darkText: '#d4d4d4',
+                muted: '#787774',
+                darkMuted: '#9b9b9b',
+                callout: '#f7f6f3',
+                darkCallout: '#262626',
+                blue: '#0b6e99',
+                darkBlue: '#529cca',
+                green: '#0f7b6c',
+                darkGreen: '#4dab9a',
+                red: '#e03e3e',
+                darkRed: '#ff7373',
+                yellow: '#dfab01',
+                darkYellow: '#ffd54f'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body { font-family: 'Inter', 'Sarabun', sans-serif; }
+      code, pre { font-family: 'JetBrains Mono', monospace; }
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 3px; }
+      .dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); }
+    </style>
+  </head>
+  <body class="h-full bg-notion-bg text-notion-text dark:bg-notion-darkBg dark:text-notion-darkText antialiased selection:bg-slate-200 dark:selection:bg-slate-800">
+    <div id="root" class="h-full"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
