@@ -96,84 +96,140 @@ volumes:
         path: "frontend/index.html",
         name: "index.html",
         badge: "Frontend UI",
-        desc: "หน้าเว็บหลัก Responsive: หน้า Login แยก 3 สิทธิ์, ตาราง CRUD, แนบไฟล์, Modal ยืนยันลบ",
+        desc: "หน้าเว็บหลักแบบเรียบง่าย Simple (No CSS Framework): Login แยก 3 สิทธิ์, ตาราง CRUD, แนบไฟล์, Modal ยืนยันลบ",
         code: `<!-- ========================================================================= -->
-<!-- FRONTEND UI: frontend/index.html (HTML5 + Tailwind CSS + Vanilla JS)     -->
+<!-- FRONTEND UI: frontend/index.html (Simple HTML / No CSS Framework)        -->
 <!-- เกณฑ์ข้อ 4.6: Responsive, JWT Login 3 Roles, CRUD, แนบไฟล์, Modal ลบ     -->
 <!-- ========================================================================= -->
 
 <!DOCTYPE html>
-<html lang="th" class="h-full bg-slate-900 text-slate-100">
+<html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบบริหารจัดการเทคโนโลยีสารสนเทศ (DevOps Competition Platform)</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>DevOps Inventory System (Simple UI)</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; line-height: 1.5; }
+    .hidden { display: none !important; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; }
+    .modal-box { background: #fff; padding: 20px; border: 2px solid #333; max-width: 500px; width: 90%; }
+    #toast-container { position: fixed; top: 15px; right: 15px; z-index: 1000; }
+    .toast-msg { background: #333; color: #fff; padding: 10px 15px; margin-bottom: 8px; border-radius: 4px; }
+    .toast-success { background: #2e7d32; }
+    .toast-error { background: #c62828; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+    th, td { border: 1px solid #999; padding: 8px; text-align: left; }
+    th { background: #f0f0f0; }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 15px; }
+  </style>
 </head>
-<body class="h-full flex flex-col">
+<body>
 
-  <!-- 1. หน้าจอ Login ด้วย JWT (ตอบข้อ 4.6: แยกระบบ Login แต่ละระดับ) -->
-  <div id="view-login" class="min-h-screen flex items-center justify-center p-4 bg-slate-950">
-    <div class="w-full max-w-md p-8 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
-      <h1 class="text-xl font-bold text-center text-white">DevOps Platform</h1>
-      
-      <!-- ปุ่มลัดเข้าสู่ระบบตามสิทธิ์ (Admin / User 1 / User 2) -->
-      <div class="grid grid-cols-3 gap-2 text-xs">
-        <button onclick="fillAndLogin('admin')" class="py-1 bg-indigo-600 rounded">Admin</button>
-        <button onclick="fillAndLogin('officer1')" class="py-1 bg-emerald-600 rounded">User 1</button>
-        <button onclick="fillAndLogin('member1')" class="py-1 bg-amber-600 rounded">User 2</button>
+  <div id="toast-container"></div>
+
+  <!-- VIEW 1: LOGIN -->
+  <div id="view-login">
+    <h2>เข้าสู่ระบบ (Login)</h2>
+    <fieldset style="margin-bottom: 15px;">
+      <legend>ปุ่มลัดสิทธิ์ผู้ใช้ (Demo Roles)</legend>
+      <button type="button" id="btn-quick-admin" onclick="fillAndLogin('admin')">[👑 Admin]</button>
+      <button type="button" id="btn-quick-officer" onclick="fillAndLogin('officer1')">[👤 User 1]</button>
+      <button type="button" id="btn-quick-member" onclick="fillAndLogin('member1')">[👥 User 2]</button>
+    </fieldset>
+
+    <form id="form-login" onsubmit="handleLoginSubmit(event)">
+      <fieldset>
+        <legend>กรอกข้อมูลเข้าสู่ระบบ</legend>
+        <p>ชื่อผู้ใช้: <input type="text" id="input-username" required placeholder="admin"></p>
+        <p>รหัสผ่าน: <input type="password" id="input-password" required placeholder="••••••••"></p>
+        <div id="login-error-box" class="hidden" style="color: red;"><span id="login-error-text"></span></div>
+        <button type="submit" id="btn-login">เข้าสู่ระบบ (Sign In)</button>
+      </fieldset>
+    </form>
+  </div>
+
+  <!-- VIEW 2: APP / DASHBOARD -->
+  <div id="view-app" class="hidden">
+    <div class="top-bar">
+      <div><h2>DevOps Asset Center</h2></div>
+      <div>
+        ผู้ใช้: <strong id="badge-user-name">Admin</strong> | 
+        สิทธิ์: <span id="badge-user-role">admin</span>
+        <button onclick="logout()">ออกจากระบบ</button>
+      </div>
+    </div>
+
+    <div>
+      <button onclick="switchTab('inventory')" id="tab-inventory">📋 รายการข้อมูล</button>
+      <button onclick="switchTab('dashboard')" id="tab-dashboard">📊 ภาพรวม</button>
+      <button onclick="switchTab('system-info')" id="tab-system-info">ℹ️ สิทธิ์การใช้งาน</button>
+    </div>
+
+    <!-- INVENTORY TAB -->
+    <div id="section-inventory">
+      <div style="display: flex; justify-content: space-between; margin: 15px 0;">
+        <h3>รายการข้อมูลและอุปกรณ์</h3>
+        <button id="btn-open-create-modal" onclick="openCreateModal()">+ เพิ่มรายการใหม่</button>
       </div>
 
-      <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-3">
-        <input type="text" id="input-username" required placeholder="Username" class="w-full p-2.5 bg-slate-800 rounded">
-        <input type="password" id="input-password" required placeholder="Password" class="w-full p-2.5 bg-slate-800 rounded">
-        <button type="submit" id="btn-login" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded font-medium">เข้าสู่ระบบ</button>
+      <fieldset>
+        <legend>ค้นหา</legend>
+        <input type="text" id="input-search" oninput="handleSearchInput()" placeholder="ค้นหารหัสหรือชื่อ...">
+        <select id="select-category-filter" onchange="loadItems(1)">
+          <option value="">ทุกหมวดหมู่</option>
+          <option value="1">Network Equipment</option>
+          <option value="2">Server & Storage</option>
+        </select>
+        <button onclick="resetFilters()">ล้างการค้นหา</button>
+      </fieldset>
+
+      <table border="1">
+        <thead>
+          <tr><th>รหัส</th><th>ชื่อรายการ</th><th>หมวดหมู่</th><th>มูลค่า</th><th>ไฟล์แนบ</th><th>จัดการ</th></tr>
+        </thead>
+        <tbody id="table-items-body"></tbody>
+      </table>
+
+      <div style="margin-top: 10px;">
+        <span id="span-page-info"></span>
+        <button id="btn-prev-page" onclick="prevPage()">« ย้อนกลับ</button>
+        <span id="span-current-page">1</span>
+        <button id="btn-next-page" onclick="nextPage()">ถัดไป »</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CREATE/EDIT -->
+  <div id="modal-item" class="modal-overlay hidden">
+    <div class="modal-box">
+      <h3 id="modal-title">เพิ่มรายการใหม่</h3>
+      <form id="form-item" onsubmit="handleItemFormSubmit(event)">
+        <input type="hidden" id="item-form-id">
+        <p>รหัส: <input type="text" id="input-item-code" required></p>
+        <p>หมวดหมู่: 
+          <select id="select-item-category" required>
+            <option value="1">Network Equipment</option>
+            <option value="2">Server & Storage</option>
+          </select>
+        </p>
+        <p>ชื่อรายการ: <input type="text" id="input-item-title" required></p>
+        <p>มูลค่า: <input type="number" step="0.01" id="input-item-value" required></p>
+        <p>ไฟล์แนบ: <input type="file" id="input-item-file"></p>
+        <p>รายละเอียด: <textarea id="input-item-desc"></textarea></p>
+        <div id="form-error-box" class="hidden" style="color: red;"><span id="form-error-text"></span></div>
+        <button type="button" onclick="closeItemModal()">ยกเลิก</button>
+        <button type="submit" id="btn-submit-item">บันทึกข้อมูล</button>
       </form>
     </div>
   </div>
 
-  <!-- 2. หน้าจอ Dashboard & ตารางจัดการข้อมูล (CRUD + Upload + Filter + Pagination) -->
-  <div id="view-app" class="hidden min-h-screen flex flex-col bg-slate-950">
-    <header class="p-4 border-b border-slate-800 flex justify-between items-center">
-      <span class="font-bold">DevOps Asset Center</span>
-      <div class="flex items-center gap-3">
-        <span id="badge-user-name" class="text-sm">Admin</span>
-        <button onclick="logout()" class="px-2 py-1 bg-rose-600 rounded text-xs">ออกจากระบบ</button>
-      </div>
-    </header>
-
-    <main class="p-6 space-y-4">
-      <!-- Toolbar ค้นหา & หมวดหมู่ -->
-      <div class="flex gap-2">
-        <input type="text" id="input-search" oninput="loadItems()" placeholder="ค้นหารหัสหรือชื่อ..." class="p-2 bg-slate-800 rounded flex-1">
-        <select id="select-category" onchange="loadItems()" class="p-2 bg-slate-800 rounded">
-          <option value="">ทุกหมวดหมู่</option>
-          <option value="1">Network</option>
-          <option value="2">Server</option>
-        </select>
-        <button onclick="openModal()" id="btn-open-create-modal" class="px-3 py-2 bg-emerald-600 rounded">+ เพิ่มรายการใหม่</button>
-      </div>
-
-      <!-- ตารางแสดงรายการข้อมูล -->
-      <table class="w-full text-left text-sm border border-slate-800">
-        <thead class="bg-slate-800 text-xs">
-          <tr><th class="p-3">รหัส</th><th class="p-3">ชื่อรายการ</th><th class="p-3">มูลค่า</th><th class="p-3">ไฟล์</th><th class="p-3">จัดการ</th></tr>
-        </thead>
-        <tbody id="table-items-body"></tbody>
-      </table>
-    </main>
-  </div>
-
-  <!-- 3. Modal ยืนยันการลบข้อมูล (Confirm Delete Modal - ตอบข้อ 4.6 1 คะแนน) -->
-  <div id="modal-delete" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl max-w-sm w-full space-y-4 text-center">
-      <h3 class="font-bold text-lg text-rose-400">ยืนยันการลบข้อมูล?</h3>
-      <p class="text-xs text-slate-400">คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้ ข้อมูลจะถูกลบถาวร</p>
-      <div class="flex gap-2 justify-center">
-        <button onclick="closeDeleteModal()" class="px-4 py-2 bg-slate-700 rounded text-xs">ยกเลิก</button>
-        <button onclick="confirmDelete()" class="px-4 py-2 bg-rose-600 rounded text-xs font-bold">ยืนยันลบ</button>
-      </div>
+  <!-- MODAL DELETE -->
+  <div id="modal-confirm-delete" class="modal-overlay hidden">
+    <div class="modal-box" style="text-align: center;">
+      <h3>ยืนยันการลบข้อมูล?</h3>
+      <p id="delete-confirm-text"></p>
+      <button type="button" onclick="closeDeleteModal()">ยกเลิก</button>
+      <button type="button" id="btn-confirm-delete" onclick="executeDelete()" style="color: red;">ยืนยันลบ</button>
     </div>
   </div>
 
