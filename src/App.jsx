@@ -45,6 +45,8 @@ export default function App() {
   const [checkedItems, setCheckedItems] = useState({});
   const [selectedPdfImage, setSelectedPdfImage] = useState(null);
   const [activeFlowchartTab, setActiveFlowchartTab] = useState('login-flow');
+  const [activeSoftwareSubTab, setActiveSoftwareSubTab] = useState('4.1');
+  const [showPdfPages, setShowPdfPages] = useState({});
 
   useEffect(() => {
     const isDark = localStorage.getItem('devops_dark_theme') === 'true';
@@ -120,61 +122,83 @@ export default function App() {
   const totalScore = rubricList.reduce((acc, curr) => acc + (checkedItems[curr.id] ? curr.pts : 0), 0);
 
   const navCategories = [
-    { id: 'all', label: 'All Modules (ทุกหมวดและโจทย์ทั้งหมด)', icon: Layers },
-    { id: 'rules', label: '0. กฎเหล็ก & ยุทธศาสตร์ 7 ชม.', icon: Clock },
-    { id: 'network', label: '1. เครือข่าย Cisco L3 & NAT (13 pts)', icon: Network },
-    { id: 'server', label: '2. เซิร์ฟเวอร์ & DevOps Infra (24 pts)', icon: Server },
-    { id: 'design', label: '3. ออกแบบระบบ, ผังงาน & API (20 pts)', icon: Database },
-    { id: 'backend', label: '4. Backend Node.js & Tests (10 pts)', icon: Code2 },
-    { id: 'frontend', label: '5. Frontend UI & E2E Workflows (23 pts)', icon: Layout },
-    { id: 'presentation', label: '6. การนำเสนอ & เฉลย 3 คำถาม (10 pts)', icon: MessageSquare },
-    { id: 'checklist', label: '7. ตารางตรวจ 100 คะแนนเต็ม', icon: CheckCircle2 },
+    { id: 'all', label: 'รวมเฉลยทุกส่วน (All Solutions)', badge: '100 PTS', icon: Layers },
+    { id: 'network', label: 'ส่วนที่ 1: เครือข่าย Cisco Switch L3 & NAT', badge: '13 PTS', icon: Network },
+    { id: 'server', label: 'ส่วนที่ 2: เซิร์ฟเวอร์ Linux & DevOps CI/CD', badge: '24 PTS', icon: Server },
+    { 
+      id: 'software', 
+      label: 'ส่วนที่ 4: ซอฟต์แวร์และการประยุกต์', 
+      badge: '53 PTS', 
+      icon: Code2,
+      subItems: [
+        { id: '4.1', label: '4.1 ผังงาน Flowchart & Use Case', pts: '5 PTS' },
+        { id: '4.2', label: '4.2 ฐานข้อมูล Relational & Class', pts: '5 PTS' },
+        { id: '4.3', label: '4.3 ผังหน้าจอ Draw.io 5 หน้า', pts: '5 PTS' },
+        { id: '4.4', label: '4.4 RESTful API Spec (README)', pts: '5 PTS' },
+        { id: '4.5', label: '4.5 Backend Node.js API 10 ข้อ', pts: '10 PTS' },
+        { id: '4.6', label: '4.6 Frontend UI & E2E Tests', pts: '23 PTS' }
+      ]
+    },
+    { id: 'presentation', label: 'ส่วนที่ 5: การนำเสนอและตอบ 3 คำถาม', badge: '10 PTS', icon: MessageSquare },
+    { id: 'checklist', label: 'ตารางตรวจเช็ค 100 คะแนนเต็ม', badge: 'Checklist', icon: CheckCircle2 },
+    { id: 'rules', label: 'กฎการแข่งขัน & กลยุทธ์ 7 ชั่วโมง', badge: 'Rules', icon: Clock },
   ];
 
   
-  // Sub-component to render PDF Original Page Viewer
-  const PdfPageBox = ({ title, pages, description }) => (
-    <div className="p-4 rounded-xl border-2 border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/30 dark:from-indigo-950/20 dark:via-[#191919] dark:to-blue-950/10 space-y-3 mb-2">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 dark:border-indigo-950/60 pb-2.5">
-        <div className="flex items-center gap-2">
-          <span className="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span>
-          <span className="font-bold text-xs uppercase tracking-wider text-indigo-900 dark:text-indigo-300">
-            ภาพแคปต้นฉบับจริงจาก PDF เกณฑ์ทางการ ({title})
-          </span>
-        </div>
-        <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
-          เอกสาร: รายการที่ 58 (หน้า {pages.join(', ')}/29)
-        </span>
-      </div>
-      <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-        {description}
-      </p>
-      <div className={pages.length > 1 ? "grid grid-cols-1 md:grid-cols-2 gap-3" : "grid grid-cols-1 gap-3 max-w-xl mx-auto"}>
-        {pages.map((p) => (
-          <div key={p} className="relative group rounded-lg overflow-hidden border border-[#edece9] dark:border-[#2e2e2e] bg-slate-100 dark:bg-slate-900 shadow-sm transition hover:shadow-md">
-            <div className="p-2 bg-white/80 dark:bg-black/60 backdrop-blur-sm border-b border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between text-[11px]">
-              <span className="font-semibold text-slate-700 dark:text-slate-300">หน้า {p} จาก PDF เกณฑ์ทางการ</span>
-              <button 
-                type="button" 
-                onClick={() => setSelectedPdfImage({ src: `/pdf_pages/page_${p}.png`, title: `หน้า ${p} - เกณฑ์การแข่งขันทางการ` })} 
-                className="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-[10px] flex items-center gap-1 transition"
-              >
-                <Search className="w-3 h-3" />
-                ขยายภาพเต็มจอ
-              </button>
-            </div>
-            <img 
-              src={`/pdf_pages/page_${p}.png`} 
-              alt={`หน้า ${p} จาก PDF รายการที่ 58`} 
-              className="w-full max-h-[360px] md:max-h-[440px] object-contain object-top cursor-pointer transition hover:opacity-95" 
-              onClick={() => setSelectedPdfImage({ src: `/pdf_pages/page_${p}.png`, title: `หน้า ${p} - เกณฑ์การแข่งขันทางการ` })} 
-              loading="lazy" 
-            />
+  // Sub-component to render PDF Original Page Viewer (Collapsible by default for clean view)
+  const PdfPageBox = ({ title, pages, description, boxId = 'default' }) => {
+    const isExpanded = !!showPdfPages[boxId];
+    return (
+      <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#202020] text-xs space-y-2 mb-3 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold shrink-0">
+              PDF เกณฑ์ทางการ (หน้า {pages.join(', ')}/29)
+            </span>
+            <span className="font-semibold text-slate-800 dark:text-slate-200 text-xs truncate max-w-md">
+              {title}
+            </span>
           </div>
-        ))}
+          <button
+            type="button"
+            onClick={() => setShowPdfPages(prev => ({ ...prev, [boxId]: !prev[boxId] }))}
+            className="px-2.5 py-1 rounded-lg bg-white dark:bg-[#191919] border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-[11px] font-medium flex items-center gap-1.5 transition shadow-sm shrink-0"
+          >
+            <FileText className="w-3.5 h-3.5 text-blue-600" />
+            <span>{isExpanded ? 'ซ่อนภาพสแกน PDF' : 'เปิดดูภาพสแกน PDF ต้นฉบับ'}</span>
+            {isExpanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+          </button>
+        </div>
+        {isExpanded && (
+          <div className="pt-2.5 border-t border-slate-200 dark:border-slate-700/60 space-y-2">
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">{description}</p>
+            <div className={pages.length > 1 ? "grid grid-cols-1 md:grid-cols-2 gap-3" : "grid grid-cols-1 gap-3 max-w-xl mx-auto"}>
+              {pages.map((p) => (
+                <div key={p} className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-black p-2 space-y-1.5">
+                  <div className="flex items-center justify-between text-[10px] text-slate-500 px-1">
+                    <span className="font-medium">หน้า {p} จาก PDF รายการที่ 58</span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedPdfImage({ src: `/pdf_pages/page_${p}.png`, title: `หน้า ${p} - เกณฑ์การแข่งขันทางการ` })}
+                      className="text-blue-600 hover:underline flex items-center gap-1"
+                    >
+                      <Search className="w-3 h-3" /> ขยายภาพเต็มจอ
+                    </button>
+                  </div>
+                  <img
+                    src={`/pdf_pages/page_${p}.png`}
+                    alt={`หน้า ${p}`}
+                    className="w-full max-h-[360px] object-contain cursor-pointer rounded"
+                    onClick={() => setSelectedPdfImage({ src: `/pdf_pages/page_${p}.png`, title: `หน้า ${p} - เกณฑ์การแข่งขันทางการ` })}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-white dark:bg-[#191919] text-[#37352f] dark:text-[#d4d4d4] transition-colors">
@@ -244,31 +268,106 @@ export default function App() {
           </div>
         </div>
 
+        {/* Live Search Quick Jump */}
+        {searchQuery.trim() !== '' && (
+          <div className="p-2 border-b border-[#edece9] dark:border-[#2e2e2e] space-y-1 max-h-48 overflow-y-auto text-xs bg-slate-50 dark:bg-[#1c1c1c]">
+            <div className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide px-1">
+              ผลการค้นหาข้อโจทย์ ({rubricList.filter(r => r.text.toLowerCase().includes(searchQuery.toLowerCase()) || r.qNum.toLowerCase().includes(searchQuery.toLowerCase())).length})
+            </div>
+            {rubricList
+              .filter(r => r.text.toLowerCase().includes(searchQuery.toLowerCase()) || r.qNum.toLowerCase().includes(searchQuery.toLowerCase()))
+              .map(r => (
+                <button
+                  key={r.id}
+                  onClick={() => {
+                    if (r.cat === 'Network') setActiveTab('network');
+                    else if (r.cat === 'Server') setActiveTab('server');
+                    else if (r.cat === 'Software') {
+                      setActiveTab('software');
+                      if (r.qNum.includes('4.1')) setActiveSoftwareSubTab('4.1');
+                      else if (r.qNum.includes('4.2')) setActiveSoftwareSubTab('4.2');
+                      else if (r.qNum.includes('4.3')) setActiveSoftwareSubTab('4.3');
+                      else if (r.qNum.includes('4.4')) setActiveSoftwareSubTab('4.4');
+                      else if (r.qNum.includes('4.5')) setActiveSoftwareSubTab('4.5');
+                      else if (r.qNum.includes('4.6')) setActiveSoftwareSubTab('4.6');
+                      else setActiveSoftwareSubTab('all');
+                    }
+                    else if (r.cat === 'Present') setActiveTab('presentation');
+                    setSidebarOpen(false);
+                  }}
+                  className="w-full text-left p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-800 text-[11px] block truncate transition"
+                >
+                  <strong className="text-blue-600 dark:text-blue-400 mr-1 font-mono">[{r.qNum}]</strong>
+                  <span>{r.text}</span>
+                </button>
+              ))
+            }
+          </div>
+        )}
+
         <nav className="flex-1 overflow-y-auto p-2 space-y-0.5 text-xs">
           <div className="text-[10px] font-semibold tracking-wider text-[#787774] dark:text-[#9b9b9b] px-2 py-1 uppercase">
-            Curriculum Sections
+            Curriculum Sections (เกณฑ์ทางการ)
           </div>
           {navCategories.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
             return (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setActiveTab(item.id);
-                  setSidebarOpen(false);
-                }}
-                className={`w-full flex items-center justify-between px-2.5 py-2 rounded text-left transition ${
-                  isActive 
-                    ? 'bg-black/5 dark:bg-white/10 font-semibold text-black dark:text-white' 
-                    : 'text-[#787774] dark:text-[#9b9b9b] hover:bg-black/5 dark:hover:bg-white/5'
-                }`}
-              >
-                <div className="flex items-center gap-2 truncate">
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span className="truncate">{item.label}</span>
-                </div>
-              </button>
+              <div key={item.id} className="space-y-0.5">
+                <button
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    if (item.id === 'software' && activeSoftwareSubTab === 'all') {
+                      setActiveSoftwareSubTab('4.1');
+                    }
+                    setSidebarOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-2.5 py-2 rounded text-left transition ${
+                    isActive 
+                      ? 'bg-black/5 dark:bg-white/10 font-semibold text-black dark:text-white' 
+                      : 'text-[#787774] dark:text-[#9b9b9b] hover:bg-black/5 dark:hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 truncate">
+                    <Icon className="w-4 h-4 shrink-0" />
+                    <span className="truncate">{item.label}</span>
+                  </div>
+                  {item.badge && (
+                    <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold shrink-0">
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+
+                {/* Sub-items for Section 4 */}
+                {item.subItems && (activeTab === item.id || activeTab === 'all') && (
+                  <div className="pl-6 pr-1 space-y-0.5 py-1 border-l-2 border-slate-200 dark:border-slate-800 ml-3">
+                    {item.subItems.map((sub) => {
+                      const isSubActive = activeTab === item.id && activeSoftwareSubTab === sub.id;
+                      return (
+                        <button
+                          key={sub.id}
+                          onClick={() => {
+                            setActiveTab(item.id);
+                            setActiveSoftwareSubTab(sub.id);
+                            setSidebarOpen(false);
+                          }}
+                          className={`w-full flex items-center justify-between px-2 py-1.5 rounded text-[11px] transition text-left ${
+                            isSubActive
+                              ? 'font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40'
+                              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                          }`}
+                        >
+                          <span className="truncate">{sub.label}</span>
+                          <span className="font-mono text-[9px] px-1 py-0.2 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 font-medium">
+                            {sub.pts}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>
@@ -331,6 +430,7 @@ export default function App() {
         <hr className="border-[#edece9] dark:border-[#2e2e2e]" />
 
         {/* ------------------------------------------------------------------- */}
+
         {/* MODULE 0: RULES & STRATEGY */}
         {/* ------------------------------------------------------------------- */}
         {(activeTab === 'all' || activeTab === 'rules') && (
@@ -379,6 +479,7 @@ export default function App() {
         )}
 
         {/* ------------------------------------------------------------------- */}
+
         {/* MODULE 1: NETWORK & CISCO L3 */}
         {/* ------------------------------------------------------------------- */}
         {(activeTab === 'all' || activeTab === 'network') && (
@@ -394,7 +495,7 @@ export default function App() {
             </div>
             <PdfPageBox 
               title="ส่วนที่ 1 การตั้งค่าอุปกรณ์เครือข่าย Cisco Switch L3 & Router (13 คะแนน)" 
-              pages={[9, 10]} 
+              boxId="network-pdf" pages={[9, 10]} 
               description="หน้า 9 ระบุเกณฑ์ข้อ 1.1 VLAN, 1.2 Inter-VLAN Routing, 1.3 DHCP และหน้า 10 ระบุเกณฑ์ข้อ 1.4 NAT, 1.5 ACL ควบคุมการสื่อสาร และ Loop Protection" 
             />
 
@@ -503,6 +604,12 @@ ip dhcp pool POOL_DEV
  default-router 192.168.20.1
  dns-server 192.168.10.10
 exit
+! ตัวเลือก DHCP Relay กรณีใช้ Server เครื่องเดียวแจก (ข้อ 1.3):
+! interface vlan 20
+!  ip helper-address 192.168.10.10
+! interface vlan 30
+!  ip helper-address 192.168.10.10
+
 ip dhcp pool POOL_GUEST
  network 192.168.30.0 255.255.255.0
  default-router 192.168.30.1
@@ -568,6 +675,12 @@ ip dhcp pool POOL_DEV
  network 192.168.20.0 255.255.255.0
  default-router 192.168.20.1
  dns-server 192.168.10.10
+! ตัวเลือก DHCP Relay กรณีใช้ Server เครื่องเดียวแจก (ข้อ 1.3):
+! interface vlan 20
+!  ip helper-address 192.168.10.10
+! interface vlan 30
+!  ip helper-address 192.168.10.10
+
 ip dhcp pool POOL_GUEST
  network 192.168.30.0 255.255.255.0
  default-router 192.168.30.1
@@ -695,6 +808,7 @@ exit`}
         )}
 
         {/* ------------------------------------------------------------------- */}
+
         {/* MODULE 2: SERVER & DEVOPS INFRA */}
         {/* ------------------------------------------------------------------- */}
         {(activeTab === 'all' || activeTab === 'server') && (
@@ -708,6 +822,13 @@ exit`}
                 24 PTS
               </span>
             </div>
+            <PdfPageBox 
+              boxId="server-pdf"
+              title="ส่วนที่ 2 การตั้งค่าเครือข่ายตามผังระบบเครือข่าย Server & DevOps (24 คะแนน)" 
+              pages={[10, 11, 12]} 
+              description="หน้า 10-12 ระบุเกณฑ์ข้อ 2.1 Virtualization (3 คะแนน), 2.2 Linux Server & DNS (5 คะแนน), 2.3 SSH 2 Users & Sudo NOPASSWD -i & UFW (5 คะแนน), 2.4 Docker & GitLab (3 คะแนน), 2.5 Reverse Proxy HTTPS & Compose (4 คะแนน), และ 2.6-2.7 CI/CD 4 Stages (4 คะแนน)" 
+            />
+
 
             {/* Ubuntu Server Setup (ข้อ 2.1, 2.2, 2.3) */}
             <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-lg bg-white dark:bg-[#191919] space-y-3 text-xs">
@@ -1064,24 +1185,130 @@ deploy_job:
         )}
 
         {/* ------------------------------------------------------------------- */}
-        {/* MODULE 3: SYSTEM DESIGN & DB */}
+
         {/* ------------------------------------------------------------------- */}
-        {(activeTab === 'all' || activeTab === 'design') && (
+        {/* MODULE 4: SOFTWARE & APPLICATION (53 PTS) */}
+        {/* ------------------------------------------------------------------- */}
+        {(activeTab === 'all' || activeTab === 'software') && (
           <section className="space-y-6">
             <div className="flex items-center justify-between pb-2 border-b border-[#edece9] dark:border-[#2e2e2e]">
-              <h2 className="text-lg font-bold text-[#37352f] dark:text-[#d4d4d4] flex items-center gap-2">
-                <Database className="w-5 h-5 text-emerald-600" />
-                <span>3. ส่วนที่ 4 การออกแบบผังงาน, ฐานข้อมูล และ RESTful API (20 คะแนน)</span>
-              </h2>
-              <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-                20 PTS
+              <div>
+                <h2 className="text-lg font-bold text-[#37352f] dark:text-[#d4d4d4] flex items-center gap-2">
+                  <Code2 className="w-5 h-5 text-indigo-600" />
+                  <span>ส่วนที่ 4 ซอฟต์แวร์และการประยุกต์ (53 คะแนนเต็ม)</span>
+                </h2>
+                <p className="text-xs text-[#787774] dark:text-[#9b9b9b] mt-0.5">
+                  ครอบคลุม 6 หัวข้อใหญ่: ผังงาน (4.1), ฐานข้อมูล (4.2), Draw.io (4.3), REST API Spec (4.4), Backend Node.js (4.5), Frontend & Tests (4.6)
+                </p>
+              </div>
+              <span className="font-mono text-xs font-semibold px-2.5 py-1 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 shrink-0 font-bold">
+                53 PTS
               </span>
             </div>
 
-            {/* ------------------------------------------------------------- */}
-            {/* 4.1: Flowchart & Use Case Interactive Solution */}
-            {/* ------------------------------------------------------------- */}
-            <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-4">
+            {/* Collapsible PDF Page Box for Section 4 */}
+            <PdfPageBox 
+              boxId="software-pdf"
+              title="ส่วนที่ 4 ซอฟต์แวร์และการประยุกต์ (53 คะแนน) หน้า 13-18 จาก PDF เกณฑ์ทางการ" 
+              pages={[13, 14, 15, 16, 17, 18]} 
+              description="หน้า 13-18 ระบุเกณฑ์ข้อ 4.1 ผังงาน Flowchart (5 คะแนน), ข้อ 4.2 ฐานข้อมูลเชิงสัมพันธ์ & Class Diagram (5 คะแนน), ข้อ 4.3 ผังหน้าจอ Draw.io 5 หน้า (5 คะแนน), ข้อ 4.4 RESTful API Spec (5 คะแนน), ข้อ 4.5 Backend Node.js 10 ข้อย่อย (10 คะแนน), และข้อ 4.6 Frontend UI, Automated Tests, E2E Workflows (23 คะแนน)" 
+            />
+
+            {/* Quick Sub-tab Switcher Bar for Section 4 */}
+            <div className="sticky top-0 z-20 bg-white/95 dark:bg-[#191919]/95 backdrop-blur-md py-2.5 border-b border-[#edece9] dark:border-[#2e2e2e] flex flex-wrap gap-1.5 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setActiveSoftwareSubTab('4.1')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                  activeSoftwareSubTab === '4.1'
+                    ? 'bg-emerald-600 text-white shadow-sm font-semibold'
+                    : 'bg-[#f7f6f3] dark:bg-[#252525] text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                <span>4.1 ผังงาน Flowchart</span>
+                <span className="font-mono text-[10px] opacity-80">(5)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSoftwareSubTab('4.2')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                  activeSoftwareSubTab === '4.2'
+                    ? 'bg-blue-600 text-white shadow-sm font-semibold'
+                    : 'bg-[#f7f6f3] dark:bg-[#252525] text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                <span>4.2 ฐานข้อมูล & Class</span>
+                <span className="font-mono text-[10px] opacity-80">(5)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSoftwareSubTab('4.3')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                  activeSoftwareSubTab === '4.3'
+                    ? 'bg-amber-600 text-white shadow-sm font-semibold'
+                    : 'bg-[#f7f6f3] dark:bg-[#252525] text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                <span>4.3 หน้าจอ Draw.io</span>
+                <span className="font-mono text-[10px] opacity-80">(5)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSoftwareSubTab('4.4')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                  activeSoftwareSubTab === '4.4'
+                    ? 'bg-teal-600 text-white shadow-sm font-semibold'
+                    : 'bg-[#f7f6f3] dark:bg-[#252525] text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                <span>4.4 RESTful API Spec</span>
+                <span className="font-mono text-[10px] opacity-80">(5)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSoftwareSubTab('4.5')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                  activeSoftwareSubTab === '4.5'
+                    ? 'bg-indigo-600 text-white shadow-sm font-semibold'
+                    : 'bg-[#f7f6f3] dark:bg-[#252525] text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                <span>4.5 Backend API</span>
+                <span className="font-mono text-[10px] opacity-80">(10)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSoftwareSubTab('4.6')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                  activeSoftwareSubTab === '4.6'
+                    ? 'bg-violet-600 text-white shadow-sm font-semibold'
+                    : 'bg-[#f7f6f3] dark:bg-[#252525] text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                <span>4.6 Frontend UI & Tests</span>
+                <span className="font-mono text-[10px] opacity-80">(23)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSoftwareSubTab('all')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ml-auto ${
+                  activeSoftwareSubTab === 'all'
+                    ? 'bg-slate-800 text-white dark:bg-white dark:text-black font-semibold'
+                    : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300'
+                }`}
+              >
+                <span>ดูทั้งหมดในส่วนที่ 4 (53 PTS)</span>
+              </button>
+            </div>
+            {/* Sub-item 4.1: Flowcharts */}
+            {(activeSoftwareSubTab === 'all' || activeSoftwareSubTab === '4.1') && (
+              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-4">
               <div className="p-3 bg-emerald-50 dark:bg-emerald-950/20 border-l-4 border-emerald-600 rounded-r-lg">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-emerald-800 dark:text-emerald-300 text-sm">
@@ -1139,11 +1366,10 @@ deploy_job:
                 );
               })()}
             </div>
-
-            {/* ------------------------------------------------------------- */}
-            {/* 4.2: Database Relational Design & Class Diagram */}
-            {/* ------------------------------------------------------------- */}
-            <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-4">
+            )}
+            {/* Sub-item 4.2: Database Relational Design & Class Diagram */}
+            {(activeSoftwareSubTab === 'all' || activeSoftwareSubTab === '4.2') && (
+              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-4">
               <div className="p-3 bg-blue-50 dark:bg-blue-950/20 border-l-4 border-blue-600 rounded-r-lg flex items-center justify-between">
                 <div>
                   <span className="font-bold text-blue-800 dark:text-blue-300 text-sm">
@@ -1212,14 +1438,12 @@ deploy_job:
                 </div>
               </div>
             </div>
-
-            {/* ------------------------------------------------------------- */}
-            {/* 4.3 & 4.4 Grid: UI Templates & RESTful API Spec */}
-            {/* ------------------------------------------------------------- */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
-              
-              {/* Question 4.3 Card */}
-              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-3">
+            )}
+            {/* Sub-item 4.3 & 4.4: Draw.io Templates & API Spec */}
+            {(activeSoftwareSubTab === 'all' || activeSoftwareSubTab === '4.3' || activeSoftwareSubTab === '4.4') && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
+                {(activeSoftwareSubTab === 'all' || activeSoftwareSubTab === '4.3') && (
+                  <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-3">
                 <div className="p-2.5 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-600 rounded-r">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-amber-800 dark:text-amber-300">[เฉลยข้อที่ 4.3: การออกแบบหน้าจอ 5 หน้า Draw.io]</span>
@@ -1246,9 +1470,9 @@ deploy_job:
                   ))}
                 </div>
               </div>
-
-              {/* Question 4.4 Card */}
-              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-3">
+                )}
+                {(activeSoftwareSubTab === 'all' || activeSoftwareSubTab === '4.4') && (
+                  <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-3">
                 <div className="p-2.5 bg-emerald-50 dark:bg-emerald-950/20 border-l-4 border-emerald-600 rounded-r">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-emerald-800 dark:text-emerald-300">[เฉลยข้อที่ 4.4: RESTful API Spec (README.md)]</span>
@@ -1305,28 +1529,12 @@ deploy_job:
                   </div>
                 </div>
               </div>
-
-            </div>
-          </section>
-        )}
-
-        {/* ------------------------------------------------------------------- */}
-        {/* MODULE 4: BACKEND NODE.JS & TESTS (10 PTS) */}
-        {/* ------------------------------------------------------------------- */}
-        {(activeTab === 'all' || activeTab === 'backend') && (
-          <section className="space-y-5">
-            <div className="flex items-center justify-between pb-2 border-b border-[#edece9] dark:border-[#2e2e2e]">
-              <h2 className="text-lg font-bold text-[#37352f] dark:text-[#d4d4d4] flex items-center gap-2">
-                <Code2 className="w-5 h-5 text-indigo-600" />
-                <span>4. ส่วนที่ 4 พัฒนาระบบ Back-end การพัฒนา API 10 ข้อย่อย (10 คะแนน)</span>
-              </h2>
-              <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
-                10 PTS
-              </span>
-            </div>
-
-            {/* Backend Requirements (ข้อ 4.5: 10 คะแนน) */}
-            <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-lg bg-white dark:bg-[#191919] space-y-3 text-xs">
+                )}
+              </div>
+            )}
+            {/* Sub-item 4.5: Backend Node.js REST API 10 ข้อย่อย */}
+            {(activeSoftwareSubTab === 'all' || activeSoftwareSubTab === '4.5') && (
+              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-lg bg-white dark:bg-[#191919] space-y-3 text-xs">
               <div className="p-3 bg-[#f7f6f3] dark:bg-[#262626] border-l-4 border-indigo-600 rounded-r-lg space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-wide">
@@ -1569,26 +1777,10 @@ docker ps
                 </div>
               </div>
             </div>
-          </section>
-        )}
-
-        {/* ------------------------------------------------------------------- */}
-        {/* MODULE 5: FRONTEND UI & E2E WORKFLOWS (23 PTS) */}
-        {/* ------------------------------------------------------------------- */}
-        {(activeTab === 'all' || activeTab === 'frontend') && (
-          <section className="space-y-5">
-            <div className="flex items-center justify-between pb-2 border-b border-[#edece9] dark:border-[#2e2e2e]">
-              <h2 className="text-lg font-bold text-[#37352f] dark:text-[#d4d4d4] flex items-center gap-2">
-                <Layout className="w-5 h-5 text-indigo-600" />
-                <span>5. ส่วนที่ 4 พัฒนาระบบ Front-end, Automated Tests และ E2E Workflows (23 คะแนน)</span>
-              </h2>
-              <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
-                23 PTS
-              </span>
-            </div>
-
-            {/* Frontend & Automated Tests (ข้อ 4.6: 23 คะแนน) */}
-            <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-lg bg-white dark:bg-[#191919] space-y-3 text-xs">
+            )}
+            {/* Sub-item 4.6: Frontend UI, Tests, & Workflows */}
+            {(activeSoftwareSubTab === 'all' || activeSoftwareSubTab === '4.6') && (
+              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-lg bg-white dark:bg-[#191919] space-y-3 text-xs">
               <div className="p-3 bg-[#f7f6f3] dark:bg-[#262626] border-l-4 border-indigo-600 rounded-r-lg space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-wide">
@@ -1845,10 +2037,11 @@ docker ps
               </div>
 
             </div>
+            )}
+
           </section>
         )}
 
-        {/* ------------------------------------------------------------------- */}
         {/* MODULE 6: PRESENTATION & 3 ORAL QUESTIONS */}
         {/* ------------------------------------------------------------------- */}
         {(activeTab === 'all' || activeTab === 'presentation') && (
@@ -1856,7 +2049,7 @@ docker ps
             <div className="flex items-center justify-between pb-2 border-b border-[#edece9] dark:border-[#2e2e2e]">
               <h2 className="text-lg font-bold text-[#37352f] dark:text-[#d4d4d4] flex items-center gap-2">
                 <MessageSquare className="w-5 h-5 text-rose-600" />
-                <span>6. ส่วนที่ 5 การนำเสนอและตอบคำถามคณะกรรมการ (10 คะแนน)</span>
+                <span>ส่วนที่ 5 การนำเสนอและตอบคำถามคณะกรรมการ (10 คะแนน)</span>
               </h2>
               <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300">
                 10 PTS
@@ -1864,7 +2057,7 @@ docker ps
             </div>
             <PdfPageBox 
               title="ส่วนที่ 5 การนำเสนอผลงาน และเกณฑ์เหรียญรางวัล (10 คะแนน)" 
-              pages={[28, 29]} 
+              boxId="presentation-pdf" pages={[18, 28, 29]} 
               description="หน้า 28 ระบุระเบียบคณะกรรมการตัดสิน และหน้า 29 ระบุเกณฑ์เหรียญรางวัล (เหรียญทอง 80 คะแนนขึ้นไป, เหรียญเงิน 70-79, เหรียญทองแดง 60-69)" 
             />
 
@@ -1950,6 +2143,7 @@ docker ps
         )}
 
         {/* ------------------------------------------------------------------- */}
+
         {/* MODULE 8: 100-POINT AUDIT CHECKLIST */}
         {/* ------------------------------------------------------------------- */}
         {(activeTab === 'all' || activeTab === 'checklist') && (
@@ -1957,7 +2151,7 @@ docker ps
             <div className="flex items-center justify-between pb-2 border-b border-[#edece9] dark:border-[#2e2e2e]">
               <h2 className="text-lg font-bold text-[#37352f] dark:text-[#d4d4d4] flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-teal-600" />
-                <span>7. ตารางตรวจสอบความพร้อมพร้อมระบุเลขข้อโจทย์ (Interactive Audit Checklist)</span>
+                <span>ตารางตรวจสอบความพร้อม 100 คะแนนเต็มพร้อมระบุเลขข้อโจทย์ (Interactive Audit Checklist)</span>
               </h2>
               <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-teal-100 text-teal-800 dark:bg-teal-950 dark:text-teal-300">
                 {totalScore} / 100 PTS

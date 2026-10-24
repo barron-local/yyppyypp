@@ -109,9 +109,9 @@ export const designSolutions = {
       desc: "แสดงความสัมพันธ์ระหว่าง 3 Actors (Admin, User Level 1, User Level 2) กับ Use Cases ของระบบทั้งหมด",
       mermaid: `flowchart LR
     subgraph Users ["กลุ่มผู้ใช้งาน (Actors)"]
-        Admin(("👑 ผู้ดูแลระบบ<br/>(Admin)"))
-        Officer(("👤 ผู้ใช้งานระดับ 1<br/>(Officer)"))
-        Member(("👥 ผู้ใช้งานระดับ 2<br/>(Member)"))
+        Admin(("ผู้ดูแลระบบ<br/>(Admin)"))
+        Officer(("ผู้ใช้งานระดับ 1<br/>(Officer)"))
+        Member(("ผู้ใช้งานระดับ 2<br/>(Member)"))
     end
 
     subgraph System ["ระบบเทคโนโลยีสารสนเทศและการจัดการ (DevOps Application)"]

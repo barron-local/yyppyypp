@@ -59,15 +59,6 @@ def load_initial_config():
 # โหลดค่าเริ่มต้น
 load_initial_config()
 
-BANNER = """
-*******************************************************************************
-*             Cisco Catalyst 3560 L3 Switch (Competition Lab Item 58)         *
-*             Practice Console - Telnet / Raw Compatible                      *
-*             Type 'enable' -> 'configure terminal' to configure              *
-*             Type 'write' / 'copy run start' to save config to disk          *
-*******************************************************************************
-"""
-
 class CiscoSwitchSession:
     def __init__(self, client_socket, client_addr=None):
         self.sock = client_socket
@@ -131,8 +122,6 @@ class CiscoSwitchSession:
 
     def handle(self):
         # 1. Do NOT send raw IAC negotiations initially to prevent PuTTY waiting indefinitely
-        # 2. Immediately send Banner + Prompt
-        self.send(BANNER)
         self.send("User Access Verification\r\n\r\n")
         self.send(self.get_prompt() + " ")
 
