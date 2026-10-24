@@ -600,7 +600,6 @@
       }
     }
 
-    // ลบข้อมูลแบบง่ายสุดๆ: ถามยืนยันด้วย confirm() หน้าต่างระบบตรงๆ
     async function openDeleteModal(id, code) {
       if (confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบรายการรหัส '${code}'?`)) {
         deleteTargetId = id;

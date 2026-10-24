@@ -35,6 +35,30 @@ DEFAULT_CONFIG = {
     }
 }
 
+# -----------------------------------------------------------------------------
+# SHARED GLOBAL SWITCH STATE (สถานะกลางสวิตช์เครื่องเดียวที่ทุกคนแชร์ร่วมกัน)
+# -----------------------------------------------------------------------------
+config_lock = threading.Lock()
+shared_hostname = DEFAULT_CONFIG["hostname"]
+shared_running_config = copy.deepcopy(DEFAULT_CONFIG["running_config"])
+
+def load_initial_config():
+    global shared_hostname, shared_running_config
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                saved = json.load(f)
+                shared_hostname = saved.get("hostname", "Switch")
+                shared_running_config = saved.get("running_config", copy.deepcopy(DEFAULT_CONFIG["running_config"]))
+                return
+        except Exception as e:
+            print(f"[!] Warning: Failed to read {CONFIG_FILE}: {e}")
+    shared_hostname = DEFAULT_CONFIG["hostname"]
+    shared_running_config = copy.deepcopy(DEFAULT_CONFIG["running_config"])
+
+# โหลดค่าเริ่มต้น
+load_initial_config()
+
 BANNER = """
 *******************************************************************************
 *             Cisco Catalyst 3560 L3 Switch (Competition Lab Item 58)         *
@@ -50,30 +74,31 @@ class CiscoSwitchSession:
         self.client_addr = client_addr or ("unknown", 0)
         self.mode = "user"  # 'user', 'privileged', 'config', 'config-if', 'config-vlan', 'config-dhcp'
         self.submode_target = ""
-        self.load_config()
 
-    def load_config(self):
-        if os.path.exists(CONFIG_FILE):
-            try:
-                with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-                    saved = json.load(f)
-                    self.hostname = saved.get("hostname", "Switch")
-                    self.running_config = saved.get("running_config", copy.deepcopy(DEFAULT_CONFIG["running_config"]))
-                    return
-            except Exception as e:
-                print(f"[!] Warning: Failed to read {CONFIG_FILE}: {e}")
-        # Default fallback
-        self.hostname = DEFAULT_CONFIG["hostname"]
-        self.running_config = copy.deepcopy(DEFAULT_CONFIG["running_config"])
+    @property
+    def hostname(self):
+        with config_lock:
+            return shared_hostname
+
+    @hostname.setter
+    def hostname(self, val):
+        global shared_hostname
+        with config_lock:
+            shared_hostname = val
+
+    @property
+    def running_config(self):
+        return shared_running_config
 
     def save_config(self):
         try:
-            data = {
-                "hostname": self.hostname,
-                "running_config": self.running_config
-            }
-            with open(CONFIG_FILE, "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
+            with config_lock:
+                data = {
+                    "hostname": shared_hostname,
+                    "running_config": shared_running_config
+                }
+                with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+                    json.dump(data, f, indent=2, ensure_ascii=False)
             return True
         except Exception as e:
             print(f"[!] Error saving config: {e}")
@@ -241,16 +266,18 @@ class CiscoSwitchSession:
                 return
             elif (cmd == "write" and args and args[0] == "erase") or (cmd == "erase" and args and args[0] == "startup-config"):
                 try:
-                    if os.path.exists(CONFIG_FILE):
-                        os.remove(CONFIG_FILE)
-                    self.hostname = DEFAULT_CONFIG["hostname"]
-                    self.running_config = copy.deepcopy(DEFAULT_CONFIG["running_config"])
+                    global shared_hostname, shared_running_config
+                    with config_lock:
+                        if os.path.exists(CONFIG_FILE):
+                            os.remove(CONFIG_FILE)
+                        shared_hostname = DEFAULT_CONFIG["hostname"]
+                        shared_running_config = copy.deepcopy(DEFAULT_CONFIG["running_config"])
                     self.send("Erasing the nvram filesystem will remove all configuration files! Continue? [confirm]\r\n[OK] Erase of nvram: complete\r\n% Configuration reset to default.\r\n")
                 except Exception as e:
                     self.send(f"% Error erasing config: {e}\r\n")
                 return
             elif cmd == "reload":
-                self.load_config()
+                load_initial_config()
                 self.send("Proceed with reload? [confirm]\r\n% System reloaded from startup-config.\r\n")
                 return
             elif cmd == "ping":
