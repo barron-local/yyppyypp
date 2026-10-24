@@ -1208,8 +1208,8 @@ deploy_job:
                 <span className="text-[11px] font-normal text-indigo-600 dark:text-indigo-400">คลิกเลือกไฟล์เพื่อดู Source Code</span>
               </div>
 
-              {/* Tabs for choosing which backend file to view */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+              {/* Tabs for choosing which backend file to view (All 9 Files) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                 {backendCodeFiles.map((item) => {
                   const isSelected = activeBackendFile === item.path;
                   return (
@@ -1225,7 +1225,7 @@ deploy_job:
                     >
                       <div className="flex items-center justify-between gap-1">
                         <span className="font-mono text-[11px] font-bold text-indigo-700 dark:text-indigo-300 truncate">
-                          {item.path.split('/').pop()}
+                          {item.path}
                         </span>
                         <span className="text-[9px] px-1.5 py-0.5 rounded font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-200 shrink-0">
                           {item.badge}
