@@ -1741,7 +1741,7 @@ docker ps
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                 <div className="p-3 bg-[#f7f6f3] dark:bg-[#252525] border border-[#edece9] dark:border-[#2e2e2e] rounded space-y-1">
                   <div className="font-bold text-indigo-600 dark:text-indigo-400">คำตอบข้อ 4.6: Workflow E2E-001 (ผู้ใช้เข้าสู่ระบบสำเร็จ)</div>
-                  <ol className="list-decimal list-inside text-notion-muted dark:text-notion-darkMuted space-y-0.5">
+                  <ol className="list-decimal list-inside text-[#787774] dark:text-[#9b9b9b] space-y-0.5">
                     <li>เปิดหน้า Login (http://localhost:3000)</li>
                     <li>กรอก username / password</li>
                     <li>กดปุ่ม Login</li>
@@ -1750,15 +1750,100 @@ docker ps
                 </div>
                 <div className="p-3 bg-[#f7f6f3] dark:bg-[#252525] border border-[#edece9] dark:border-[#2e2e2e] rounded space-y-1">
                   <div className="font-bold text-indigo-600 dark:text-indigo-400">คำตอบข้อ 4.6: Workflow E2E-002 (ผู้ใช้ส่งข้อมูลสำเร็จ)</div>
-                  <ol className="list-decimal list-inside text-notion-muted dark:text-notion-darkMuted space-y-0.5">
+                  <ol className="list-decimal list-inside text-[#787774] dark:text-[#9b9b9b] space-y-0.5">
                     <li>Login เข้าระบบด้วย Admin หรือ User 1</li>
                     <li>เปิดหน้าเพิ่มข้อมูล (+ เพิ่มรายการใหม่)</li>
                     <li>กรอกข้อมูลในฟอร์ม + แนบไฟล์เอกสาร</li>
                     <li>กดปุ่มบันทึก</li>
-                    <li>ระบบแสดงข้อความ Toast 'บันทึกข้อมูลสำเร็จ' และปรากฏในตาราง</li>
+                    <li>ระบบแสดงข้อความแจ้งเตือน 'บันทึกข้อมูลสำเร็จ' และปรากฏในตาราง</li>
                   </ol>
                 </div>
               </div>
+
+              {/* Source Code Viewer for Frontend & E2E Tests */}
+              <div className="mt-4 pt-4 border-t border-[#edece9] dark:border-[#2e2e2e] space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 font-bold text-sm text-[#37352f] dark:text-[#d4d4d4]">
+                    <FileCode className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                    <span>ซอร์สโค้ดไฟล์ Frontend HTML และ Playwright E2E Tests</span>
+                  </div>
+                  <span className="text-[11px] font-mono text-slate-500">2 Source Files</span>
+                </div>
+
+                {/* Quick File Select Buttons for Frontend */}
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveBackendFile('frontend/index.html')}
+                    className={`px-3 py-1.5 rounded-lg border flex items-center gap-2 transition text-xs font-medium ${
+                      activeBackendFile === 'frontend/index.html'
+                        ? 'border-indigo-500 bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-400 font-semibold'
+                        : 'border-[#edece9] dark:border-[#2e2e2e] bg-white dark:bg-[#191919] hover:bg-slate-200 dark:hover:bg-[#2c2c2c] text-[#37352f] dark:text-[#d4d4d4]'
+                    }`}
+                  >
+                    <Layout className={`w-3.5 h-3.5 ${activeBackendFile === 'frontend/index.html' ? 'text-white' : 'text-indigo-500'}`} />
+                    <span>frontend/index.html (100% No-CSS UI)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveBackendFile('tests/e2e.spec.js')}
+                    className={`px-3 py-1.5 rounded-lg border flex items-center gap-2 transition text-xs font-medium ${
+                      activeBackendFile === 'tests/e2e.spec.js'
+                        ? 'border-indigo-500 bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-400 font-semibold'
+                        : 'border-[#edece9] dark:border-[#2e2e2e] bg-white dark:bg-[#191919] hover:bg-slate-200 dark:hover:bg-[#2c2c2c] text-[#37352f] dark:text-[#d4d4d4]'
+                    }`}
+                  >
+                    <CheckCircle2 className={`w-3.5 h-3.5 ${activeBackendFile === 'tests/e2e.spec.js' ? 'text-white' : 'text-emerald-500'}`} />
+                    <span>tests/e2e.spec.js (Playwright Workflows)</span>
+                  </button>
+                </div>
+
+                {/* Code Box for Selected Frontend File */}
+                {(() => {
+                  const targetPath = (activeBackendFile === 'tests/e2e.spec.js') ? 'tests/e2e.spec.js' : 'frontend/index.html';
+                  const currentFile = allProjectFiles.find(f => f.path === targetPath) || allProjectFiles[0];
+                  return (
+                    <div className="space-y-2">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 p-3 rounded-xl bg-slate-100 dark:bg-[#202020] border border-[#edece9] dark:border-[#2e2e2e]">
+                        <div className="flex items-center gap-2">
+                          <Terminal className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                          <div>
+                            <div className="font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                              modules/04_Fullstack_DevOps_App/{currentFile.path}
+                            </div>
+                            <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
+                              {currentFile.desc}
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard(currentFile.code, `frontend-${currentFile.path}`)}
+                          className="px-3 py-1.5 rounded-lg bg-white dark:bg-[#191919] border border-[#edece9] dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-medium flex items-center gap-1.5 shrink-0 transition shadow-sm"
+                        >
+                          {copiedId === `frontend-${currentFile.path}` ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-500" />
+                              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">คัดลอกสำเร็จ!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5" />
+                              <span>คัดลอกซอร์สโค้ด</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      <pre className="p-3.5 bg-[#1e1e1e] text-[#d4d4d4] rounded-lg border border-[#2e2e2e] text-[11px] font-mono overflow-x-auto max-h-[460px] overflow-y-auto leading-relaxed shadow-inner">
+                        <code>{currentFile.code}</code>
+                      </pre>
+                    </div>
+                  );
+                })()}
+              </div>
+
             </div>
           </section>
         )}
