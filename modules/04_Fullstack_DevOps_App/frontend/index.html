@@ -1,171 +1,132 @@
+<!-- ========================================================================= -->
+<!-- FRONTEND UI: frontend/index.html (Pure HTML / 100% No CSS / No Emoji)     -->
+<!-- เกณฑ์ข้อ 4.6: Responsive, JWT Login 3 Roles, CRUD, แนบไฟล์, Modal ลบ     -->
+<!-- ========================================================================= -->
+
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
   <meta charset="UTF-8">
-  <title>ระบบบริหารจัดการข้อมูล</title>
+  <title>DevOps Inventory System (100% No CSS)</title>
 </head>
-
 <body>
 
-  <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast-container"></div>
 
-  <!-- ========================================================================= -->
-  <!-- VIEW 1: AUTHENTICATION / LOGIN SCREEN -->
-  <!-- ========================================================================= -->
+  <!-- VIEW 1: LOGIN -->
   <div id="view-login">
-    <h1>เข้าสู่ระบบ (Login)</h1>
-    <p>ระบบบริหารจัดการข้อมูลการแข่งขันทักษะเทคโนโลยีสารสนเทศ (DevOps Competition)</p>
-
-
-
-    <!-- Login Form -->
+    <h2>เข้าสู่ระบบ (Login)</h2>
     <form id="form-login" onsubmit="handleLoginSubmit(event)">
       <fieldset>
         <legend>กรอกข้อมูลเข้าสู่ระบบ</legend>
-        <p>
-          <label for="input-username">ชื่อผู้ใช้งาน (Username):</label><br>
-          <input type="text" id="input-username" required placeholder="admin, officer1 หรือ member1">
-        </p>
-
-        <p>
-          <label for="input-password">รหัสผ่าน (Password):</label><br>
-          <input type="password" id="input-password" required placeholder="รหัสผ่าน">
-        </p>
-
-        <!-- Frontend Error Box -->
-        <p id="login-error-box" hidden>
-          <font color="red"><b id="login-error-text">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</b></font>
-        </p>
-
-        <p>
-          <button type="submit" id="btn-login">เข้าสู่ระบบ (Sign In)</button>
-        </p>
+        <p>ชื่อผู้ใช้: <input type="text" id="input-username" required placeholder="admin"></p>
+        <p>รหัสผ่าน: <input type="password" id="input-password" required placeholder="รหัสผ่าน"></p>
+        <p id="login-error-box" hidden><font color="red"><b id="login-error-text"></b></font></p>
+        <button type="submit" id="btn-login">เข้าสู่ระบบ (Sign In)</button>
       </fieldset>
     </form>
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- VIEW 2: MAIN DASHBOARD & APPLICATION SHELL -->
-  <!-- ========================================================================= -->
+  <!-- VIEW 2: APP / DASHBOARD -->
   <div id="view-app" hidden>
-
-    <!-- Top Header -->
     <table width="100%" border="0">
       <tr>
-        <td>
-          <h2 style="margin: 0;">DevOps Inventory Management System</h2>
-          <small>ระบบจัดการข้อมูลอุปกรณ์และโครงสร้างพื้นฐาน</small>
-        </td>
+        <td><h2>DevOps Asset Center</h2></td>
         <td align="right">
-          ผู้ใช้: <b id="badge-user-name">Administrator</b> |
+          ผู้ใช้: <b id="badge-user-name">Admin</b> | 
           สิทธิ์: <span id="badge-user-role">admin</span>
-          <button id="btn-logout" onclick="logout()">ออกจากระบบ</button>
+          <button onclick="logout()">ออกจากระบบ</button>
         </td>
       </tr>
     </table>
-
     <hr>
 
-    <!-- Navigation Tabs -->
     <p>
-      <button onclick="switchTab('inventory')" id="tab-inventory">📋 รายการข้อมูล (Inventory)</button>
-      <button onclick="switchTab('dashboard')" id="tab-dashboard">📊 ภาพรวม (Dashboard)</button>
-      <button onclick="switchTab('system-info')" id="tab-system-info">ℹ️ สิทธิ์และเกณฑ์การตรวจ</button>
+      <button onclick="switchTab('inventory')" id="tab-inventory">รายการข้อมูล</button>
+      <button onclick="switchTab('dashboard')" id="tab-dashboard">ภาพรวม</button>
+      <button onclick="switchTab('system-info')" id="tab-system-info">สิทธิ์การใช้งาน</button>
     </p>
 
-    <!-- SECTION B: INVENTORY MANAGEMENT TABLE (CRUD + SEARCH + FILTER + PAGINATION) -->
+    <!-- INVENTORY TAB -->
     <div id="section-inventory">
       <table width="100%" border="0">
         <tr>
-          <td>
-            <h3>รายการข้อมูลและอุปกรณ์</h3>
-          </td>
+          <td><h3>รายการข้อมูลและอุปกรณ์</h3></td>
           <td align="right">
-            <!-- ปุ่มเพิ่มข้อมูล: อนุญาตเฉพาะ admin และ user1 -->
             <button id="btn-open-create-modal" onclick="openCreateModal()">+ เพิ่มรายการใหม่</button>
           </td>
         </tr>
       </table>
 
-      <!-- Filter & Search Toolbar -->
       <fieldset>
-        <legend>ค้นหาและกรองข้อมูล</legend>
-        <input type="text" id="input-search" oninput="handleSearchInput()" placeholder="ค้นหารหัส หรือชื่อรายการ...">
-
+        <legend>ค้นหา</legend>
+        <input type="text" id="input-search" oninput="handleSearchInput()" placeholder="ค้นหารหัสหรือชื่อ...">
         <select id="select-category-filter" onchange="loadItems(1)">
-          <option value="">ทุกหมวดหมู่ (All Categories)</option>
+          <option value="">ทุกหมวดหมู่</option>
           <option value="1">Network Equipment</option>
           <option value="2">Server & Storage</option>
           <option value="3">IoT Devices</option>
         </select>
-
-        <button type="button" onclick="resetFilters()">ล้างค่าค้นหา</button>
+        <button onclick="resetFilters()">ล้างการค้นหา</button>
       </fieldset>
-
       <br>
 
-      <!-- Data Table -->
       <table border="1" cellpadding="6" cellspacing="0" width="100%">
         <thead>
           <tr>
-            <th>รหัส (Code)</th>
-            <th>ชื่อรายการ (Title)</th>
-            <th>หมวดหมู่ (Category)</th>
-            <th>มูลค่า (Value)</th>
-            <th>ไฟล์แนบ (Attachment)</th>
-            <th>การจัดการ (Actions)</th>
+            <th>รหัส</th>
+            <th>ชื่อรายการ</th>
+            <th>หมวดหมู่</th>
+            <th>มูลค่า</th>
+            <th>ไฟล์แนบ</th>
+            <th>จัดการ</th>
           </tr>
         </thead>
-        <tbody id="table-items-body">
-          <!-- Rendered via JS -->
-        </tbody>
+        <tbody id="table-items-body"></tbody>
       </table>
 
-      <!-- Pagination Toolbar -->
       <table width="100%" border="0" style="margin-top: 10px;">
         <tr>
-          <td><span id="span-page-info">กำลังแสดง 0 รายการ</span></td>
+          <td><span id="span-page-info"></span></td>
           <td align="right">
-            <button id="btn-prev-page" onclick="prevPage()">« ย้อนกลับ</button>
+            <button id="btn-prev-page" onclick="prevPage()">&laquo; ย้อนกลับ</button>
             <span> หน้าที่ <b id="span-current-page">1</b> </span>
-            <button id="btn-next-page" onclick="nextPage()">ถัดไป »</button>
+            <button id="btn-next-page" onclick="nextPage()">ถัดไป &raquo;</button>
           </td>
         </tr>
       </table>
     </div>
 
-    <!-- SECTION A: DASHBOARD OVERVIEW -->
+    <!-- DASHBOARD TAB -->
     <div id="section-dashboard" hidden>
-      <h3>ภาพรวมระบบ (Overview Dashboard)</h3>
+      <h3>ภาพรวมระบบ</h3>
       <table border="1" cellpadding="8" cellspacing="0">
         <tr>
-          <th>รายการทั้งหมด (Total Items)</th>
+          <th>รายการทั้งหมด</th>
           <td><b id="kpi-total-items">0</b> รายการ</td>
         </tr>
         <tr>
-          <th>หมวดหมู่ระบบ (Categories)</th>
+          <th>หมวดหมู่ระบบ</th>
           <td><b id="kpi-categories">3</b> หมวดหมู่</td>
         </tr>
         <tr>
-          <th>สถานะพร้อมใช้งาน (Active Items)</th>
+          <th>สถานะพร้อมใช้งาน</th>
           <td><b id="kpi-active-items">0</b> รายการ</td>
         </tr>
         <tr>
-          <th>มูลค่าทรัพย์สินรวม (Total Value)</th>
-          <td><b id="kpi-total-value">฿0.00</b></td>
+          <th>มูลค่ารวม</th>
+          <td><b id="kpi-total-value">0.00 บาท</b></td>
         </tr>
       </table>
     </div>
 
-    <!-- SECTION C: SYSTEM INFO & RUBRIC DETAILS -->
+    <!-- SYSTEM INFO TAB -->
     <div id="section-system-info" hidden>
-      <h3>ตารางการแยกระดับสิทธิ์ผู้ใช้งาน (RBAC Matrix)</h3>
+      <h3>ตารางการแยกระดับสิทธิ์ผู้ใช้งาน</h3>
       <table border="1" cellpadding="6" cellspacing="0" width="100%">
         <thead>
           <tr>
-            <th>บทบาท (Role)</th>
+            <th>บทบาท</th>
             <th>ดูข้อมูล (GET)</th>
             <th>เพิ่ม/แนบไฟล์ (POST)</th>
             <th>แก้ไข (PUT)</th>
@@ -197,104 +158,51 @@
         </tbody>
       </table>
     </div>
-
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- MODAL: ADD / EDIT ITEM (USING HTML5 NATIVE <dialog> WITHOUT ANY CSS) -->
-  <!-- ========================================================================= -->
+  <!-- NATIVE HTML5 DIALOG FOR MODALS -->
   <dialog id="modal-item">
-    <table width="100%" border="0">
-      <tr>
-        <td>
-          <h3 id="modal-title" style="margin: 0;">เพิ่มรายการใหม่</h3>
-        </td>
-        <td align="right"><button type="button" onclick="closeItemModal()">X</button></td>
-      </tr>
-    </table>
-    <hr>
-
+    <h3 id="modal-title">เพิ่มรายการใหม่</h3>
     <form id="form-item" onsubmit="handleItemFormSubmit(event)">
       <input type="hidden" id="item-form-id">
-
-      <p>
-        <label for="input-item-code">รหัสอุปกรณ์ (Item Code) *</label><br>
-        <input type="text" id="input-item-code" required placeholder="เช่น NET-002">
-      </p>
-
-      <p>
-        <label for="select-item-category">หมวดหมู่ (Category) *</label><br>
+      <p>รหัส: <input type="text" id="input-item-code" required placeholder="เช่น NET-002"></p>
+      <p>หมวดหมู่: 
         <select id="select-item-category" required>
           <option value="1">Network Equipment</option>
           <option value="2">Server & Storage</option>
           <option value="3">IoT Devices</option>
         </select>
       </p>
-
-      <p>
-        <label for="input-item-title">ชื่อรายการ (Title) *</label><br>
-        <input type="text" id="input-item-title" required placeholder="เช่น Cisco Switch 24 Port" size="40">
-      </p>
-
-      <p>
-        <label for="input-item-value">มูลค่า / ราคา (บาท) *</label><br>
-        <input type="number" step="0.01" id="input-item-value" required placeholder="0.00">
-      </p>
-
-      <p>
-        <label for="input-item-file">ไฟล์แนบ (เอกสาร/รูปภาพ)</label><br>
-        <input type="file" id="input-item-file">
-      </p>
-
-      <p>
-        <label for="input-item-desc">รายละเอียด (Description)</label><br>
-        <textarea id="input-item-desc" rows="3" cols="40" placeholder="รายละเอียดคุณสมบัติ..."></textarea>
-      </p>
-
-      <!-- Form Error Alert -->
-      <p id="form-error-box" hidden>
-        <font color="red"><b id="form-error-text"></b></font>
-      </p>
-
+      <p>ชื่อรายการ: <input type="text" id="input-item-title" required placeholder="เช่น Cisco Switch 24 Port"></p>
+      <p>มูลค่า: <input type="number" step="0.01" id="input-item-value" required placeholder="0.00"></p>
+      <p>ไฟล์แนบ: <input type="file" id="input-item-file"></p>
+      <p>รายละเอียด: <textarea id="input-item-desc" rows="3" cols="40"></textarea></p>
+      <p id="form-error-box" hidden><font color="red"><b id="form-error-text"></b></font></p>
       <hr>
-      <p align="right">
-        <button type="button" onclick="closeItemModal()">ยกเลิก</button>
-        <button type="submit" id="btn-submit-item">บันทึกข้อมูล</button>
-      </p>
+      <button type="button" onclick="closeItemModal()">ยกเลิก</button>
+      <button type="submit" id="btn-submit-item">บันทึกข้อมูล</button>
     </form>
   </dialog>
 
-  <!-- ========================================================================= -->
-  <!-- MODAL: CONFIRM DELETE (เกณฑ์ข้อ 4.6: มีแจ้งเตือนการลบข้อมูลได้) -->
-  <!-- ========================================================================= -->
   <dialog id="modal-confirm-delete">
-    <h3 align="center">ยืนยันการลบข้อมูล</h3>
-    <p align="center" id="delete-confirm-text">คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?</p>
-
+    <h3 align="center">ยืนยันการลบข้อมูล?</h3>
+    <p align="center" id="delete-confirm-text"></p>
     <hr>
     <p align="center">
       <button type="button" onclick="closeDeleteModal()">ยกเลิก</button>
-      <button type="button" id="btn-confirm-delete" onclick="executeDelete()">
-        <font color="red"><b>ยืนยันการลบ</b></font>
-      </button>
+      <button type="button" id="btn-confirm-delete" onclick="executeDelete()"><font color="red"><b>ยืนยันลบ</b></font></button>
     </p>
   </dialog>
 
-  <!-- ========================================================================= -->
-  <!-- JAVASCRIPT FRONTEND APPLICATION LOGIC -->
-  <!-- ========================================================================= -->
   <script>
-    // State Application
     let currentUser = null;
     let currentToken = localStorage.getItem('devops_token') || null;
     let currentPage = 1;
     let deleteTargetId = null;
     let cachedItems = [];
 
-    // แจ้งเตือนข้อความแบบง่ายสุดๆ ด้วย alert() มาตรฐาน
     function showToast(message) {
       alert(message);
-      // ฝากข้อความไว้ใน container สั้นๆ สำหรับ e2e test
       const container = document.getElementById('toast-container');
       if (container) {
         container.innerText = message;
@@ -302,7 +210,6 @@
       }
     }
 
-    // Login Form Submit
     async function handleLoginSubmit(e) {
       e.preventDefault();
       const errBox = document.getElementById('login-error-box');
@@ -312,7 +219,6 @@
       const username = document.getElementById('input-username').value.trim();
       const password = document.getElementById('input-password').value;
 
-      // Frontend Validation
       if (!username || !password) {
         errText.innerText = "กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน";
         errBox.hidden = false;
@@ -339,12 +245,11 @@
           errBox.hidden = false;
         }
       } catch (err) {
-        errText.innerText = "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ Backend ได้ กรุณาลองใหม่";
+        errText.innerText = "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ Backend ได้";
         errBox.hidden = false;
       }
     }
 
-    // Logout
     function logout() {
       localStorage.removeItem('devops_token');
       localStorage.removeItem('devops_user');
@@ -355,7 +260,6 @@
       showToast('ออกจากระบบเรียบร้อยแล้ว');
     }
 
-    // Tab Navigation
     function switchTab(tabId) {
       ['dashboard', 'inventory', 'system-info'].forEach(t => {
         document.getElementById(`section-${t}`).hidden = true;
@@ -363,7 +267,6 @@
       document.getElementById(`section-${tabId}`).hidden = false;
     }
 
-    // Initialize App after Login
     function initApp() {
       document.getElementById('view-login').hidden = true;
       document.getElementById('view-app').hidden = false;
@@ -371,10 +274,9 @@
       document.getElementById('badge-user-name').innerText = currentUser.full_name;
       document.getElementById('badge-user-role').innerText = currentUser.role.toUpperCase();
 
-      // Role Permission Matrix on UI
       const btnCreate = document.getElementById('btn-open-create-modal');
       if (currentUser.role === 'user2') {
-        btnCreate.hidden = true; // Level 2 can only view
+        btnCreate.hidden = true;
       } else {
         btnCreate.hidden = false;
       }
@@ -383,7 +285,6 @@
       loadItems(1);
     }
 
-    // Load Items with Search, Filter & Pagination
     async function loadItems(page = 1) {
       currentPage = page;
       const search = document.getElementById('input-search').value.trim();
@@ -408,7 +309,7 @@
           logout();
         }
       } catch (err) {
-        showToast('เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + err.message, 'error');
+        showToast('เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + err.message);
       }
     }
 
@@ -424,7 +325,6 @@
       loadItems(1);
     }
 
-    // Render Table based on Role
     function renderTable(items) {
       const tbody = document.getElementById('table-items-body');
       tbody.innerHTML = '';
@@ -438,7 +338,7 @@
         const tr = document.createElement('tr');
 
         const fileBadge = item.attachment_name
-          ? `<a href="${item.attachment_path}" target="_blank">📎 ${item.attachment_name}</a>`
+          ? `<a href="${item.attachment_path}" target="_blank">${item.attachment_name}</a>`
           : `- ไม่มี -`;
 
         let actionButtons = '';
@@ -460,7 +360,7 @@
           <td><b>${item.item_code}</b></td>
           <td>${item.title}</td>
           <td>${item.category_name}</td>
-          <td>฿${parseFloat(item.value_amount).toLocaleString('th-TH', { minimumFractionDigits: 2 })}</td>
+          <td>${parseFloat(item.value_amount).toLocaleString('th-TH', { minimumFractionDigits: 2 })} บาท</td>
           <td>${fileBadge}</td>
           <td>${actionButtons}</td>
         `;
@@ -468,7 +368,6 @@
       });
     }
 
-    // Render Pagination
     function renderPagination(pg) {
       document.getElementById('span-page-info').innerText = `หน้า ${pg.currentPage} จาก ${pg.totalPages} (ทั้งหมด ${pg.totalItems} รายการ)`;
       document.getElementById('span-current-page').innerText = pg.currentPage;
@@ -479,20 +378,18 @@
     function prevPage() { if (currentPage > 1) loadItems(currentPage - 1); }
     function nextPage() { loadItems(currentPage + 1); }
 
-    // Update KPI Dashboard Cards
     function updateKPIs() {
       document.getElementById('kpi-total-items').innerText = cachedItems.length;
       document.getElementById('kpi-active-items').innerText = cachedItems.filter(i => i.status === 'active').length;
       const sum = cachedItems.reduce((acc, curr) => acc + (parseFloat(curr.value_amount) || 0), 0);
-      document.getElementById('kpi-total-value').innerText = `฿${sum.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+      document.getElementById('kpi-total-value').innerText = `${sum.toLocaleString('th-TH', { minimumFractionDigits: 2 })} บาท`;
     }
 
-    // Open Create Modal
     function openCreateModal() {
       document.getElementById('form-item').reset();
       document.getElementById('item-form-id').value = '';
       document.getElementById('input-item-code').disabled = false;
-      document.getElementById('modal-title').innerText = '+ เพิ่มรายการใหม่';
+      document.getElementById('modal-title').innerText = 'เพิ่มรายการใหม่';
       document.getElementById('form-error-box').hidden = true;
 
       const modal = document.getElementById('modal-item');
@@ -503,7 +400,6 @@
       }
     }
 
-    // Open Edit Modal
     function openEditModal(id) {
       const item = cachedItems.find(i => i.id === id);
       if (!item) return;
@@ -511,7 +407,7 @@
       document.getElementById('form-item').reset();
       document.getElementById('item-form-id').value = item.id;
       document.getElementById('input-item-code').value = item.item_code;
-      document.getElementById('input-item-code').disabled = true; // Code cannot be altered
+      document.getElementById('input-item-code').disabled = true;
       document.getElementById('select-item-category').value = item.category_id;
       document.getElementById('input-item-title').value = item.title;
       document.getElementById('input-item-value').value = item.value_amount;
@@ -536,7 +432,6 @@
       }
     }
 
-    // Handle Form Submit (Add / Edit) with Frontend Validation
     async function handleItemFormSubmit(e) {
       e.preventDefault();
       const id = document.getElementById('item-form-id').value;
@@ -551,9 +446,8 @@
       const errText = document.getElementById('form-error-text');
       errBox.hidden = true;
 
-      // Frontend Form Validation (เกณฑ์ข้อ 4.6)
       if (!title || !category_id || (!id && !item_code)) {
-        errText.innerText = "กรุณากรอกข้อมูลที่มีเครื่องหมาย * ให้ครบถ้วน";
+        errText.innerText = "กรุณากรอกข้อมูลให้ครบถ้วน";
         errBox.hidden = false;
         return;
       }
@@ -564,7 +458,6 @@
         return;
       }
 
-      // FormData for Multipart File Upload
       const formData = new FormData();
       formData.append('title', title);
       formData.append('category_id', category_id);
@@ -588,7 +481,7 @@
 
         if (res.ok && result.status === 'success') {
           closeItemModal();
-          showToast(id ? 'บันทึกการแก้ไขข้อมูลสำเร็จ' : 'บันทึกข้อมูลสำเร็จ', 'success');
+          showToast(id ? 'บันทึกการแก้ไขข้อมูลสำเร็จ' : 'บันทึกข้อมูลสำเร็จ');
           loadItems(currentPage);
         } else {
           errText.innerText = result.message || "ไม่สามารถบันทึกข้อมูลได้";
@@ -600,10 +493,14 @@
       }
     }
 
-    async function openDeleteModal(id, code) {
-      if (confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบรายการรหัส '${code}'?`)) {
-        deleteTargetId = id;
-        await executeDelete();
+    function openDeleteModal(id, code) {
+      deleteTargetId = id;
+      document.getElementById('delete-confirm-text').innerText = `คุณแน่ใจหรือไม่ว่าต้องการลบรายการรหัส '${code}'?`;
+      const modal = document.getElementById('modal-confirm-delete');
+      if (typeof modal.showModal === 'function') {
+        modal.showModal();
+      } else {
+        modal.hidden = false;
       }
     }
 
@@ -628,19 +525,18 @@
 
         if (res.ok && result.status === 'success') {
           closeDeleteModal();
-          showToast(result.message || 'ลบข้อมูลสำเร็จ', 'success');
+          showToast(result.message || 'ลบข้อมูลสำเร็จ');
           loadItems(currentPage);
         } else {
-          showToast(result.message || 'ไม่มีสิทธิ์ในการลบข้อมูล', 'error');
+          showToast(result.message || 'ไม่มีสิทธิ์ในการลบข้อมูล');
           closeDeleteModal();
         }
       } catch (err) {
-        showToast('เกิดข้อผิดพลาด: ' + err.message, 'error');
+        showToast('เกิดข้อผิดพลาด: ' + err.message);
         closeDeleteModal();
       }
     }
 
-    // Auto-check existing session on load
     window.addEventListener('DOMContentLoaded', () => {
       if (currentToken) {
         const savedUser = localStorage.getItem('devops_user');
@@ -652,5 +548,4 @@
     });
   </script>
 </body>
-
 </html>

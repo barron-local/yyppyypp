@@ -96,9 +96,9 @@ volumes:
         path: "frontend/index.html",
         name: "index.html",
         badge: "Frontend UI",
-        desc: "หน้าเว็บหลักแบบ Pure HTML (100% No-CSS): Login แยก 3 สิทธิ์, ตาราง CRUD, แนบไฟล์, Native Dialog ยืนยันลบ",
+        desc: "หน้าเว็บหลักแบบ Pure HTML (100% No-CSS, No Emoji): Login แยก 3 สิทธิ์, ตาราง CRUD, แนบไฟล์, Native Dialog",
         code: `<!-- ========================================================================= -->
-<!-- FRONTEND UI: frontend/index.html (Pure HTML / 100% No CSS)                -->
+<!-- FRONTEND UI: frontend/index.html (Pure HTML / 100% No CSS / No Emoji)     -->
 <!-- เกณฑ์ข้อ 4.6: Responsive, JWT Login 3 Roles, CRUD, แนบไฟล์, Modal ลบ     -->
 <!-- ========================================================================= -->
 
@@ -119,12 +119,13 @@ volumes:
       <fieldset>
         <legend>กรอกข้อมูลเข้าสู่ระบบ</legend>
         <p>ชื่อผู้ใช้: <input type="text" id="input-username" required placeholder="admin"></p>
-        <p>รหัสผ่าน: <input type="password" id="input-password" required placeholder="••••••••"></p>
+        <p>รหัสผ่าน: <input type="password" id="input-password" required placeholder="รหัสผ่าน"></p>
         <p id="login-error-box" hidden><font color="red"><b id="login-error-text"></b></font></p>
         <button type="submit" id="btn-login">เข้าสู่ระบบ (Sign In)</button>
       </fieldset>
     </form>
   </div>
+
   <!-- VIEW 2: APP / DASHBOARD -->
   <div id="view-app" hidden>
     <table width="100%" border="0">
@@ -140,9 +141,9 @@ volumes:
     <hr>
 
     <p>
-      <button onclick="switchTab('inventory')" id="tab-inventory">📋 รายการข้อมูล</button>
-      <button onclick="switchTab('dashboard')" id="tab-dashboard">📊 ภาพรวม</button>
-      <button onclick="switchTab('system-info')" id="tab-system-info">ℹ️ สิทธิ์การใช้งาน</button>
+      <button onclick="switchTab('inventory')" id="tab-inventory">รายการข้อมูล</button>
+      <button onclick="switchTab('dashboard')" id="tab-dashboard">ภาพรวม</button>
+      <button onclick="switchTab('system-info')" id="tab-system-info">สิทธิ์การใช้งาน</button>
     </p>
 
     <!-- INVENTORY TAB -->
@@ -163,6 +164,7 @@ volumes:
           <option value="">ทุกหมวดหมู่</option>
           <option value="1">Network Equipment</option>
           <option value="2">Server & Storage</option>
+          <option value="3">IoT Devices</option>
         </select>
         <button onclick="resetFilters()">ล้างการค้นหา</button>
       </fieldset>
@@ -170,7 +172,14 @@ volumes:
 
       <table border="1" cellpadding="6" cellspacing="0" width="100%">
         <thead>
-          <tr><th>รหัส</th><th>ชื่อรายการ</th><th>หมวดหมู่</th><th>มูลค่า</th><th>ไฟล์แนบ</th><th>จัดการ</th></tr>
+          <tr>
+            <th>รหัส</th>
+            <th>ชื่อรายการ</th>
+            <th>หมวดหมู่</th>
+            <th>มูลค่า</th>
+            <th>ไฟล์แนบ</th>
+            <th>จัดการ</th>
+          </tr>
         </thead>
         <tbody id="table-items-body"></tbody>
       </table>
@@ -179,31 +188,94 @@ volumes:
         <tr>
           <td><span id="span-page-info"></span></td>
           <td align="right">
-            <button id="btn-prev-page" onclick="prevPage()">« ย้อนกลับ</button>
+            <button id="btn-prev-page" onclick="prevPage()">&laquo; ย้อนกลับ</button>
             <span> หน้าที่ <b id="span-current-page">1</b> </span>
-            <button id="btn-next-page" onclick="nextPage()">ถัดไป »</button>
+            <button id="btn-next-page" onclick="nextPage()">ถัดไป &raquo;</button>
           </td>
         </tr>
+      </table>
+    </div>
+
+    <!-- DASHBOARD TAB -->
+    <div id="section-dashboard" hidden>
+      <h3>ภาพรวมระบบ</h3>
+      <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+          <th>รายการทั้งหมด</th>
+          <td><b id="kpi-total-items">0</b> รายการ</td>
+        </tr>
+        <tr>
+          <th>หมวดหมู่ระบบ</th>
+          <td><b id="kpi-categories">3</b> หมวดหมู่</td>
+        </tr>
+        <tr>
+          <th>สถานะพร้อมใช้งาน</th>
+          <td><b id="kpi-active-items">0</b> รายการ</td>
+        </tr>
+        <tr>
+          <th>มูลค่ารวม</th>
+          <td><b id="kpi-total-value">0.00 บาท</b></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- SYSTEM INFO TAB -->
+    <div id="section-system-info" hidden>
+      <h3>ตารางการแยกระดับสิทธิ์ผู้ใช้งาน</h3>
+      <table border="1" cellpadding="6" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th>บทบาท</th>
+            <th>ดูข้อมูล (GET)</th>
+            <th>เพิ่ม/แนบไฟล์ (POST)</th>
+            <th>แก้ไข (PUT)</th>
+            <th>ลบข้อมูล (DELETE)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Admin</b></td>
+            <td>อนุญาต</td>
+            <td>อนุญาต</td>
+            <td>อนุญาต</td>
+            <td>อนุญาต</td>
+          </tr>
+          <tr>
+            <td><b>User 1 (Officer)</b></td>
+            <td>อนุญาต</td>
+            <td>อนุญาต</td>
+            <td>อนุญาต</td>
+            <td>ไม่อนุญาต (403)</td>
+          </tr>
+          <tr>
+            <td><b>User 2 (Member)</b></td>
+            <td>อนุญาต</td>
+            <td>ไม่อนุญาต (403)</td>
+            <td>ไม่อนุญาต (403)</td>
+            <td>ไม่อนุญาต (403)</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
 
   <!-- NATIVE HTML5 DIALOG FOR MODALS -->
   <dialog id="modal-item">
-    <h3>เพิ่มรายการใหม่</h3>
+    <h3 id="modal-title">เพิ่มรายการใหม่</h3>
     <form id="form-item" onsubmit="handleItemFormSubmit(event)">
       <input type="hidden" id="item-form-id">
-      <p>รหัส: <input type="text" id="input-item-code" required></p>
+      <p>รหัส: <input type="text" id="input-item-code" required placeholder="เช่น NET-002"></p>
       <p>หมวดหมู่: 
         <select id="select-item-category" required>
           <option value="1">Network Equipment</option>
           <option value="2">Server & Storage</option>
+          <option value="3">IoT Devices</option>
         </select>
       </p>
-      <p>ชื่อรายการ: <input type="text" id="input-item-title" required></p>
-      <p>มูลค่า: <input type="number" step="0.01" id="input-item-value" required></p>
+      <p>ชื่อรายการ: <input type="text" id="input-item-title" required placeholder="เช่น Cisco Switch 24 Port"></p>
+      <p>มูลค่า: <input type="number" step="0.01" id="input-item-value" required placeholder="0.00"></p>
       <p>ไฟล์แนบ: <input type="file" id="input-item-file"></p>
-      <p>รายละเอียด: <textarea id="input-item-desc"></textarea></p>
+      <p>รายละเอียด: <textarea id="input-item-desc" rows="3" cols="40"></textarea></p>
       <p id="form-error-box" hidden><font color="red"><b id="form-error-text"></b></font></p>
       <hr>
       <button type="button" onclick="closeItemModal()">ยกเลิก</button>
