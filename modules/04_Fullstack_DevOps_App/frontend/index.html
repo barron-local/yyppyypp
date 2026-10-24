@@ -16,15 +16,7 @@
     <h1>เข้าสู่ระบบ (Login)</h1>
     <p>ระบบบริหารจัดการข้อมูลการแข่งขันทักษะเทคโนโลยีสารสนเทศ (DevOps Competition)</p>
 
-    <!-- Quick Role Login (ปุ่มลัดสำหรับทดสอบสิทธิ์) -->
-    <fieldset>
-      <legend>ปุ่มลัดสิทธิ์ผู้ใช้ (Demo Roles)</legend>
-      <button type="button" id="btn-quick-admin" onclick="fillAndLogin('admin')">[👑 Admin]</button>
-      <button type="button" id="btn-quick-officer" onclick="fillAndLogin('officer1')">[👤 User 1 (Officer)]</button>
-      <button type="button" id="btn-quick-member" onclick="fillAndLogin('member1')">[👥 User 2 (Member)]</button>
-    </fieldset>
 
-    <br>
 
     <!-- Login Form -->
     <form id="form-login" onsubmit="handleLoginSubmit(event)">
@@ -300,18 +292,6 @@
       setTimeout(() => {
         toast.remove();
       }, 3500);
-    }
-
-    // Quick Login Demo Helper
-    function fillAndLogin(role) {
-      const map = {
-        'admin': { u: 'admin', p: 'Password123!' },
-        'officer1': { u: 'officer1', p: 'Password123!' },
-        'member1': { u: 'member1', p: 'Password123!' }
-      };
-      document.getElementById('input-username').value = map[role].u;
-      document.getElementById('input-password').value = map[role].p;
-      document.getElementById('form-login').dispatchEvent(new Event('submit'));
     }
 
     // Login Form Submit

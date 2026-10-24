@@ -115,14 +115,6 @@ volumes:
   <!-- VIEW 1: LOGIN -->
   <div id="view-login">
     <h2>เข้าสู่ระบบ (Login)</h2>
-    <fieldset>
-      <legend>ปุ่มลัดสิทธิ์ผู้ใช้ (Demo Roles)</legend>
-      <button type="button" id="btn-quick-admin" onclick="fillAndLogin('admin')">[👑 Admin]</button>
-      <button type="button" id="btn-quick-officer" onclick="fillAndLogin('officer1')">[👤 User 1]</button>
-      <button type="button" id="btn-quick-member" onclick="fillAndLogin('member1')">[👥 User 2]</button>
-    </fieldset>
-
-    <br>
     <form id="form-login" onsubmit="handleLoginSubmit(event)">
       <fieldset>
         <legend>กรอกข้อมูลเข้าสู่ระบบ</legend>
@@ -132,6 +124,7 @@ volumes:
         <button type="submit" id="btn-login">เข้าสู่ระบบ (Sign In)</button>
       </fieldset>
     </form>
+  </div>
   <!-- VIEW 2: APP / DASHBOARD -->
   <div id="view-app" hidden>
     <table width="100%" border="0">
