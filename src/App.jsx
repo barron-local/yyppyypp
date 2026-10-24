@@ -475,6 +475,51 @@ export default function App() {
                 </p>
               </div>
             </div>
+
+            {/* Official Tech Stack & Language Restrictions (เกณฑ์ข้อ 3.2.6 - 3.2.8 & 3.4.2.5 - 3.4.2.7) */}
+            <div className="p-4 bg-white dark:bg-[#1f1f1f] border-2 border-indigo-200 dark:border-indigo-900/60 rounded-xl space-y-3 text-xs">
+              <div className="flex items-center justify-between pb-2 border-b border-indigo-100 dark:border-indigo-950">
+                <span className="font-bold text-sm text-indigo-900 dark:text-indigo-300">
+                  [เกณฑ์ข้อ 3.2.6 - 3.2.8 & 3.4.2.5 - 3.4.2.7: ข้อกำหนดภาษาและเฟรมเวิร์กทางการ (Official Tech Stack)]
+                </span>
+                <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 font-bold">
+                  กติกาบังคับใช้
+                </span>
+              </div>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                เอกสารทางการระบุข้อกำหนดด้านเทคโนโลยีและซอฟต์แวร์ที่อนุญาตให้ใช้ในการแข่งขันไว้อย่างชัดเจน โดยเน้นระบบนิเวศ <strong>JavaScript (Node.js & Vue 3)</strong> และ <strong>Arduino (C/C++)</strong> ไม่อนุญาตให้ใช้ภาษาอื่นนอกเหนือจากที่กำหนด:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
+                <div className="p-3 rounded-lg bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40 space-y-1">
+                  <div className="font-bold text-emerald-800 dark:text-emerald-300">1. Front-end (เว็บ/แอป)</div>
+                  <div className="font-medium text-slate-800 dark:text-slate-200">Vue 3 / Nuxt (หรือ React/Next)</div>
+                  <p className="text-[11px] text-slate-500">
+                    Template บังคับ: Pinia, Axios, Vue Router, TailwindCSS / Vuetify, @mdi/font, Vee-Validate
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/40 space-y-1">
+                  <div className="font-bold text-blue-800 dark:text-blue-300">2. Back-end (REST API)</div>
+                  <div className="font-medium text-slate-800 dark:text-slate-200">Node.js (เวอร์ชัน 18 ขึ้นไป)</div>
+                  <p className="text-[11px] text-slate-500">
+                    Template บังคับ: Express, jsonwebtoken (JWT), Cors, Multer, Dotenv, Express-Validator
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 space-y-1">
+                  <div className="font-bold text-amber-800 dark:text-amber-300">3. IoT (ฮาร์ดแวร์)</div>
+                  <div className="font-medium text-slate-800 dark:text-slate-200">Arduino (C/C++)</div>
+                  <p className="text-[11px] text-slate-500">
+                    บอร์ด ESP32 / ESP8266 อ่านเซนเซอร์ (BME280/BMP280) ส่งข้อมูลเข้า MQTT Broker (Mosquitto/EMQX)
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-purple-50/70 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900/40 space-y-1">
+                  <div className="font-bold text-purple-800 dark:text-purple-300">4. Database (ฐานข้อมูล)</div>
+                  <div className="font-medium text-slate-800 dark:text-slate-200">MariaDB / MySQL (Docker)</div>
+                  <p className="text-[11px] text-slate-500">
+                    รันผ่าน Docker Compose เชื่อมโยงกับ Backend จัดการผ่าน HeidiSQL หรือ DBeaver
+                  </p>
+                </div>
+              </div>
+            </div>
           </section>
         )}
 
@@ -1962,8 +2007,34 @@ docker ps
                   <span className="text-[11px] font-mono text-slate-500">2 Source Files</span>
                 </div>
 
-                {/* Quick File Select Buttons for Frontend */}
+                {/* Quick File Select Buttons for Frontend & Official Stack */}
                 <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveBackendFile('frontend/src/App.vue')}
+                    className={`px-3 py-1.5 rounded-lg border flex items-center gap-2 transition text-xs font-medium ${
+                      activeBackendFile === 'frontend/src/App.vue'
+                        ? 'border-emerald-500 bg-emerald-600 text-white shadow-sm ring-2 ring-emerald-400 font-semibold'
+                        : 'border-[#edece9] dark:border-[#2e2e2e] bg-white dark:bg-[#191919] hover:bg-slate-200 dark:hover:bg-[#2c2c2c] text-[#37352f] dark:text-[#d4d4d4]'
+                    }`}
+                  >
+                    <Layout className={`w-3.5 h-3.5 ${activeBackendFile === 'frontend/src/App.vue' ? 'text-white' : 'text-emerald-500'}`} />
+                    <span>frontend/src/App.vue (Vue 3 Framework)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveBackendFile('frontend/src/stores/auth.js')}
+                    className={`px-3 py-1.5 rounded-lg border flex items-center gap-2 transition text-xs font-medium ${
+                      activeBackendFile === 'frontend/src/stores/auth.js'
+                        ? 'border-amber-500 bg-amber-600 text-white shadow-sm ring-2 ring-amber-400 font-semibold'
+                        : 'border-[#edece9] dark:border-[#2e2e2e] bg-white dark:bg-[#191919] hover:bg-slate-200 dark:hover:bg-[#2c2c2c] text-[#37352f] dark:text-[#d4d4d4]'
+                    }`}
+                  >
+                    <FileCode className={`w-3.5 h-3.5 ${activeBackendFile === 'frontend/src/stores/auth.js' ? 'text-white' : 'text-amber-500'}`} />
+                    <span>frontend/src/stores/auth.js (Pinia Store)</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setActiveBackendFile('frontend/index.html')}
@@ -1974,7 +2045,7 @@ docker ps
                     }`}
                   >
                     <Layout className={`w-3.5 h-3.5 ${activeBackendFile === 'frontend/index.html' ? 'text-white' : 'text-indigo-500'}`} />
-                    <span>frontend/index.html (100% No-CSS UI)</span>
+                    <span>frontend/index.html (No-CSS Pure HTML)</span>
                   </button>
 
                   <button
@@ -1989,11 +2060,24 @@ docker ps
                     <CheckCircle2 className={`w-3.5 h-3.5 ${activeBackendFile === 'tests/e2e.spec.js' ? 'text-white' : 'text-emerald-500'}`} />
                     <span>tests/e2e.spec.js (Playwright Workflows)</span>
                   </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveBackendFile('iot/esp32_mqtt.ino')}
+                    className={`px-3 py-1.5 rounded-lg border flex items-center gap-2 transition text-xs font-medium ${
+                      activeBackendFile === 'iot/esp32_mqtt.ino'
+                        ? 'border-rose-500 bg-rose-600 text-white shadow-sm ring-2 ring-rose-400 font-semibold'
+                        : 'border-[#edece9] dark:border-[#2e2e2e] bg-white dark:bg-[#191919] hover:bg-slate-200 dark:hover:bg-[#2c2c2c] text-[#37352f] dark:text-[#d4d4d4]'
+                    }`}
+                  >
+                    <Radio className={`w-3.5 h-3.5 ${activeBackendFile === 'iot/esp32_mqtt.ino' ? 'text-white' : 'text-rose-500'}`} />
+                    <span>iot/esp32_mqtt.ino (Arduino C++ MQTT)</span>
+                  </button>
                 </div>
 
                 {/* Code Box for Selected Frontend File */}
                 {(() => {
-                  const targetPath = (activeBackendFile === 'tests/e2e.spec.js') ? 'tests/e2e.spec.js' : 'frontend/index.html';
+                  const targetPath = ['frontend/src/App.vue', 'frontend/src/stores/auth.js', 'frontend/src/services/api', 'tests/e2e.spec.js', 'iot/esp32_mqtt.ino', 'frontend/index.html'].includes(activeBackendFile) ? activeBackendFile : 'frontend/src/App.vue';
                   const currentFile = allProjectFiles.find(f => f.path === targetPath) || allProjectFiles[0];
                   return (
                     <div className="space-y-2">
