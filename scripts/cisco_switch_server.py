@@ -11,39 +11,27 @@ PORT = 2323
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(SCRIPT_DIR, "cisco_switch_config.json")
 
+# ตัวนับและบันทึกรายชื่อผู้เชื่อมต่อปัจจุบัน
+active_clients = {}  # { (ip, port): connect_time }
+clients_lock = threading.Lock()
+
 DEFAULT_CONFIG = {
     "hostname": "Switch",
     "running_config": {
         "vlans": {
-            "10": "server",
-            "20": "dev",
-            "30": "guest",
-            "99": "mgmt"
+            "1": "default"
         },
         "ip_routing": False,
         "interfaces": {
-            "Vlan10": {"ip": "192.168.10.1", "mask": "255.255.255.0", "status": "up"},
-            "Vlan20": {"ip": "192.168.20.1", "mask": "255.255.255.0", "status": "up"},
-            "Vlan30": {"ip": "192.168.30.1", "mask": "255.255.255.0", "status": "up"},
-            "Vlan99": {"ip": "192.168.99.1", "mask": "255.255.255.0", "status": "up"},
-            "GigabitEthernet0/1": {"mode": "trunk", "trust": True},
-            "FastEthernet0/1": {"mode": "access", "vlan": "10"},
-            "FastEthernet0/2": {"mode": "access", "vlan": "20"},
-            "FastEthernet0/3": {"mode": "access", "vlan": "30"}
+            # พอร์ตสวิตช์เดิมๆ จากโรงงาน ไม่มี IP ไม่มี VLAN 10/20/30
+            "FastEthernet0/1": {"mode": "access", "vlan": "1"},
+            "FastEthernet0/2": {"mode": "access", "vlan": "1"},
+            "FastEthernet0/3": {"mode": "access", "vlan": "1"},
+            "GigabitEthernet0/1": {"mode": "access", "vlan": "1"}
         },
-        "dhcp_pools": {
-            "VLAN10_POOL": {"network": "192.168.10.0 255.255.255.0", "router": "192.168.10.1", "dns": "192.168.10.100"},
-            "VLAN20_POOL": {"network": "192.168.20.0 255.255.255.0", "router": "192.168.20.1", "dns": "192.168.10.100"},
-            "VLAN30_POOL": {"network": "192.168.30.0 255.255.255.0", "router": "192.168.30.1", "dns": "192.168.10.100"}
-        },
-        "dhcp_snooping": True,
-        "acl": {
-            "ACL_SERVER_PROTECT": [
-                "permit ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255",
-                "deny ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255",
-                "permit ip any any"
-            ]
-        }
+        "dhcp_pools": {},
+        "dhcp_snooping": False,
+        "acl": {}
     }
 }
 
@@ -57,8 +45,9 @@ BANNER = """
 """
 
 class CiscoSwitchSession:
-    def __init__(self, client_socket):
+    def __init__(self, client_socket, client_addr=None):
         self.sock = client_socket
+        self.client_addr = client_addr or ("unknown", 0)
         self.mode = "user"  # 'user', 'privileged', 'config', 'config-if', 'config-vlan', 'config-dhcp'
         self.submode_target = ""
         self.load_config()
@@ -431,17 +420,40 @@ class CiscoSwitchSession:
                 out += "!\r\n"
             out += "end\r\n"
             self.send(out)
+        elif sub in ["users", "who"]:
+            # คำสั่ง show users ตามมาตรฐาน Cisco IOS
+            with clients_lock:
+                total = len(active_clients)
+                out = f"\r\n    Line       User       Host(s)              Idle       Location\r\n"
+                for idx, (c_addr, c_time) in enumerate(active_clients.items(), start=1):
+                    is_me = "*" if c_addr == self.client_addr else " "
+                    idle_secs = int(time.time() - c_time)
+                    idle_str = f"{idle_secs}s" if idle_secs < 60 else f"{idle_secs//60}m"
+                    out += f" {is_me}  vty {idx:<6} admin      idle                 {idle_str:<10} {c_addr[0]}:{c_addr[1]}\r\n"
+                out += f"\r\n  Total active sessions: {total} user(s) connected.\r\n"
+            self.send(out)
         else:
             self.send(f"% Unknown show argument: '{sub}'\r\n")
 
 
 def client_handler(sock, addr):
+    with clients_lock:
+        active_clients[addr] = time.time()
+        count = len(active_clients)
+    print(f"\r\n[+] [CONNECTED] ผู้ใช้เข้ามาใหม่จาก IP: {addr[0]}:{addr[1]} (ขณะนี้มีคนออนไลน์: {count} คน)")
+    sys.stdout.flush()
+
     try:
-        session = CiscoSwitchSession(sock)
+        session = CiscoSwitchSession(sock, addr)
         session.handle()
     except Exception as e:
-        print(f"Error handling client {addr}: {e}")
+        print(f"\r\n[!] Error handling client {addr}: {e}")
     finally:
+        with clients_lock:
+            active_clients.pop(addr, None)
+            remaining = len(active_clients)
+        print(f"\r\n[-] [DISCONNECTED] ผู้ใช้ {addr[0]}:{addr[1]} ออกไปแล้ว (เหลือคนออนไลน์: {remaining} คน)")
+        sys.stdout.flush()
         try:
             sock.close()
         except Exception:
@@ -451,19 +463,23 @@ def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind((HOST, PORT))
-    server.listen(5)
+    server.listen(10)
     server.settimeout(1.0)
-    print(f"[*] Cisco L3 Switch Mock Server listening on {HOST}:{PORT}")
-    print(f"[*] Open PuTTY -> Host Name: 127.0.0.1, Port: {PORT}, Connection Type: Telnet or Raw")
-    print(f"[*] Press Ctrl+C at any time to stop cleanly.")
+    print("=" * 65)
+    print(f"🚀 Cisco L3 Switch Server พร้อมให้บริการแล้ว!")
+    print(f"📡 พอร์ต: {PORT} (เปิดรับทุก IP: 0.0.0.0)")
+    print(f"👥 ระบบตรวจนับผู้ใช้งานแบบเรียลไทม์: พร้อมใช้งาน")
+    print("=" * 65)
+    print(f"[*] ทดสอบเข้าจากเครื่องนี้:  PuTTY -> 127.0.0.1 พอร์ต {PORT} (Telnet)")
+    print(f"[*] ให้เพื่อนเข้าจากนอกเครื่อง: PuTTY -> <IP_ของคุณ> พอร์ต {PORT}")
+    print(f"[*] กด Ctrl + C เพื่อปิดเซิร์ฟเวอร์")
+    print("=" * 65)
     sys.stdout.flush()
 
     running = True
     while running:
         try:
             client, addr = server.accept()
-            print(f"[+] New connection from {addr}")
-            sys.stdout.flush()
             t = threading.Thread(target=client_handler, args=(client, addr), daemon=True)
             t.start()
         except socket.timeout:

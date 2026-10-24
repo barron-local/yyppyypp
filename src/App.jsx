@@ -430,13 +430,6 @@ export default function App() {
                     <td className="p-2.5 font-mono">192.168.30.1</td>
                     <td className="p-2.5">วงผู้ใช้งานทั่วไป และเครื่องกรรมการทดสอบ</td>
                   </tr>
-                  <tr>
-                    <td className="p-2.5 font-mono font-bold text-slate-500">99</td>
-                    <td className="p-2.5 font-mono">mgmt</td>
-                    <td className="p-2.5 font-mono">192.168.99.0/24</td>
-                    <td className="p-2.5 font-mono">192.168.99.1</td>
-                    <td className="p-2.5">วงสำหรับรีโมต SSH บริหารจัดการ Switch/Router</td>
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -478,9 +471,6 @@ vlan 20
 exit
 vlan 30
  name guest
-exit
-vlan 99
- name mgmt
 exit
 ip routing
 interface vlan 10
@@ -548,8 +538,6 @@ vlan 20
  name dev
 vlan 30
  name guest
-vlan 99
- name mgmt
 exit
 
 ! ตอบข้อ 1.2: เปิด ip routing และตั้ง SVI Gateway ครบทั้ง 3 วง
