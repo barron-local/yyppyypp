@@ -33,6 +33,7 @@ import {
   Download
 } from 'lucide-react';
 import { projectFileTree, allProjectFiles } from './data/backendCode';
+import { designSolutions } from './data/designSolutions';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('all');
@@ -43,6 +44,7 @@ export default function App() {
   const [copiedId, setCopiedId] = useState(null);
   const [checkedItems, setCheckedItems] = useState({});
   const [selectedPdfImage, setSelectedPdfImage] = useState(null);
+  const [activeFlowchartTab, setActiveFlowchartTab] = useState('login-flow');
 
   useEffect(() => {
     const isDark = localStorage.getItem('devops_dark_theme') === 'true';
@@ -1065,7 +1067,7 @@ deploy_job:
         {/* MODULE 3: SYSTEM DESIGN & DB */}
         {/* ------------------------------------------------------------------- */}
         {(activeTab === 'all' || activeTab === 'design') && (
-          <section className="space-y-5">
+          <section className="space-y-6">
             <div className="flex items-center justify-between pb-2 border-b border-[#edece9] dark:border-[#2e2e2e]">
               <h2 className="text-lg font-bold text-[#37352f] dark:text-[#d4d4d4] flex items-center gap-2">
                 <Database className="w-5 h-5 text-emerald-600" />
@@ -1076,86 +1078,231 @@ deploy_job:
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            {/* ------------------------------------------------------------- */}
+            {/* 4.1: Flowchart & Use Case Interactive Solution */}
+            {/* ------------------------------------------------------------- */}
+            <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-4">
+              <div className="p-3 bg-emerald-50 dark:bg-emerald-950/20 border-l-4 border-emerald-600 rounded-r-lg">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-emerald-800 dark:text-emerald-300 text-sm">
+                    [เฉลยข้อที่ 4.1: การออกแบบผังงาน Flowchart & Use Case (5 คะแนนเต็ม)]
+                  </span>
+                  <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-200 font-bold">
+                    5 ข้อครบ 5 คะแนน
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                  คลิกเลือกดูเฉลยผังงานแต่ละข้อ สามารถคัดลอกโค้ด Mermaid ไป Import ใส่ Draw.io หรือวาดส่งกรรมการได้ทันที
+                </p>
+              </div>
+
+              {/* Flowchart Tabs */}
+              <div className="flex flex-wrap gap-1.5 border-b border-[#edece9] dark:border-[#2e2e2e] pb-2">
+                {designSolutions.flowcharts.map(fc => (
+                  <button
+                    key={fc.id}
+                    onClick={() => setActiveFlowchartTab(fc.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                      activeFlowchartTab === fc.id
+                        ? 'bg-emerald-600 text-white shadow-sm'
+                        : 'bg-[#f7f6f3] dark:bg-[#262626] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    {fc.title.split(' ')[1]}
+                  </button>
+                ))}
+              </div>
+
+              {/* Selected Flowchart Details */}
+              {(() => {
+                const currentFc = designSolutions.flowcharts.find(f => f.id === activeFlowchartTab) || designSolutions.flowcharts[0];
+                return (
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div>
+                        <h4 className="font-bold text-sm text-[#37352f] dark:text-[#d4d4d4]">{currentFc.title}</h4>
+                        <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">{currentFc.points}</span>
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard(currentFc.mermaid, currentFc.id)}
+                        className="px-3 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-[#252525] dark:hover:bg-[#303030] text-slate-700 dark:text-slate-200 rounded text-xs flex items-center gap-1.5 transition"
+                      >
+                        {copiedId === currentFc.id ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                        <span>คัดลอก Mermaid Code</span>
+                      </button>
+                    </div>
+                    <p className="text-xs text-[#787774] dark:text-[#9b9b9b]">{currentFc.desc}</p>
+                    <div className="bg-[#1e1e1e] text-[#d4d4d4] p-3 rounded-lg overflow-x-auto text-[11px] font-mono leading-relaxed border border-[#333]">
+                      <pre>{currentFc.mermaid}</pre>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* ------------------------------------------------------------- */}
+            {/* 4.2: Database Relational Design & Class Diagram */}
+            {/* ------------------------------------------------------------- */}
+            <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-4">
+              <div className="p-3 bg-blue-50 dark:bg-blue-950/20 border-l-4 border-blue-600 rounded-r-lg flex items-center justify-between">
+                <div>
+                  <span className="font-bold text-blue-800 dark:text-blue-300 text-sm">
+                    [เฉลยข้อที่ 4.2: การออกแบบฐานข้อมูลเชิงสัมพันธ์ & Class Diagram (5 คะแนน)]
+                  </span>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                    ออกแบบครบ 3 ตารางสัมพันธ์กัน (Relational Design: PK/FK 1:N) พร้อม Data Type และ Class Diagram
+                  </p>
+                </div>
+                <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-blue-200 text-blue-900 dark:bg-blue-900 dark:text-blue-200 font-bold shrink-0">
+                  5 คะแนน
+                </span>
+              </div>
+
+              {/* 3 Tables Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 text-xs">
+                {designSolutions.databaseDesign.tables.map(tbl => (
+                  <div key={tbl.name} className="border border-[#edece9] dark:border-[#2e2e2e] rounded-lg overflow-hidden bg-[#fafafa] dark:bg-[#1f1f1f]">
+                    <div className="p-2.5 bg-[#f0f0f0] dark:bg-[#282828] border-b border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                      <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">table: {tbl.name}</span>
+                      <span className="text-[10px] text-slate-500">Relational</span>
+                    </div>
+                    <div className="p-2 space-y-1">
+                      <p className="text-[11px] text-slate-500 mb-1.5">{tbl.desc}</p>
+                      <table className="w-full text-[11px] text-left">
+                        <thead>
+                          <tr className="border-b border-[#edece9] dark:border-[#2e2e2e] text-slate-400 text-[10px]">
+                            <th>ฟิลด์</th>
+                            <th>Type</th>
+                            <th>Key</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#edece9] dark:divide-[#2e2e2e]">
+                          {tbl.columns.map(col => (
+                            <tr key={col.name}>
+                              <td className="py-1 font-mono font-medium text-slate-700 dark:text-slate-300">{col.name}</td>
+                              <td className="py-1 text-slate-500">{col.type}</td>
+                              <td className="py-1">
+                                {col.key === 'PK' && <span className="px-1 py-0.2 rounded bg-amber-500 text-white font-mono text-[9px]">PK</span>}
+                                {col.key === 'FK' && <span className="px-1 py-0.2 rounded bg-indigo-500 text-white font-mono text-[9px]">FK</span>}
+                                {col.key === 'UQ' && <span className="px-1 py-0.2 rounded bg-emerald-500 text-white font-mono text-[9px]">UQ</span>}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Class Diagram Code Block */}
+              <div className="space-y-2 pt-2 border-t border-[#edece9] dark:border-[#2e2e2e]">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-xs text-[#37352f] dark:text-[#d4d4d4]">Class Diagram (Mermaid Code สำหรับ Draw.io):</span>
+                  <button
+                    onClick={() => copyToClipboard(designSolutions.databaseDesign.classDiagram, 'class-diag')}
+                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-[#252525] dark:hover:bg-[#303030] text-slate-700 dark:text-slate-200 rounded text-xs flex items-center gap-1 transition"
+                  >
+                    {copiedId === 'class-diag' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                    <span>คัดลอก Class Diagram</span>
+                  </button>
+                </div>
+                <div className="bg-[#1e1e1e] text-[#d4d4d4] p-3 rounded-lg overflow-x-auto text-[11px] font-mono leading-relaxed border border-[#333]">
+                  <pre>{designSolutions.databaseDesign.classDiagram}</pre>
+                </div>
+              </div>
+            </div>
+
+            {/* ------------------------------------------------------------- */}
+            {/* 4.3 & 4.4 Grid: UI Templates & RESTful API Spec */}
+            {/* ------------------------------------------------------------- */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
               
-              {/* Question 4.1 Card */}
-              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-lg bg-white dark:bg-[#191919] space-y-2">
-                <div className="p-2.5 bg-[#f7f6f3] dark:bg-[#262626] border-l-4 border-emerald-600 rounded-r text-xs space-y-1">
-                  <div className="font-bold text-emerald-700 dark:text-emerald-300">[โจทย์ข้อที่ 4.1: การออกแบบผังงาน Flowchart (5 คะแนน)]</div>
-                  <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
-                    "จัดทำผังงานระบบการเข้าสู่ระบบ (Login Flow), จัดทำผังงานกระบวนการของผู้ดูแลระบบ, จัดทำผังงานกระบวนการของผู้ใช้งานระดับ 1, จัดทำผังงานกระบวนการของผู้ใช้งานระดับ 2, จัดทำผังงานภาพรวมของระบบทั้งหมด (Usecase Diagram)"
-                  </div>
-                </div>
-                <div className="font-semibold text-[#37352f] dark:text-[#d4d4d4]">คำตอบและวิธีการทำ:</div>
-                <ul className="list-disc list-inside space-y-1 text-[#787774] dark:text-[#9b9b9b]">
-                  <li>Login Flowchart: รับ input &rarr; ตรวจความครบ &rarr; ตรวจ bcrypt hash &rarr; ออก JWT Token &rarr; นำทางตาม Role</li>
-                  <li>Admin Process: ดูสถิติ &rarr; จัดการ User (CRUD) &rarr; จัดการหมวดหมู่ &rarr; ตรวจสอบ Logs</li>
-                  <li>User Level 1 (Officer): ค้นหาข้อมูล &rarr; เพิ่มรายการพร้อมแนบไฟล์ &rarr; แก้ไขข้อมูลและไฟล์</li>
-                  <li>User Level 2 (Member): สืบค้นข้อมูลแบบ Read-Only &rarr; ดูรายละเอียด &rarr; ดาวน์โหลดไฟล์แนบ</li>
-                  <li>Use Case Diagram: สรุปภาพรวมความสัมพันธ์ 3 Actors กับ 10 Features</li>
-                </ul>
-                <div className="text-[11px] pt-1">
-                  <em>ดูโค้ด Mermaid ใน: </em>
-                  <span className="font-mono text-emerald-600">modules/01_System_Design/FLOWCHARTS_AND_DIAGRAMS.md</span>
-                </div>
-              </div>
-
-              {/* Question 4.2 Card */}
-              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-lg bg-white dark:bg-[#191919] space-y-2">
-                <div className="p-2.5 bg-[#f7f6f3] dark:bg-[#262626] border-l-4 border-emerald-600 rounded-r text-xs space-y-1">
-                  <div className="font-bold text-emerald-700 dark:text-emerald-300">[โจทย์ข้อที่ 4.2: ฐานข้อมูล Database Design & Class Diagram (5 คะแนน)]</div>
-                  <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
-                    "มีการสร้างฐานข้อมูลอย่างน้อย 3 ตาราง, ตารางฐานข้อมูลมีความสัมพันธ์กันอย่างเหมาะสม (Relational Design), การเลือกใช้ Data Type เหมาะสม, แสดง Class Diagram อธิบายโครงสร้างถูกต้องสมบูรณ์, ตั้งชื่อตารางและฟิลด์เป็นไปตามมาตรฐานการเขียนชื่อทางเทคนิค"
-                  </div>
-                </div>
-                <div className="font-semibold text-[#37352f] dark:text-[#d4d4d4]">คำตอบและโครงสร้าง 3 ตาราง:</div>
-                <ul className="list-disc list-inside space-y-1 text-[#787774] dark:text-[#9b9b9b]">
-                  <li><code>users</code>: id (PK), username (UQ), password_hash, full_name, email (UQ), role ('admin','user1','user2')</li>
-                  <li><code>categories</code>: id (PK), code (UQ), name, description</li>
-                  <li><code>items</code>: id (PK), category_id (FK &rarr; categories.id), created_by (FK &rarr; users.id), item_code (UQ), title, value_amount, attachment_name, attachment_path</li>
-                </ul>
-                <div className="text-[11px] pt-1">
-                  <em>ดูไฟล์ SQL DDL ใน: </em>
-                  <span className="font-mono text-emerald-600">modules/01_System_Design/database_schema.sql</span>
-                </div>
-              </div>
-
               {/* Question 4.3 Card */}
-              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-lg bg-white dark:bg-[#191919] space-y-2">
-                <div className="p-2.5 bg-[#f7f6f3] dark:bg-[#262626] border-l-4 border-emerald-600 rounded-r text-xs space-y-1">
-                  <div className="font-bold text-emerald-700 dark:text-emerald-300">[โจทย์ข้อที่ 4.3: การออกแบบหน้าจอด้วย Draw.io 5 หน้า (5 คะแนน)]</div>
-                  <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
-                    "มี Template Layout สำหรับ: 1. หน้าจอผู้ดูแลระบบ 2. หน้าจอผู้ใช้งานระดับ 1 3. หน้าจอผู้ใช้งานระดับ 2 4. หน้าจอหลักของระบบ (Dashboard/Overview) 5. หน้าจอเข้าสู่ระบบ (Login Screen)"
+              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-3">
+                <div className="p-2.5 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-600 rounded-r">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-amber-800 dark:text-amber-300">[เฉลยข้อที่ 4.3: การออกแบบหน้าจอ 5 หน้า Draw.io]</span>
+                    <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-amber-200 text-amber-900 font-bold">5 คะแนน</span>
                   </div>
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1">
+                    Template Layout ทั้ง 5 หน้าจอที่ต้องวาดในโปรแกรมสำเร็จรูป Draw.io (Offline)
+                  </p>
                 </div>
-                <div className="font-semibold text-[#37352f] dark:text-[#d4d4d4]">คำตอบและองค์ประกอบที่ต้องวาด:</div>
-                <ul className="list-disc list-inside space-y-1 text-[#787774] dark:text-[#9b9b9b]">
-                  <li>Template 1 (Login): Card กึ่งกลาง, ช่อง Username/Password, ปุ่ม Login, แจ้งเตือนสิทธิ์</li>
-                  <li>Template 2 (Overview): Topbar, Sidebar, 4 KPI Summary Cards, กราฟสถิติ, ตารางกิจกรรมล่าสุด</li>
-                  <li>Template 3 (Admin): ตาราง User Management, ปุ่มเพิ่มผู้ใช้, Modal แก้ไข Role, Modal ยืนยันลบ</li>
-                  <li>Template 4 (Officer): ตาราง Inventory, Search Bar, Dropdown Filter, ปุ่มเพิ่มข้อมูลพร้อมแนบไฟล์</li>
-                  <li>Template 5 (Member): Read-Only Catalog View สำหรับค้นหาและดาวน์โหลดเอกสาร</li>
-                </ul>
+
+                <div className="space-y-2.5">
+                  {designSolutions.uiTemplates.map(tpl => (
+                    <div key={tpl.id} className="p-2.5 bg-[#f7f6f3] dark:bg-[#252525] rounded-lg border border-[#edece9] dark:border-[#2e2e2e]">
+                      <div className="flex items-center justify-between font-semibold text-slate-800 dark:text-slate-200 mb-1">
+                        <span>{tpl.title}</span>
+                        <span className="text-[10px] text-amber-600 font-mono font-medium">{tpl.points}</span>
+                      </div>
+                      <ul className="list-disc list-inside space-y-0.5 text-[11px] text-slate-600 dark:text-slate-400">
+                        {tpl.elements.map((el, idx) => (
+                          <li key={idx}>{el}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Question 4.4 Card */}
-              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-lg bg-white dark:bg-[#191919] space-y-2">
-                <div className="p-2.5 bg-[#f7f6f3] dark:bg-[#262626] border-l-4 border-emerald-600 rounded-r text-xs space-y-1">
-                  <div className="font-bold text-emerald-700 dark:text-emerald-300">[โจทย์ข้อที่ 4.4: RESTful API Design (README.md) (5 คะแนน)]</div>
-                  <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
-                    "ออกแบบ API ตามหลัก RESTful (GET, POST, PUT/Patch, DELETE), ตั้งชื่อ Endpoint สื่อความหมายและสอดคล้องกัน เช่น /api/teachers, /api/scores/{`{id}`}, รูปแบบ Response Body สอดคล้องกับ HTTP Status Code, ออกแบบรองรับกรณีเกิด Error เช่น 401, 404, แนวทางความปลอดภัย เช่น JWT Token"
+              <div className="p-4 border border-[#edece9] dark:border-[#2e2e2e] rounded-xl bg-white dark:bg-[#191919] space-y-3">
+                <div className="p-2.5 bg-emerald-50 dark:bg-emerald-950/20 border-l-4 border-emerald-600 rounded-r">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-emerald-800 dark:text-emerald-300">[เฉลยข้อที่ 4.4: RESTful API Spec (README.md)]</span>
+                    <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-200 text-emerald-900 font-bold">5 คะแนน</span>
                   </div>
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1">
+                    ตารางออกแบบ API ครบถ้วนตามมาตรฐาน RESTful รองรับ JWT, Status Code และ Error Handling
+                  </p>
                 </div>
-                <div className="font-semibold text-[#37352f] dark:text-[#d4d4d4]">คำตอบและโครงสร้างเอกสาร:</div>
-                <ul className="list-disc list-inside space-y-1 text-[#787774] dark:text-[#9b9b9b]">
-                  <li>Authentication: <code>Authorization: Bearer &lt;JWT_TOKEN&gt;</code></li>
-                  <li>Endpoints: <code>POST /api/auth/login</code>, <code>GET /api/items</code>, <code>POST /api/items</code>, <code>PUT /api/items/:id</code>, <code>DELETE /api/items/:id</code></li>
-                  <li>HTTP Status Codes: 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found</li>
-                  <li>รูปแบบ JSON มาตรฐาน: <code>{`{ status: "success", message: "...", data: {...} }`}</code></li>
-                </ul>
-                <div className="text-[11px] pt-1">
-                  <em>ดูเอกสารฉบับเต็มใน: </em>
-                  <span className="font-mono text-emerald-600">modules/01_System_Design/README_API_SPECIFICATION.md</span>
+
+                <div className="overflow-x-auto border border-[#edece9] dark:border-[#2e2e2e] rounded-lg">
+                  <table className="w-full text-[11px] text-left">
+                    <thead className="bg-[#f0f0f0] dark:bg-[#262626] font-semibold text-slate-700 dark:text-slate-300">
+                      <tr>
+                        <th className="p-2">Method</th>
+                        <th className="p-2">Endpoint</th>
+                        <th className="p-2">สิทธิ์</th>
+                        <th className="p-2">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#edece9] dark:divide-[#2e2e2e] text-slate-600 dark:text-slate-400">
+                      {designSolutions.apiSpec.endpoints.map(ep => (
+                        <tr key={ep.path + ep.method}>
+                          <td className="p-1.5 font-mono font-bold">
+                            <span className={`px-1.5 py-0.5 rounded text-[10px] ${
+                              ep.method === 'GET' ? 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300' :
+                              ep.method === 'POST' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' :
+                              ep.method === 'PUT' ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300' :
+                              'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300'
+                            }`}>
+                              {ep.method}
+                            </span>
+                          </td>
+                          <td className="p-1.5 font-mono font-medium text-slate-800 dark:text-slate-200">{ep.path}</td>
+                          <td className="p-1.5 text-[10px]">{ep.role}</td>
+                          <td className="p-1.5 font-mono text-[10px]">{ep.code}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="p-2.5 bg-[#f7f6f3] dark:bg-[#252525] rounded-lg text-[11px] space-y-1">
+                  <div className="font-semibold text-slate-800 dark:text-slate-200">รูปแบบ Response มาตรฐาน:</div>
+                  <div className="grid grid-cols-2 gap-2 font-mono text-[10px]">
+                    <div className="bg-[#1e1e1e] text-emerald-400 p-2 rounded">
+                      <div className="text-slate-400 text-[9px] mb-0.5">// สำเร็จ (200/201)</div>
+                      <pre>{designSolutions.apiSpec.responseSuccess}</pre>
+                    </div>
+                    <div className="bg-[#1e1e1e] text-rose-400 p-2 rounded">
+                      <div className="text-slate-400 text-[9px] mb-0.5">// ผิดพลาด (400/401/403/404)</div>
+                      <pre>{designSolutions.apiSpec.responseError}</pre>
+                    </div>
+                  </div>
                 </div>
               </div>
 
