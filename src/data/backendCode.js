@@ -104,13 +104,11 @@ import api from './services/api';
 
 const auth = useAuthStore();
 
-// Form & View State
-const activeTab = ref('inventory');
+// Form & Data State
 const loginForm = reactive({ username: '', password: '' });
 const loginError = ref('');
 const isSubmitting = ref(false);
 
-// Inventory Data State
 const items = ref([]);
 const categories = ref([]);
 const searchQuery = ref('');
@@ -131,14 +129,14 @@ const newItem = reactive({
   file: null
 });
 
-// Toast Notification
+// Toast
 const toastMessage = ref('');
 function showToast(msg) {
   toastMessage.value = msg;
   setTimeout(() => { toastMessage.value = ''; }, 3000);
 }
 
-// 1. Authentication Handlers
+// 1. Auth Handlers
 async function handleLogin() {
   loginError.value = '';
   isSubmitting.value = true;
@@ -158,7 +156,7 @@ function handleLogout() {
   showToast('ออกจากระบบเรียบร้อย');
 }
 
-// 2. Data Fetching
+// 2. Load Data
 async function loadData() {
   if (!auth.token) return;
   try {
@@ -173,12 +171,11 @@ async function loadData() {
   }
 }
 
-// 3. Computed Filters & Pagination
+// 3. Filters & Pagination
 const filteredItems = computed(() => {
   return items.value.filter(item => {
-    const matchSearch = searchQuery.value === '' || 
-      item.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      item.item_code.toLowerCase().includes(searchQuery.value.toLowerCase());
+    const q = searchQuery.value.toLowerCase().trim();
+    const matchSearch = !q || item.title.toLowerCase().includes(q) || item.item_code.toLowerCase().includes(q);
     const matchCat = !selectedCategory.value || item.category_id === Number(selectedCategory.value);
     return matchSearch && matchCat;
   });
@@ -190,7 +187,7 @@ const paginatedItems = computed(() => {
   return filteredItems.value.slice(start, start + itemsPerPage);
 });
 
-// 4. Create Item with File Upload
+// 4. Create Item
 function onFileChange(e) {
   newItem.file = e.target.files[0] || null;
 }
@@ -217,7 +214,7 @@ async function handleCreateItem() {
   }
 }
 
-// 5. Delete Item Modal
+// 5. Delete Item
 function confirmDelete(item) {
   itemToDelete.value = item;
   showDeleteModal.value = true;
@@ -242,150 +239,156 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 text-slate-800 font-sans">
+  <div class="p-4 max-w-4xl mx-auto font-sans text-sm text-gray-800">
     
-    <!-- Toast Notification -->
-    <div v-if="toastMessage" class="fixed top-4 right-4 z-50 bg-emerald-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm">
+    <!-- Toast Message -->
+    <div v-if="toastMessage" class="fixed top-3 right-3 bg-green-600 text-white px-3 py-1.5 rounded shadow">
       {{ toastMessage }}
     </div>
 
     <!-- VIEW 1: LOGIN -->
-    <div v-if="!auth.token" class="flex items-center justify-center min-h-screen p-4">
-      <div class="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
-        <h2 class="text-xl font-bold text-center text-slate-900">เข้าสู่ระบบ (Login)</h2>
-        <form @submit.prevent="handleLogin" class="space-y-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อผู้ใช้ (Username)</label>
-            <input v-model="loginForm.username" type="text" required placeholder="admin / officer1 / user2"
-              class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">รหัสผ่าน (Password)</label>
-            <input v-model="loginForm.password" type="password" required placeholder="รหัสผ่าน"
-              class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
-          </div>
-          <div v-if="loginError" class="p-2 rounded bg-rose-50 border border-rose-200 text-rose-600 text-xs">
-            {{ loginError }}
-          </div>
-          <button type="submit" :disabled="isSubmitting"
-            class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold transition">
-            {{ isSubmitting ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ (Sign In)' }}
-          </button>
-        </form>
-      </div>
+    <div v-if="!auth.token" class="max-w-sm mx-auto mt-16 p-6 border rounded-lg bg-white shadow-sm">
+      <h2 class="text-lg font-bold mb-4 text-center">เข้าสู่ระบบ (Login)</h2>
+      <form @submit.prevent="handleLogin" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold mb-1">ชื่อผู้ใช้</label>
+          <input v-model="loginForm.username" type="text" required placeholder="admin / officer1 / user2"
+            class="w-full border px-2 py-1.5 rounded text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold mb-1">รหัสผ่าน</label>
+          <input v-model="loginForm.password" type="password" required placeholder="รหัสผ่าน"
+            class="w-full border px-2 py-1.5 rounded text-sm" />
+        </div>
+        <div v-if="loginError" class="text-red-600 text-xs">{{ loginError }}</div>
+        <button type="submit" :disabled="isSubmitting"
+          class="w-full bg-blue-600 text-white py-1.5 rounded font-semibold hover:bg-blue-700">
+          {{ isSubmitting ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ' }}
+        </button>
+      </form>
     </div>
 
-    <!-- VIEW 2: APP DASHBOARD -->
-    <div v-else class="max-w-6xl mx-auto p-4 md:p-6 space-y-4">
-      <!-- Top Bar -->
-      <header class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-200 gap-2">
-        <div>
-          <h1 class="text-xl font-bold text-slate-900">DevOps Asset Center (Vue 3)</h1>
-          <p class="text-xs text-slate-500">ระบบบริหารจัดการอุปกรณ์และข้อมูลสารสนเทศ</p>
-        </div>
-        <div class="flex items-center gap-3 text-xs">
-          <span>ผู้ใช้: <strong>{{ auth.user?.full_name || auth.user?.username }}</strong></span>
-          <span class="px-2 py-0.5 rounded-full font-bold uppercase text-[10px]"
-            :class="{
-              'bg-purple-100 text-purple-800': auth.role === 'admin',
-              'bg-blue-100 text-blue-800': auth.role === 'user1',
-              'bg-slate-100 text-slate-800': auth.role === 'user2'
-            }">
-            {{ auth.role }}
-          </span>
-          <button @click="handleLogout" class="px-3 py-1 rounded bg-slate-200 hover:bg-slate-300 font-medium transition">
+    <!-- VIEW 2: APP / INVENTORY -->
+    <div v-else class="space-y-4">
+      <!-- Header -->
+      <header class="flex justify-between items-center border-b pb-3">
+        <h1 class="text-lg font-bold">ระบบบริหารจัดการอุปกรณ์ (DevOps App)</h1>
+        <div class="flex items-center gap-2">
+          <span>ผู้ใช้: <b>{{ auth.user?.username }}</b></span>
+          <button @click="handleLogout" class="border px-2.5 py-1 rounded bg-gray-100 hover:bg-gray-200 text-xs">
             ออกจากระบบ
           </button>
         </div>
       </header>
 
-      <!-- Navigation Tabs -->
-      <div class="flex gap-2 border-b border-slate-200 pb-2 text-xs">
-        <button @click="activeTab = 'inventory'" :class="activeTab === 'inventory' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border'"
-          class="px-3 py-1.5 rounded-lg font-medium transition">รายการอุปกรณ์</button>
-        <button @click="activeTab = 'dashboard'" :class="activeTab === 'dashboard' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border'"
-          class="px-3 py-1.5 rounded-lg font-medium transition">ภาพรวมสถิติ</button>
+      <!-- Search & Controls Toolbar -->
+      <div class="flex justify-between items-center gap-2">
+        <div class="flex gap-2">
+          <input v-model="searchQuery" type="text" placeholder="ค้นหารหัส หรือชื่ออุปกรณ์..."
+            class="border px-2 py-1 rounded w-52 text-xs" />
+          <select v-model="selectedCategory" class="border px-2 py-1 rounded text-xs">
+            <option value="">ทุกหมวดหมู่</option>
+            <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+          </select>
+        </div>
+        <!-- Add Button (Admin & User 1 Only) -->
+        <button v-if="auth.canCreate" @click="showCreateModal = true"
+          class="bg-green-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-green-700">
+          + เพิ่มรายการ
+        </button>
       </div>
 
-      <!-- INVENTORY SECTION -->
-      <div v-if="activeTab === 'inventory'" class="space-y-4">
-        <!-- Controls Toolbar -->
-        <div class="flex flex-wrap items-center justify-between gap-2 bg-white p-3 rounded-xl border border-slate-200">
-          <div class="flex flex-wrap items-center gap-2 text-xs">
-            <input v-model="searchQuery" type="text" placeholder="ค้นหารหัส หรือชื่ออุปกรณ์..."
-              class="px-3 py-1.5 border rounded-lg w-48 sm:w-64" />
-            <select v-model="selectedCategory" class="px-3 py-1.5 border rounded-lg">
-              <option value="">ทุกหมวดหมู่</option>
-              <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
-            </select>
-          </div>
-          <!-- Add Button (Admin & User 1 Only) -->
-          <button v-if="auth.canCreate" @click="showCreateModal = true"
-            class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition">
-            + เพิ่มรายการใหม่
-          </button>
-        </div>
+      <!-- Data Table -->
+      <table class="w-full border border-collapse text-left text-xs">
+        <thead class="bg-gray-100 border-b">
+          <tr>
+            <th class="p-2 border">รหัส</th>
+            <th class="p-2 border">ชื่อรายการ</th>
+            <th class="p-2 border">หมวดหมู่</th>
+            <th class="p-2 border">มูลค่า (บาท)</th>
+            <th class="p-2 border">ไฟล์แนบ</th>
+            <th v-if="auth.role === 'admin'" class="p-2 border text-center">จัดการ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in paginatedItems" :key="item.id" class="border-b hover:bg-gray-50">
+            <td class="p-2 border font-mono font-bold">{{ item.item_code }}</td>
+            <td class="p-2 border">{{ item.title }}</td>
+            <td class="p-2 border">{{ item.category_name || item.category_id }}</td>
+            <td class="p-2 border">{{ Number(item.value_amount).toLocaleString() }}</td>
+            <td class="p-2 border text-center">
+              <a v-if="item.attachment_path" :href="item.attachment_path" target="_blank"
+                class="text-blue-600 underline">ดาวน์โหลด</a>
+              <span v-else class="text-gray-400">-</span>
+            </td>
+            <td v-if="auth.role === 'admin'" class="p-2 border text-center">
+              <button @click="confirmDelete(item)" class="bg-red-50 text-red-600 border border-red-200 px-2 py-0.5 rounded hover:bg-red-100">
+                ลบ
+              </button>
+            </td>
+          </tr>
+          <tr v-if="paginatedItems.length === 0">
+            <td colspan="6" class="p-4 text-center text-gray-400">ไม่พบข้อมูล</td>
+          </tr>
+        </tbody>
+      </table>
 
-        <!-- Data Table -->
-        <div class="bg-white rounded-xl border border-slate-200 overflow-x-auto">
-          <table class="w-full text-xs text-left">
-            <thead class="bg-slate-100 border-b border-slate-200 font-semibold text-slate-700">
-              <tr>
-                <th class="p-2.5">รหัส</th>
-                <th class="p-2.5">ชื่อรายการ</th>
-                <th class="p-2.5">หมวดหมู่</th>
-                <th class="p-2.5">มูลค่า (บาท)</th>
-                <th class="p-2.5">ไฟล์แนบ</th>
-                <th v-if="auth.role === 'admin'" class="p-2.5 text-center">จัดการ</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100 text-slate-700">
-              <tr v-for="item in paginatedItems" :key="item.id">
-                <td class="p-2.5 font-mono font-bold">{{ item.item_code }}</td>
-                <td class="p-2.5 font-medium">{{ item.title }}</td>
-                <td class="p-2.5">{{ item.category_name || item.category_id }}</td>
-                <td class="p-2.5">{{ Number(item.value_amount).toLocaleString() }}</td>
-                <td class="p-2.5">
-                  <a v-if="item.attachment_path" :href="item.attachment_path" target="_blank"
-                    class="text-blue-600 hover:underline">ดาวน์โหลด</a>
-                  <span v-else class="text-slate-400">-</span>
-                </td>
-                <td v-if="auth.role === 'admin'" class="p-2.5 text-center">
-                  <button @click="confirmDelete(item)" class="px-2 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded">
-                    ลบ
-                  </button>
-                </td>
-              </tr>
-              <tr v-if="paginatedItems.length === 0">
-                <td colspan="6" class="p-4 text-center text-slate-400">ไม่พบข้อมูลที่ตรงกับเงื่อนไข</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Pagination Bar -->
-        <div class="flex items-center justify-between text-xs text-slate-500">
-          <span>แสดง {{ paginatedItems.length }} จากทั้งหมด {{ filteredItems.length }} รายการ</span>
-          <div class="flex gap-1">
-            <button :disabled="currentPage <= 1" @click="currentPage--"
-              class="px-2.5 py-1 border rounded bg-white disabled:opacity-40">ย้อนกลับ</button>
-            <span class="px-2.5 py-1">หน้า {{ currentPage }} / {{ totalPages }}</span>
-            <button :disabled="currentPage >= totalPages" @click="currentPage++"
-              class="px-2.5 py-1 border rounded bg-white disabled:opacity-40">ถัดไป</button>
-          </div>
+      <!-- Pagination -->
+      <div class="flex justify-between items-center text-xs text-gray-600">
+        <span>รายการ {{ paginatedItems.length }} จาก {{ filteredItems.length }}</span>
+        <div class="flex gap-1">
+          <button :disabled="currentPage <= 1" @click="currentPage--"
+            class="border px-2 py-0.5 rounded bg-white disabled:opacity-30">ย้อนกลับ</button>
+          <span class="px-2 py-0.5">หน้า {{ currentPage }} / {{ totalPages }}</span>
+          <button :disabled="currentPage >= totalPages" @click="currentPage++"
+            class="border px-2 py-0.5 rounded bg-white disabled:opacity-30">ถัดไป</button>
         </div>
       </div>
 
-      <!-- Delete Confirmation Modal -->
-      <div v-if="showDeleteModal" class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-xl">
-          <h3 class="font-bold text-base text-slate-900">ยืนยันการลบข้อมูล</h3>
-          <p class="text-xs text-slate-600">
-            คุณต้องการลบรายการ <strong class="text-rose-600">{{ itemToDelete?.title }}</strong> ใช่หรือไม่?
-          </p>
-          <div class="flex justify-end gap-2 text-xs">
-            <button @click="showDeleteModal = false" class="px-3 py-1.5 border rounded-lg">ยกเลิก</button>
-            <button @click="executeDelete" class="px-3 py-1.5 bg-rose-600 text-white rounded-lg font-semibold">ยืนยันการลบ</button>
+      <!-- Add Item Modal -->
+      <div v-if="showCreateModal" class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
+        <div class="bg-white p-5 rounded-lg border max-w-md w-full space-y-3 shadow-lg">
+          <h3 class="font-bold text-sm">เพิ่มรายการอุปกรณ์ใหม่</h3>
+          <form @submit.prevent="handleCreateItem" class="space-y-2 text-xs">
+            <div>
+              <label class="block font-semibold mb-0.5">รหัสอุปกรณ์</label>
+              <input v-model="newItem.item_code" type="text" required placeholder="เช่น NET-002" class="w-full border p-1.5 rounded" />
+            </div>
+            <div>
+              <label class="block font-semibold mb-0.5">หมวดหมู่</label>
+              <select v-model="newItem.category_id" required class="w-full border p-1.5 rounded">
+                <option value="" disabled>เลือกหมวดหมู่</option>
+                <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold mb-0.5">ชื่อรายการ</label>
+              <input v-model="newItem.title" type="text" required placeholder="ชื่ออุปกรณ์" class="w-full border p-1.5 rounded" />
+            </div>
+            <div>
+              <label class="block font-semibold mb-0.5">มูลค่า (บาท)</label>
+              <input v-model="newItem.value_amount" type="number" step="0.01" required placeholder="0.00" class="w-full border p-1.5 rounded" />
+            </div>
+            <div>
+              <label class="block font-semibold mb-0.5">ไฟล์แนบ (รูปภาพ/PDF)</label>
+              <input type="file" @change="onFileChange" class="w-full border p-1 rounded" />
+            </div>
+            <div class="flex justify-end gap-2 pt-2 border-t">
+              <button type="button" @click="showCreateModal = false" class="border px-3 py-1 rounded">ยกเลิก</button>
+              <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded font-semibold">บันทึก</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Delete Confirmation Modal (Admin only) -->
+      <div v-if="showDeleteModal" class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
+        <div class="bg-white p-5 rounded-lg border max-w-sm w-full space-y-3 shadow-lg text-xs">
+          <h3 class="font-bold text-sm text-red-600">ยืนยันการลบข้อมูล</h3>
+          <p>คุณต้องการลบรายการ <b>{{ itemToDelete?.title }}</b> ใช่หรือไม่?</p>
+          <div class="flex justify-end gap-2 pt-2 border-t">
+            <button @click="showDeleteModal = false" class="border px-3 py-1 rounded">ยกเลิก</button>
+            <button @click="executeDelete" class="bg-red-600 text-white px-3 py-1 rounded font-semibold">ยืนยันลบ</button>
           </div>
         </div>
       </div>
@@ -743,7 +746,7 @@ app.use(errorHandler);
 
 if (require.main === module) {
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(\`🚀 DevOps Server running on http://localhost:\${PORT}\`);
+    console.log(\`DevOps Server running on http://localhost:\${PORT}\`);
   });
 }
 
@@ -872,6 +875,25 @@ exports.getItems = async (req, res, next) => {
   }
 };
 
+// GET /api/items/:id (ดึงข้อมูลรายการเดี่ยวตาม ID)
+exports.getItemById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const db = readDb();
+    const item = db.items.find(i => i.id === parseInt(id, 10));
+    if (!item) {
+      return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลรายการ" });
+    }
+    return res.status(200).json({
+      status: "success",
+      message: "ดึงข้อมูลรายการสำเร็จ",
+      data: item
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // POST /api/items (เพิ่มรายการ + แนบไฟล์)
 exports.createItem = async (req, res, next) => {
   try {
@@ -893,7 +915,7 @@ exports.createItem = async (req, res, next) => {
       title: title.trim(),
       description: description || "",
       value_amount: parseFloat(value_amount) || 0,
-      attachment_path: req.file ? \`/uploads/\${req.file.filename}\` : null,
+      attachment_path: req.file ? `/uploads/${req.file.filename}` : null,
       created_at: new Date().toISOString()
     };
 
@@ -919,7 +941,7 @@ exports.updateItem = async (req, res, next) => {
     if (category_id) item.category_id = parseInt(category_id, 10);
     if (description !== undefined) item.description = description.trim();
     if (value_amount !== undefined) item.value_amount = parseFloat(value_amount) || 0;
-    if (req.file) item.attachment_path = \`/uploads/\${req.file.filename}\`;
+    if (req.file) item.attachment_path = `/uploads/${req.file.filename}`;
 
     writeDb(db);
     return res.status(200).json({ status: "success", message: "แก้ไขสำเร็จ", data: item });
@@ -1033,7 +1055,7 @@ function notFoundHandler(req, res, next) {
 }
 
 function errorHandler(err, req, res, next) {
-  console.error("💥 Error:", err.message);
+  console.error("Error:", err.message);
   const status = err.statusCode || (res.statusCode !== 200 ? res.statusCode : 500);
   res.status(status).json({ status: "error", message: err.message || "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์" });
 }
@@ -1080,7 +1102,8 @@ module.exports = router;`
         badge: "Test",
         desc: "Unit Tests & Integration Tests ตอบโจทย์ข้อ 4.6 (ผ่าน 100%)",
         code: `// ==============================================================================
-// AUTOMATED TESTS: backend/tests/api.test.js (Unit & Integration Tests)
+// AUTOMATED TESTS: backend/tests/api.test.js (Unit, Integration & RBAC Tests)
+// เกณฑ์ข้อ 4.6: Unit Test, Integration Test และตรวจสิทธิ์ 3 Roles
 // ==============================================================================
 
 const test = require('node:test');
@@ -1092,37 +1115,110 @@ const bcrypt = require('bcryptjs');
 const app = require('../server');
 const { JWT_SECRET } = require('../middlewares/auth.middleware');
 
-test.describe('Unit Tests', () => {
+test.describe('1. Unit Tests (ทดสอบฟังก์ชันระดับหน่วย)', () => {
   test('UNIT-001: ควรรหัสผ่านและเปรียบเทียบ hash ด้วย bcrypt ได้ถูกต้อง', async () => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash('Test1234', salt);
     assert.strictEqual(await bcrypt.compare('Test1234', hash), true);
   });
 
-  test('UNIT-002: ควรสร้าง JWT Token และถอดรหัส Payload ได้ตรงตามกำหนด', () => {
+  test('UNIT-002: ควรสร้าง JWT Token และถอดรหัส Payload ระบุ Role ได้ตรงตามกำหนด', () => {
     const token = jwt.sign({ id: 1, role: 'admin' }, JWT_SECRET, { expiresIn: '1h' });
     const decoded = jwt.verify(token, JWT_SECRET);
     assert.strictEqual(decoded.role, 'admin');
   });
 });
 
-test.describe('Integration Tests', () => {
-  let token = '';
+test.describe('2. Integration Tests (ทดสอบ API Endpoints พื้นฐาน)', () => {
+  let adminToken = '';
 
   test('INT-001: POST /api/auth/login ควรได้รับ Status 200 พร้อม Token', async () => {
     const res = await request(app).post('/api/auth/login').send({ username: 'admin', password: 'Password123!' });
     assert.strictEqual(res.statusCode, 200);
-    token = res.body.data.token;
+    assert.ok(res.body.data.token, 'ต้องมี Token ส่งกลับมา');
+    adminToken = res.body.data.token;
   });
 
-  test('INT-002: GET /api/items ถ้าไม่ส่ง Token ต้องได้ Status 401 Unauthorized', async () => {
+  test('INT-002: GET /api/items ถ้าไม่ส่ง Token ต้องถูกบล็อก Status 401 Unauthorized', async () => {
     const res = await request(app).get('/api/items');
     assert.strictEqual(res.statusCode, 401);
   });
 
-  test('INT-003: GET /api/items ส่ง Token ถูกต้อง ต้องได้รับ Status 200 OK', async () => {
-    const res = await request(app).get('/api/items').set('Authorization', \`Bearer \${token}\`);
+  test('INT-003: GET /api/items ส่ง Token ถูกต้อง ต้องได้รับ Status 200 OK พร้อมข้อมูล', async () => {
+    const res = await request(app).get('/api/items').set('Authorization', `Bearer ${adminToken}`);
     assert.strictEqual(res.statusCode, 200);
+    assert.ok(Array.isArray(res.body.data.items), 'items ต้องเป็น Array');
+  });
+});
+
+test.describe('3. RBAC Security Tests (ทดสอบสิทธิ์ผู้ใช้งาน 3 ระดับตามเกณฑ์)', () => {
+  let adminToken = '';
+  let officerToken = '';
+  let memberToken = '';
+
+  test('RBAC-001: ล็อกอินครบ 3 บทบาท และได้ Token ระบุ Role ถูกต้อง', async () => {
+    const resAdmin = await request(app).post('/api/auth/login').send({ username: 'admin', password: 'Password123!' });
+    assert.strictEqual(resAdmin.statusCode, 200);
+    assert.strictEqual(resAdmin.body.data.user.role, 'admin');
+    adminToken = resAdmin.body.data.token;
+
+    const resOfficer = await request(app).post('/api/auth/login').send({ username: 'officer1', password: 'Password123!' });
+    assert.strictEqual(resOfficer.statusCode, 200);
+    assert.strictEqual(resOfficer.body.data.user.role, 'user1');
+    officerToken = resOfficer.body.data.token;
+
+    const resMember = await request(app).post('/api/auth/login').send({ username: 'user2', password: 'Password123!' });
+    assert.strictEqual(resMember.statusCode, 200);
+    assert.strictEqual(resMember.body.data.user.role, 'user2');
+    memberToken = resMember.body.data.token;
+  });
+
+  test('RBAC-002: User 1 (Officer) สามารถสร้างข้อมูลได้ (201 Created)', async () => {
+    const randomCode = 'UNIT-' + Date.now().toString().slice(-4);
+    const res = await request(app)
+      .post('/api/items')
+      .set('Authorization', `Bearer ${officerToken}`)
+      .send({
+        item_code: randomCode,
+        category_id: 1,
+        title: 'Router Cisco ISR 4331',
+        value_amount: 32000
+      });
+    assert.strictEqual(res.statusCode, 201);
+  });
+
+  test('RBAC-003: User 2 (Member) ต้องถูกห้ามสร้างข้อมูล (403 Forbidden)', async () => {
+    const res = await request(app)
+      .post('/api/items')
+      .set('Authorization', `Bearer ${memberToken}`)
+      .send({
+        item_code: 'UNIT-HACK-01',
+        category_id: 1,
+        title: 'Unauthorized Item',
+        value_amount: 1000
+      });
+    assert.strictEqual(res.statusCode, 403);
+  });
+
+  test('RBAC-004: User 1 และ User 2 ต้องถูกห้ามลบข้อมูล (403 Forbidden)', async () => {
+    const resOff = await request(app).delete('/api/items/1').set('Authorization', `Bearer ${officerToken}`);
+    assert.strictEqual(resOff.statusCode, 403);
+
+    const resMem = await request(app).delete('/api/items/1').set('Authorization', `Bearer ${memberToken}`);
+    assert.strictEqual(resMem.statusCode, 403);
+  });
+
+  test('RBAC-005: Admin สามารถลบข้อมูลได้ตามสิทธิ์ (200 OK)', async () => {
+    // 1. ดึงรายการข้อมูลปัจจุบันเพื่อหา ID ที่มีอยู่จริง
+    const listRes = await request(app).get('/api/items').set('Authorization', `Bearer ${adminToken}`);
+    const items = listRes.body.data.items;
+    assert.ok(items.length > 0, 'ต้องมีข้อมูลอย่างน้อย 1 รายการเพื่อทดสอบลบ');
+    const targetId = items[0].id;
+
+    // 2. สั่งลบด้วยสิทธิ์ Admin
+    const res = await request(app).delete(`/api/items/${targetId}`).set('Authorization', `Bearer ${adminToken}`);
+    assert.strictEqual(res.statusCode, 200);
+    assert.strictEqual(res.body.status, 'success');
   });
 });`
       }

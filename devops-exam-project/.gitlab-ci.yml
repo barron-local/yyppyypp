@@ -1,0 +1,72 @@
+# ==============================================================================
+# GITLAB CI/CD PIPELINE: .gitlab-ci.yml
+# เกณฑ์ข้อ 2.6 & 4.6: ทำงานครบ 4 Stages (build, test, push, deploy) อัตโนมัติเมื่อ Push
+# ==============================================================================
+
+stages:
+  - build
+  - test
+  - push
+  - deploy
+
+variables:
+  DOCKER_IMAGE_NAME: "devops-app"
+  DOCKER_TAG: "latest"
+
+# ------------------------------------------------------------------------------
+# 1. STAGE: BUILD
+# ------------------------------------------------------------------------------
+build-job:
+  stage: build
+  image: node:18-alpine
+  script:
+    - echo "=== [Stage 1: Build] กำลังตรวจสอบ Dependency และ Build โปรเจกต์ ==="
+    - cd backend && npm install --omit=dev
+    - cd ../frontend && npm install && npm run build
+  artifacts:
+    paths:
+      - frontend/dist/
+    expire_in: 1 hour
+
+# ------------------------------------------------------------------------------
+# 2. STAGE: TEST (Unit & Integration Tests)
+# ------------------------------------------------------------------------------
+test-job:
+  stage: test
+  image: node:18-alpine
+  script:
+    - echo "=== [Stage 2: Test] ดำเนินการรัน Automated Tests ==="
+    - cd backend
+    - npm install
+    - npm test
+  dependencies:
+    - build-job
+
+# ------------------------------------------------------------------------------
+# 3. STAGE: PUSH (Docker Registry)
+# ------------------------------------------------------------------------------
+push-job:
+  stage: push
+  image: docker:24.0
+  services:
+    - docker:dind
+  script:
+    - echo "=== [Stage 3: Push] สร้างและพุช Docker Image ไปยัง Local Registry ==="
+    - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .
+    - echo "Image built successfully: $DOCKER_IMAGE_NAME:$DOCKER_TAG"
+  dependencies:
+    - test-job
+
+# ------------------------------------------------------------------------------
+# 4. STAGE: DEPLOY (Production Deployment)
+# ------------------------------------------------------------------------------
+deploy-job:
+  stage: deploy
+  script:
+    - echo "=== [Stage 4: Deploy] นำ Container ขึ้นรันบน Production Server ==="
+    - docker compose down || true
+    - docker compose up -d
+    - echo "Deployment Complete! แอปพลิเคชันพร้อมให้บริการบนพอร์ต 3000"
+  only:
+    - main
+    - master

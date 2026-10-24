@@ -31,3 +31,11 @@ p, span, div, td, th {
   -webkit-overflow-scrolling: touch;
   max-width: 100%;
 }
+
+/* ปรับแต่งเส้น Flowchart ให้ตรงและเลี้ยวโค้งมนสวยงามที่มุมข้อต่อ */
+.mermaid-svg-container svg .flowchart-link,
+.mermaid-svg-container svg .edgePath .path {
+  stroke-linejoin: round !important;
+  stroke-linecap: round !important;
+  stroke-width: 1.75px !important;
+}

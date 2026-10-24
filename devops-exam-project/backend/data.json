@@ -1,0 +1,80 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password_hash": "$2a$10$nBUWFF5z.gzQSYrXiLb1YeawpLMvipfAjd03ybB/BYBKyw8tPMzna",
+      "full_name": "ผู้ดูแลระบบ (Admin)",
+      "role": "admin",
+      "created_at": "2026-10-24T13:54:25.389Z"
+    },
+    {
+      "id": 2,
+      "username": "officer1",
+      "password_hash": "$2a$10$nBUWFF5z.gzQSYrXiLb1YeawpLMvipfAjd03ybB/BYBKyw8tPMzna",
+      "full_name": "เจ้าหน้าที่บันทึกข้อมูล (Officer)",
+      "role": "user1",
+      "created_at": "2026-10-24T13:54:25.541Z"
+    },
+    {
+      "id": 3,
+      "username": "user2",
+      "password_hash": "$2a$10$nBUWFF5z.gzQSYrXiLb1YeawpLMvipfAjd03ybB/BYBKyw8tPMzna",
+      "full_name": "สมาชิกทั่วไป (Member)",
+      "role": "user2",
+      "created_at": "2026-10-24T13:54:25.691Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "code": "NET",
+      "name": "อุปกรณ์เครือข่าย (Network)"
+    },
+    {
+      "id": 2,
+      "code": "SRV",
+      "name": "เครื่องแม่ข่าย (Server & Storage)"
+    },
+    {
+      "id": 3,
+      "code": "IOT",
+      "name": "อุปกรณ์ไอโอที (IoT & Sensor)"
+    }
+  ],
+  "items": [
+    {
+      "id": 4,
+      "category_id": 1,
+      "created_by": 2,
+      "item_code": "TEST-OFF-01",
+      "title": "Item created by Officer",
+      "description": "",
+      "value_amount": 1500,
+      "attachment_path": null,
+      "created_at": "2026-10-24T14:11:53.264Z"
+    },
+    {
+      "id": 5,
+      "category_id": 1,
+      "created_by": 2,
+      "item_code": "UNIT-TEST-01",
+      "title": "Router Cisco ISR 4331",
+      "description": "",
+      "value_amount": 32000,
+      "attachment_path": null,
+      "created_at": "2026-10-24T14:13:16.798Z"
+    },
+    {
+      "id": 6,
+      "category_id": 1,
+      "created_by": 2,
+      "item_code": "UNIT-6542",
+      "title": "Router Cisco ISR 4331",
+      "description": "",
+      "value_amount": 32000,
+      "attachment_path": null,
+      "created_at": "2026-10-24T14:14:06.549Z"
+    }
+  ]
+}
