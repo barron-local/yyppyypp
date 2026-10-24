@@ -1311,17 +1311,17 @@ deploy_job:
         )}
 
         {/* ------------------------------------------------------------------- */}
-        {/* MODULE 4 & 5: BACKEND, FRONTEND & TESTS */}
+        {/* MODULE 4: BACKEND NODE.JS & TESTS (10 PTS) */}
         {/* ------------------------------------------------------------------- */}
-        {(activeTab === 'all' || activeTab === 'backend' || activeTab === 'frontend') && (
+        {(activeTab === 'all' || activeTab === 'backend') && (
           <section className="space-y-5">
             <div className="flex items-center justify-between pb-2 border-b border-[#edece9] dark:border-[#2e2e2e]">
               <h2 className="text-lg font-bold text-[#37352f] dark:text-[#d4d4d4] flex items-center gap-2">
                 <Code2 className="w-5 h-5 text-indigo-600" />
-                <span>4 - 5. ส่วนที่ 4 พัฒนาระบบ Back-end, Front-end และการทดสอบ (33 คะแนน)</span>
+                <span>4. ส่วนที่ 4 พัฒนาระบบ Back-end การพัฒนา API 10 ข้อย่อย (10 คะแนน)</span>
               </h2>
               <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
-                33 PTS
+                10 PTS
               </span>
             </div>
 
@@ -1568,6 +1568,23 @@ docker ps
                   </div>
                 </div>
               </div>
+            </div>
+          </section>
+        )}
+
+        {/* ------------------------------------------------------------------- */}
+        {/* MODULE 5: FRONTEND UI & E2E WORKFLOWS (23 PTS) */}
+        {/* ------------------------------------------------------------------- */}
+        {(activeTab === 'all' || activeTab === 'frontend') && (
+          <section className="space-y-5">
+            <div className="flex items-center justify-between pb-2 border-b border-[#edece9] dark:border-[#2e2e2e]">
+              <h2 className="text-lg font-bold text-[#37352f] dark:text-[#d4d4d4] flex items-center gap-2">
+                <Layout className="w-5 h-5 text-indigo-600" />
+                <span>5. ส่วนที่ 4 พัฒนาระบบ Front-end, Automated Tests และ E2E Workflows (23 คะแนน)</span>
+              </h2>
+              <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
+                23 PTS
+              </span>
             </div>
 
             {/* Frontend & Automated Tests (ข้อ 4.6: 23 คะแนน) */}
