@@ -1434,9 +1434,122 @@ docker ps
                     คะแนนเต็ม 23 คะแนน
                   </span>
                 </div>
-                <div className="text-[#37352f] dark:text-[#d4d4d4] leading-relaxed">
-                  <strong>ข้อความโจทย์ตามเกณฑ์:</strong><br />
-                  "มี Layout ใช้งานง่าย Responsive (1), หน้าจอ Login ด้วย JWT ใช้งานได้จริง (1), แยกระบบ Login แต่ละระดับ (1), เพิ่มข้อมูลตามแบบฟอร์ม (1), แนบไฟล์พร้อมข้อมูล (1), แก้ไขข้อมูล (1), แก้ไขไฟล์แนบได้ (1), <strong>มีแจ้งเตือนการลบข้อมูลได้ (Confirm Delete Modal) (1)</strong>, ค้นหา/Filter ข้อมูลตามสิทธิ์ (1), แบ่งหน้า Pagination ตามสิทธิ์ (1), Validate ข้อมูลฝั่ง Frontend (1), Error Handling ฝั่ง Frontend แจ้งเตือนเข้าใจง่าย (1), แปลงรหัส Error จาก Backend เป็นข้อความเหมาะสม (1), Dockerfile สำหรับ Backend (1), Pipeline config ทำงานครบทุก stages (1), <strong>Test ใน Pipeline (Unit Test และ Integration Test อย่างละ 1 Case) (1)</strong>, <strong>E to E Test 2 workflows: E2E-001 (Login สำเร็จ) และ E2E-002 (ส่งข้อมูลสำเร็จ) (2)</strong>, Git Branch Strategy (1), ความสมบูรณ์ระบบ (3)"
+                <div className="text-[#37352f] dark:text-[#d4d4d4] space-y-2.5">
+                  <div className="font-semibold text-slate-800 dark:text-slate-200">
+                    ข้อความโจทย์ตามเกณฑ์ (แจกแจง 19 หัวข้อย่อย รวม 23 คะแนนเต็ม):
+                  </div>
+
+                  {/* Group 1: UI & Authentication */}
+                  <div className="space-y-1">
+                    <span className="font-bold text-[10px] uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                      • กลุ่มหน้าจอ UI & ระบบความปลอดภัย (3 คะแนน):
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 pl-2">
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>มี Layout ใช้งานง่าย Responsive</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>หน้าจอ Login ด้วย JWT ใช้งานได้จริง</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>แยกระบบ Login แต่ละระดับ</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 font-bold shrink-0">(1)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Group 2: CRUD & Features */}
+                  <div className="space-y-1">
+                    <span className="font-bold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                      • กลุ่มฟังก์ชันจัดการข้อมูล CRUD & ระบบค้นหา (6 คะแนน):
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 pl-2">
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>เพิ่มข้อมูลตามแบบฟอร์ม</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>แนบไฟล์พร้อมข้อมูล</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>แก้ไขข้อมูล</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>แก้ไขไฟล์แนบได้</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 flex items-center justify-between">
+                        <span className="font-semibold text-rose-900 dark:text-rose-300">มีแจ้งเตือนการลบข้อมูลได้ (Confirm Delete Modal)</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-rose-200 text-rose-900 dark:bg-rose-900 dark:text-rose-200 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>ค้นหา/Filter ข้อมูลตามสิทธิ์</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>แบ่งหน้า Pagination ตามสิทธิ์</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold shrink-0">(1)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Group 3: Validation & Error Handling */}
+                  <div className="space-y-1">
+                    <span className="font-bold text-[10px] uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                      • กลุ่ม Validation & Error Handling (3 คะแนน):
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 pl-2">
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>Validate ข้อมูลฝั่ง Frontend</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>Error Handling ฝั่ง Frontend แจ้งเตือนเข้าใจง่าย</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>แปลงรหัส Error จาก Backend เป็นข้อความเหมาะสม</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-bold shrink-0">(1)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Group 4: DevOps, Testing & Pipeline */}
+                  <div className="space-y-1">
+                    <span className="font-bold text-[10px] uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                      • กลุ่ม DevOps, Automated Testing, Git & คุณภาพระบบ (11 คะแนน):
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pl-2">
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>Dockerfile สำหรับ Backend</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>Pipeline config ทำงานครบทุก stages</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/50 flex items-center justify-between sm:col-span-2">
+                        <span className="font-semibold text-emerald-900 dark:text-emerald-300">Test ใน Pipeline (Unit Test และ Integration Test อย่างละ 1 Case)</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-200 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-violet-50/70 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-900/50 flex items-center justify-between sm:col-span-2">
+                        <span className="font-semibold text-violet-900 dark:text-violet-300">E to E Test 2 workflows: E2E-001 (Login สำเร็จ) และ E2E-002 (ส่งข้อมูลสำเร็จ)</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-violet-200 text-violet-900 dark:bg-violet-900 dark:text-violet-200 font-bold shrink-0">(2)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span>Git Branch Strategy</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold shrink-0">(1)</span>
+                      </div>
+                      <div className="p-2 rounded bg-white dark:bg-[#1f1f1f] border border-[#edece9] dark:border-[#2e2e2e] flex items-center justify-between">
+                        <span className="font-bold">ความสมบูรณ์ระบบ</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-indigo-200 text-indigo-900 dark:bg-indigo-900 dark:text-indigo-200 font-bold shrink-0">(3)</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
