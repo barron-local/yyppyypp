@@ -28,7 +28,7 @@ import {
   HelpCircle,
   AlertTriangle
 } from 'lucide-react';
-import { backendCodeFiles } from './data/backendCode';
+import { backendCodeFiles, projectStructureTree } from './data/backendCode';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('all');
@@ -1284,6 +1284,38 @@ deploy_job:
 
               <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b] italic">
                 *ไฟล์ต้นฉบับจริงในโปรเจกต์อยู่ที่โฟลเดอร์: <code>modules/04_Fullstack_DevOps_App/backend/</code>
+              </div>
+
+              {/* Project Architecture & Directory Structure */}
+              <div className="mt-4 pt-4 border-t border-[#edece9] dark:border-[#2e2e2e] space-y-2.5">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                    <span className="font-bold text-xs text-[#37352f] dark:text-[#d4d4d4]">
+                      โครงสร้างโฟลเดอร์ของโปรเจกต์ทั้งหมด (Project Architecture)
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copyToClipboard(projectStructureTree, 'project-tree')}
+                    className="px-2.5 py-1 rounded bg-[#f7f6f3] dark:bg-[#252525] border border-[#edece9] dark:border-[#2e2e2e] hover:bg-slate-200 dark:hover:bg-slate-700 text-[11px] font-medium flex items-center gap-1.5 shrink-0 transition"
+                  >
+                    {copiedId === 'project-tree' ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-500" />
+                        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">คัดลอกผังสำเร็จ!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>คัดลอกโครงสร้างโฟลเดอร์</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+                <pre className="p-3 bg-[#f7f6f3] dark:bg-[#202020] border border-[#edece9] dark:border-[#2e2e2e] rounded-lg text-[11px] font-mono overflow-x-auto text-slate-800 dark:text-slate-200 leading-relaxed max-h-[350px] overflow-y-auto">
+                  {projectStructureTree}
+                </pre>
               </div>
             </div>
 

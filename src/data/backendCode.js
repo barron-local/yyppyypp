@@ -1,38 +1,72 @@
+export const projectStructureTree = `📁 modules/04_Fullstack_DevOps_App/
+│
+├── 📄 Dockerfile                  # ตัว Build Container (Node 18 Alpine + เสิร์ฟพอร์ต 3000)
+├── 📄 docker-compose.yml          # ตัวรัน Service (Web App + Reverse Proxy)
+├── 📄 package.json                # ข้อมูลโปรเจกต์และ dependencies (express, jwt, bcryptjs ฯลฯ)
+│
+├── 📁 frontend/                   # 🖥️ ฝั่งหน้าบ้าน (UI & Client-Side HTML/CSS/JS)
+│   ├── 📄 index.html              # หน้าเว็บหลัก (HTML + Tailwind CSS + Vanilla JS ในไฟล์เดียว)
+│   │                              # ├── หน้าจอ Login (Admin, User 1, User 2)
+│   │                              # ├── ตาราง CRUD รายการ + แนบไฟล์ + Modal ลบ
+│   │                              # └── ค้นหา (Search) + กรอง (Filter) + แบ่งหน้า (Pagination)
+│   └── 📄 guide.html              # คู่มือและเอกสารการใช้งานระบบ
+│
+├── 📁 backend/                    # ⚙️ ฝั่งหลังบ้าน (Node.js REST API Server)
+│   ├── 📄 server.js               # จุดเริ่มต้น Server (Entry Point พอร์ต 3000 + รวมทุก Route)
+│   │
+│   ├── 📁 config/                 # การตั้งค่าระบบและฐานข้อมูล
+│   │   ├── 📄 db.js               # ตัวอ่าน-เขียนไฟล์ JSON เสมือนฐานข้อมูลจริง
+│   │   └── 📄 competition_data.json # ไฟล์เก็บข้อมูล 3 ตาราง (Users, Items, Categories)
+│   │
+│   ├── 📁 routes/                 # แยกลิ้งค์ URL (RESTful Endpoints)
+│   │   ├── 📄 auth.routes.js      # /api/auth (Login, Me)
+│   │   ├── 📄 item.routes.js      # /api/items (GET, POST, PUT, DELETE)
+│   │   └── 📄 category.routes.js  # /api/categories (GET)
+│   │
+│   ├── 📁 controllers/            # สมองและตรรกะการทำงาน (Business Logic)
+│   │   ├── 📄 auth.controller.js  # เช็ครหัสผ่าน bcrypt, ออก Signed JWT Token
+│   │   └── 📄 item.controller.js  # ตรรกะ CRUD, อัปโหลดไฟล์, Search, Filter, Pagination
+│   │
+│   ├── 📁 middlewares/            # ตัวดักกรองความปลอดภัยและข้อผิดพลาด
+│   │   ├── 📄 auth.middleware.js  # ตรวจ JWT Token & สิทธิ์ (RBAC: Admin, User 1, User 2)
+│   │   ├── 📄 upload.middleware.js# ตั้งค่า Multer สำหรับบันทึกไฟล์อัปโหลด
+│   │   └── 📄 error.middleware.js # ดักจับ 404 Not Found & Global Error JSON
+│   │
+│   ├── 📁 uploads/                # โฟลเดอร์เก็บไฟล์ที่ผู้ใช้แนบเข้ามา (รูปภาพ/เอกสาร)
+│   │
+│   └── 📁 tests/                  # การทดสอบ API อัตโนมัติ (Automated Testing)
+│       └── 📄 api.test.js         # Unit Tests & Integration Tests (ผ่าน 100%)
+│
+└── 📁 tests/                      # 🤖 การทดสอบแบบเสมือนผู้ใช้จริง (End-to-End)
+    └── 📄 e2e.spec.js             # Playwright E2E Workflows (E2E-001 Login, E2E-002 ส่งข้อมูล)`;
+
 export const backendCodeFiles = [
   {
     path: "controllers/auth.controller.js",
     label: "controllers/auth.controller.js",
     badge: "Auth & JWT",
-    desc: "Login API, JWT Sign, Hash Check (bcryptjs), Profile getMe",
+    desc: "Login API, JWT Sign, Hash Check (bcryptjs) - แบบอ่านง่าย 5 สเต็ป",
     code: `// ==============================================================================
-// CONTROLLER: auth.controller.js
+// CONTROLLER: auth.controller.js (แบบกระชับ อ่านเข้าใจง่าย สำหรับจำไปสอบ)
 // เกณฑ์ข้อ 4.5:
-// - Method POST สำหรับ Login ตรวจสอบ Password Hash และเซ็น JWT Signing
-// - มี Comment คำอธิบาย API และการเรียกใช้อย่างชัดเจน
-// - ตรวจสอบข้อมูลไม่ครบถ้วน และส่ง Response มาตรฐาน { status, message, data }
+// - POST /api/auth/login ตรวจรหัสผ่าน Hash (bcryptjs) และเซ็น Signed JWT Token
+// - ส่ง Response JSON มาตรฐาน { status, message, data }
 // ==============================================================================
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { readDb } = require('../config/db');
-const { JWT_SECRET } = require('../middlewares/auth.middleware');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'competition_super_secret_jwt_key_2026';
 
 /**
- * @api {POST} /api/auth/login เข้าสู่ระบบเพื่อรับ JWT Token
- * @apiDescription ตรวจสอบชื่อผู้ใช้และรหัสผ่าน แล้วออก Signed JWT Token สำหรับยืนยันตัวตน
- * @apiBody {String} username ชื่อผู้ใช้งาน (จำเป็น) เช่น 'admin', 'officer1', 'member1'
- * @apiBody {String} password รหัสผ่าน (จำเป็น) เช่น 'Password123!'
- * @apiSuccess (200 OK) {String} status "success"
- * @apiSuccess (200 OK) {String} message "เข้าสู่ระบบสำเร็จ"
- * @apiSuccess (200 OK) {Object} data ข้อมูล Token และ User Profile
- * @apiError (400 Bad Request) ข้อมูลไม่ครบถ้วน
- * @apiError (401 Unauthorized) ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+ * 1. ฟังก์ชัน Login เข้าสู่ระบบ (POST /api/auth/login)
  */
 exports.login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    // ตรวจสอบข้อมูลที่ส่งมาใน Body ว่าครบถ้วนหรือไม่
+    // สเต็ป 1: เช็คว่าส่งข้อมูลมาครบหรือไม่
     if (!username || !password) {
       return res.status(400).json({
         status: "error",
@@ -40,9 +74,9 @@ exports.login = async (req, res, next) => {
       });
     }
 
+    // สเต็ป 2: ค้นหาผู้ใช้ในฐานข้อมูล
     const db = readDb();
     const user = db.users.find(u => u.username.toLowerCase() === username.trim().toLowerCase());
-
     if (!user) {
       return res.status(401).json({
         status: "error",
@@ -50,7 +84,7 @@ exports.login = async (req, res, next) => {
       });
     }
 
-    // ตรวจสอบรหัสผ่านที่แฮชไว้ด้วย bcrypt
+    // สเต็ป 3: ตรวจสอบรหัสผ่าน Hash ด้วย bcrypt
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {
       return res.status(401).json({
@@ -59,60 +93,45 @@ exports.login = async (req, res, next) => {
       });
     }
 
-    // สร้าง JWT Token พร้อมระบุ Payload และเวลาหมดอายุ 24 ชั่วโมง
+    // สเต็ป 4: สร้าง JWT Token ลงนามด้วย Secret Key (อายุ 24 ชม.)
     const payload = {
       id: user.id,
       username: user.username,
       full_name: user.full_name,
       role: user.role
     };
-
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
 
+    // สเต็ป 5: ส่ง JSON สำเร็จพร้อม Token และ Profile
     return res.status(200).json({
       status: "success",
       message: "เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ " + user.full_name,
       data: {
         token,
-        user: {
-          id: user.id,
-          username: user.username,
-          full_name: user.full_name,
-          email: user.email,
-          role: user.role
-        }
+        user: { id: user.id, username: user.username, full_name: user.full_name, role: user.role }
       }
     });
+
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * @api {GET} /api/auth/me ตรวจสอบโปรไฟล์ของผู้ใช้ปัจจุบันจาก Token
- * @apiHeader {String} Authorization Bearer <JWT_TOKEN>
+ * 2. ฟังก์ชันตรวจสอบข้อมูลโปรไฟล์ตัวเอง (GET /api/auth/me)
  */
 exports.getMe = async (req, res, next) => {
   try {
     const db = readDb();
     const user = db.users.find(u => u.id === req.user.id);
     if (!user) {
-      return res.status(404).json({
-        status: "error",
-        message: "ไม่พบข้อมูลผู้ใช้งานนี้ในระบบ"
-      });
+      return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลผู้ใช้" });
     }
 
     return res.status(200).json({
       status: "success",
       message: "ดึงข้อมูลโปรไฟล์สำเร็จ",
-      data: {
-        id: user.id,
-        username: user.username,
-        full_name: user.full_name,
-        email: user.email,
-        role: user.role
-      }
+      data: { id: user.id, username: user.username, full_name: user.full_name, role: user.role }
     });
   } catch (error) {
     next(error);
@@ -126,73 +145,43 @@ exports.getMe = async (req, res, next) => {
     desc: "CRUD, Upload File, JSDoc Comments ทุก Method, Filter & Pagination",
     code: `// ==============================================================================
 // CONTROLLER: item.controller.js
-// เกณฑ์ข้อ 4.5:
-// - ครบทุก Method: GET (Query & Path), POST (Body & File Upload), PUT (Update & Change File), DELETE
-// - มีคำอธิบาย API และการเรียกใช้ครบทุก Method (JSDoc Comments)
-// - ระบุข้อมูล Query, Path, Body ชัดเจน
-// - โครงสร้าง async/await สะอาด อ่านง่าย
-// - มี Exception Handling & Format JSON { status, message, data }
+// เกณฑ์ข้อ 4.5: ครบทุก Method (GET, POST, PUT, DELETE) + Upload File + Search/Pagination
 // ==============================================================================
 
 const { readDb, writeDb } = require('../config/db');
 
 /**
- * @api {GET} /api/items ดึงรายการข้อมูลทั้งหมด พร้อมระบบ Search, Filter และ Pagination
- * @apiDescription รองรับการค้นหาตามคำสำคัญ กรองตามหมวดหมู่ และแบ่งหน้าแสดงผล
- * @apiQuery {String} [search] คำค้นหา (รหัส หรือ ชื่อรายการ)
- * @apiQuery {Number} [category_id] รหัสหมวดหมู่ที่ต้องการกรอง
- * @apiQuery {Number} [page=1] ลำดับหน้าที่ต้องการแสดง
- * @apiQuery {Number} [limit=10] จำนวนรายการต่อหน้า
- * @apiSuccess (200 OK) {Array} items รายการข้อมูล
- * @apiSuccess (200 OK) {Object} pagination ข้อมูลการแบ่งหน้า
+ * @api {GET} /api/items ดึงรายการข้อมูลทั้งหมด พร้อม Search, Filter, Pagination
  */
 exports.getItems = async (req, res, next) => {
   try {
     const db = readDb();
     let items = [...db.items];
-
     const { search, category_id, page = 1, limit = 10 } = req.query;
 
-    // 1. Filter: ตามหมวดหมู่ (ถ้ามีการส่ง category_id มา)
+    // กรองหมวดหมู่
     if (category_id) {
       items = items.filter(item => item.category_id === parseInt(category_id, 10));
     }
-
-    // 2. Search: ค้นหาจากชื่อรายการ หรือ รหัสอุปกรณ์ (Case-insensitive)
+    // ค้นหาตามชื่อหรือรหัส
     if (search && search.trim() !== "") {
       const q = search.trim().toLowerCase();
-      items = items.filter(item => 
-        item.title.toLowerCase().includes(q) || 
-        item.item_code.toLowerCase().includes(q)
-      );
+      items = items.filter(i => i.title.toLowerCase().includes(q) || i.item_code.toLowerCase().includes(q));
     }
 
-    // ผูกชื่อ Category ให้กับแต่ละ Item เพื่อให้ Frontend นำไปแสดงผลได้ทันที
-    const categoryMap = new Map(db.categories.map(c => [c.id, c.name]));
-    const enrichedItems = items.map(item => ({
-      ...item,
-      category_name: categoryMap.get(item.category_id) || "ทั่วไป"
-    }));
-
-    // 3. Pagination: การแบ่งหน้า
+    // แบ่งหน้า Pagination
     const pageNum = Math.max(1, parseInt(page, 10));
     const limitNum = Math.max(1, parseInt(limit, 10));
-    const totalItems = enrichedItems.length;
-    const totalPages = Math.ceil(totalItems / limitNum) || 1;
+    const totalItems = items.length;
     const startIndex = (pageNum - 1) * limitNum;
-    const paginatedItems = enrichedItems.slice(startIndex, startIndex + limitNum);
+    const paginatedItems = items.slice(startIndex, startIndex + limitNum);
 
     return res.status(200).json({
       status: "success",
       message: "ดึงรายการข้อมูลสำเร็จ",
       data: {
         items: paginatedItems,
-        pagination: {
-          currentPage: pageNum,
-          totalPages: totalPages,
-          totalItems: totalItems,
-          limit: limitNum
-        }
+        pagination: { currentPage: pageNum, totalPages: Math.ceil(totalItems / limitNum) || 1, totalItems, limit: limitNum }
       }
     });
   } catch (error) {
@@ -201,99 +190,35 @@ exports.getItems = async (req, res, next) => {
 };
 
 /**
- * @api {GET} /api/items/:id ดึงรายละเอียดของรายการข้อมูลเดี่ยวตาม ID
- * @apiPathParam {Number} id รหัสไอดีของรายการ (เช่น /api/items/1)
- * @apiSuccess (200 OK) {Object} data ข้อมูลรายการ
- * @apiError (404 Not Found) ไม่พบข้อมูล
- */
-exports.getItemById = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const db = readDb();
-    const item = db.items.find(i => i.id === parseInt(id, 10));
-
-    if (!item) {
-      return res.status(404).json({
-        status: "error",
-        message: \`ไม่พบข้อมูลรายการ ID: \${id}\`
-      });
-    }
-
-    const category = db.categories.find(c => c.id === item.category_id);
-
-    return res.status(200).json({
-      status: "success",
-      message: "ดึงรายละเอียดสำเร็จ",
-      data: {
-        ...item,
-        category_name: category ? category.name : "ทั่วไป"
-      }
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
- * @api {POST} /api/items สร้างรายการใหม่ พร้อมรองรับการอัปโหลดไฟล์แนบ
- * @apiHeader {String} Authorization Bearer <JWT_TOKEN>
- * @apiBody {String} item_code รหัสอุปกรณ์ (จำเป็นและห้ามซ้ำ)
- * @apiBody {Number} category_id รหัสหมวดหมู่ (จำเป็น)
- * @apiBody {String} title ชื่อรายการ (จำเป็น)
- * @apiBody {String} [description] รายละเอียดเพิ่มเติม
- * @apiBody {Number} value_amount มูลค่าหรือราคา
- * @apiFile {File} [file] ไฟล์เอกสารหรือรูปภาพแนบ
- * @apiSuccess (201 Created) {Object} data รายการที่ถูกสร้างขึ้น
+ * @api {POST} /api/items สร้างรายการใหม่ พร้อมรองรับอัปโหลดไฟล์
  */
 exports.createItem = async (req, res, next) => {
   try {
     const { item_code, category_id, title, description, value_amount } = req.body;
-
-    // ตรวจสอบความครบถ้วนของข้อมูล (Validation)
     if (!item_code || !title || !category_id) {
-      return res.status(400).json({
-        status: "error",
-        message: "ข้อมูลไม่ครบถ้วน! กรุณากรอก item_code, title และเลือกหมวดหมู่ category_id"
-      });
+      return res.status(400).json({ status: "error", message: "กรุณากรอก item_code, title และ category_id" });
     }
 
     const db = readDb();
-
-    // ตรวจสอบว่า item_code ซ้ำหรือไม่
-    const existing = db.items.find(i => i.item_code.toLowerCase() === item_code.trim().toLowerCase());
-    if (existing) {
-      return res.status(400).json({
-        status: "error",
-        message: \`รหัสรายการ '\${item_code}' นี้มีอยู่ในระบบแล้ว กรุณาใช้รหัสอื่น\`
-      });
+    if (db.items.some(i => i.item_code.toLowerCase() === item_code.trim().toLowerCase())) {
+      return res.status(400).json({ status: "error", message: "รหัสรายการนี้มีอยู่ในระบบแล้ว" });
     }
 
-    const newId = db.items.length > 0 ? Math.max(...db.items.map(i => i.id)) + 1 : 1;
-
     const newItem = {
-      id: newId,
+      id: db.items.length > 0 ? Math.max(...db.items.map(i => i.id)) + 1 : 1,
       category_id: parseInt(category_id, 10),
       created_by: req.user.id,
       item_code: item_code.trim(),
       title: title.trim(),
-      description: description ? description.trim() : "",
-      value_amount: parseFloat(value_amount) || 0.00,
-      status: "active",
-      attachment_name: req.file ? req.file.originalname : null,
+      description: description || "",
+      value_amount: parseFloat(value_amount) || 0,
       attachment_path: req.file ? \`/uploads/\${req.file.filename}\` : null,
-      attachment_mimetype: req.file ? req.file.mimetype : null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      created_at: new Date().toISOString()
     };
 
     db.items.push(newItem);
     writeDb(db);
-
-    return res.status(201).json({
-      status: "success",
-      message: "บันทึกข้อมูลสำเร็จ",
-      data: newItem
-    });
+    return res.status(201).json({ status: "success", message: "บันทึกสำเร็จ", data: newItem });
   } catch (error) {
     next(error);
   }
@@ -301,85 +226,42 @@ exports.createItem = async (req, res, next) => {
 
 /**
  * @api {PUT} /api/items/:id แก้ไขข้อมูลรายการ และเปลี่ยนไฟล์แนบ
- * @apiPathParam {Number} id รหัสไอดีของรายการ
- * @apiBody {String} [title] ชื่อรายการใหม่
- * @apiBody {Number} [category_id] รหัสหมวดหมู่ใหม่
- * @apiBody {String} [description] รายละเอียดใหม่
- * @apiBody {Number} [value_amount] มูลค่าใหม่
- * @apiFile {File} [file] ไฟล์แนบใหม่ที่ต้องการอัปเดตแทนที่ไฟล์เดิม
- * @apiSuccess (200 OK) {Object} data รายการที่ถูกอัปเดต
  */
 exports.updateItem = async (req, res, next) => {
   try {
     const { id } = req.params;
     const db = readDb();
-    const itemIndex = db.items.findIndex(i => i.id === parseInt(id, 10));
+    const idx = db.items.findIndex(i => i.id === parseInt(id, 10));
+    if (idx === -1) return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลรายการ" });
 
-    if (itemIndex === -1) {
-      return res.status(404).json({
-        status: "error",
-        message: \`ไม่พบข้อมูลรายการ ID: \${id} ที่ต้องการแก้ไข\`
-      });
-    }
+    const item = db.items[idx];
+    const { title, category_id, description, value_amount } = req.body;
+    if (title) item.title = title.trim();
+    if (category_id) item.category_id = parseInt(category_id, 10);
+    if (description !== undefined) item.description = description.trim();
+    if (value_amount !== undefined) item.value_amount = parseFloat(value_amount) || 0;
+    if (req.file) item.attachment_path = \`/uploads/\${req.file.filename}\`;
 
-    const currentItem = db.items[itemIndex];
-    const { title, category_id, description, value_amount, status } = req.body;
-
-    if (title) currentItem.title = title.trim();
-    if (category_id) currentItem.category_id = parseInt(category_id, 10);
-    if (description !== undefined) currentItem.description = description.trim();
-    if (value_amount !== undefined) currentItem.value_amount = parseFloat(value_amount) || 0;
-    if (status) currentItem.status = status;
-
-    // ถ้ามีการอัปโหลดไฟล์ใหม่ ให้เปลี่ยนข้อมูลไฟล์แนบ
-    if (req.file) {
-      currentItem.attachment_name = req.file.originalname;
-      currentItem.attachment_path = \`/uploads/\${req.file.filename}\`;
-      currentItem.attachment_mimetype = req.file.mimetype;
-    }
-
-    currentItem.updated_at = new Date().toISOString();
-
-    db.items[itemIndex] = currentItem;
     writeDb(db);
-
-    return res.status(200).json({
-      status: "success",
-      message: "ปรับปรุงข้อมูลสำเร็จ",
-      data: currentItem
-    });
+    return res.status(200).json({ status: "success", message: "แก้ไขสำเร็จ", data: item });
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * @api {DELETE} /api/items/:id ลบรายการข้อมูลออกจากระบบ
- * @apiPathParam {Number} id รหัสไอดีของรายการที่ต้องการลบ
- * @apiHeader {String} Authorization Bearer <JWT_TOKEN> (สิทธิ์ admin เท่านั้น)
- * @apiSuccess (200 OK) {String} message ยืนยันการลบข้อมูลสำเร็จ
+ * @api {DELETE} /api/items/:id ลบรายการออกจากระบบ
  */
 exports.deleteItem = async (req, res, next) => {
   try {
     const { id } = req.params;
     const db = readDb();
-    const itemIndex = db.items.findIndex(i => i.id === parseInt(id, 10));
+    const idx = db.items.findIndex(i => i.id === parseInt(id, 10));
+    if (idx === -1) return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลรายการ" });
 
-    if (itemIndex === -1) {
-      return res.status(404).json({
-        status: "error",
-        message: \`ไม่พบข้อมูลรายการ ID: \${id} ที่ต้องการลบ\`
-      });
-    }
-
-    const deletedItem = db.items.splice(itemIndex, 1)[0];
+    const deleted = db.items.splice(idx, 1)[0];
     writeDb(db);
-
-    return res.status(200).json({
-      status: "success",
-      message: \`ลบข้อมูลรหัส '\${deletedItem.item_code}' เรียบร้อยแล้ว\`,
-      data: { id: deletedItem.id, item_code: deletedItem.item_code }
-    });
+    return res.status(200).json({ status: "success", message: "ลบสำเร็จ", data: deleted });
   } catch (error) {
     next(error);
   }
@@ -392,87 +274,56 @@ exports.deleteItem = async (req, res, next) => {
     desc: "JWT Verification & Role-based Access Guard (3 Roles: admin, user1, user2)",
     code: `// ==============================================================================
 // MIDDLEWARE: auth.middleware.js
-// เกณฑ์ข้อ 4.5: สร้าง API Login โดยใช้ JWT Token มีการลงนาม Signing
-// และใช้สำหรับตรวจสอบสิทธิ์ในการเข้าถึงระบบ (Role-Based Access Control)
+// เกณฑ์ข้อ 4.5: ตรวจสอบความถูกต้องของ JWT Token และจำกัดสิทธิ์ตาม Role
 // ==============================================================================
 
 const jwt = require('jsonwebtoken');
-
 const JWT_SECRET = process.env.JWT_SECRET || 'competition_super_secret_jwt_key_2026';
 
-/**
- * Middleware ตรวจสอบความถูกต้องของ JWT Token
- */
+// 1. ตรวจสอบ JWT Token จาก Header: Authorization: Bearer <token>
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
-  // รูปแบบ: Bearer <TOKEN>
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({
-      status: "error",
-      message: "ไม่ได้รับอนุญาต (Unauthorized): กรุณาเข้าสู่ระบบและแนบ Token"
-    });
+    return res.status(401).json({ status: "error", message: "ไม่ได้รับอนุญาต: กรุณาแนบ Token" });
   }
 
-  jwt.verify(token, JWT_SECRET, (err, decodedUser) => {
+  jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
-      return res.status(401).json({
-        status: "error",
-        message: "Token ไม่ถูกต้องหรือหมดอายุแล้ว กรุณาเข้าสู่ระบบใหม่อีกครั้ง"
-      });
+      return res.status(401).json({ status: "error", message: "Token ไม่ถูกต้องหรือหมดอายุ" });
     }
-
-    // แนบข้อมูลผู้ใช้เข้าสู่ Request Object
-    req.user = decodedUser;
+    req.user = user;
     next();
   });
 }
 
-/**
- * Middleware ตรวจสอบสิทธิ์ตามระดับ Role (admin, user1, user2)
- * @param  {...string} allowedRoles รายชื่อ Role ที่อนุญาตให้เข้าถึง
- */
+// 2. จำกัดสิทธิ์ตาม Role เช่น requireRole('admin') หรือ requireRole('admin', 'user1')
 function requireRole(...allowedRoles) {
   return (req, res, next) => {
-    if (!req.user) {
-      return res.status(401).json({
-        status: "error",
-        message: "กรุณายืนยันตัวตนก่อนเข้าใช้งาน"
-      });
-    }
-
-    if (!allowedRoles.includes(req.user.role)) {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
       return res.status(403).json({
         status: "error",
-        message: \`คุณไม่มีสิทธิ์เข้าถึงฟังก์ชันนี้ (สิทธิ์ของคุณ: \${req.user.role}, สิทธิ์ที่ต้องการ: \${allowedRoles.join(', ')})\`
+        message: \`สิทธิ์ไม่เพียงพอ (ต้องการ: \${allowedRoles.join(', ')})\`
       });
     }
-
     next();
   };
 }
 
-module.exports = {
-  JWT_SECRET,
-  authenticateToken,
-  requireRole
-};`
+module.exports = { JWT_SECRET, authenticateToken, requireRole };`
   },
   {
     path: "middlewares/error.middleware.js",
     label: "middlewares/error.middleware.js",
     badge: "Error Handler",
-    desc: "404 Not Found & Global Exception Handler JSON { status, message, error_details }",
+    desc: "404 Not Found & Global Exception Handler JSON",
     code: `// ==============================================================================
 // MIDDLEWARE: error.middleware.js
-// เกณฑ์ข้อ 4.5: มีการจัดการข้อผิดพลาด (Exception Handling) 
-// และส่ง Response JSON มี status, message, data อย่างเป็นระบบ
+// เกณฑ์ข้อ 4.5: Exception Handling ตอบกลับเป็น JSON มี status, message สม่ำเสมอ
 // ==============================================================================
 
-/**
- * ดักจับกรณีเรียก Endpoint ที่ไม่มีในระบบ (404 Not Found)
- */
+// ดักจับ Endpoint ที่ไม่มีอยู่จริง (404)
 function notFoundHandler(req, res, next) {
   res.status(404).json({
     status: "error",
@@ -480,24 +331,16 @@ function notFoundHandler(req, res, next) {
   });
 }
 
-/**
- * Global Error Handler สำหรับดักจับ Exception ทั้งหมด
- */
+// ดักจับ Error รวมทั้งหมดของระบบ (500 หรือ status code ตามข้อผิดพลาด)
 function errorHandler(err, req, res, next) {
-  console.error("💥 [Error Handler]:", err.message || err);
-
-  const statusCode = err.statusCode || (res.statusCode !== 200 ? res.statusCode : 500);
-
-  res.status(statusCode).json({
+  console.error("💥 Error:", err.message);
+  const status = err.statusCode || (res.statusCode !== 200 ? res.statusCode : 500);
+  res.status(status).json({
     status: "error",
-    message: err.message || "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์",
-    error_details: process.env.NODE_ENV === 'production' ? undefined : err.stack
+    message: err.message || "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์"
   });
 }
 
-module.exports = {
-  notFoundHandler,
-  errorHandler
-};`
+module.exports = { notFoundHandler, errorHandler };`
   }
 ];
