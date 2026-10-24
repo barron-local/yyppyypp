@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8">
-  <title>ระบบบริหารจัดการข้อมูล (DevOps No CSS)</title>
+  <title>ระบบบริหารจัดการข้อมูล</title>
 </head>
+
 <body>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
@@ -48,7 +50,7 @@
   <!-- VIEW 2: MAIN DASHBOARD & APPLICATION SHELL -->
   <!-- ========================================================================= -->
   <div id="view-app" hidden>
-    
+
     <!-- Top Header -->
     <table width="100%" border="0">
       <tr>
@@ -57,7 +59,7 @@
           <small>ระบบจัดการข้อมูลอุปกรณ์และโครงสร้างพื้นฐาน</small>
         </td>
         <td align="right">
-          ผู้ใช้: <b id="badge-user-name">Administrator</b> | 
+          ผู้ใช้: <b id="badge-user-name">Administrator</b> |
           สิทธิ์: <span id="badge-user-role">admin</span>
           <button id="btn-logout" onclick="logout()">ออกจากระบบ</button>
         </td>
@@ -77,7 +79,9 @@
     <div id="section-inventory">
       <table width="100%" border="0">
         <tr>
-          <td><h3>รายการข้อมูลและอุปกรณ์</h3></td>
+          <td>
+            <h3>รายการข้อมูลและอุปกรณ์</h3>
+          </td>
           <td align="right">
             <!-- ปุ่มเพิ่มข้อมูล: อนุญาตเฉพาะ admin และ user1 -->
             <button id="btn-open-create-modal" onclick="openCreateModal()">+ เพิ่มรายการใหม่</button>
@@ -89,7 +93,7 @@
       <fieldset>
         <legend>ค้นหาและกรองข้อมูล</legend>
         <input type="text" id="input-search" oninput="handleSearchInput()" placeholder="ค้นหารหัส หรือชื่อรายการ...">
-        
+
         <select id="select-category-filter" onchange="loadItems(1)">
           <option value="">ทุกหมวดหมู่ (All Categories)</option>
           <option value="1">Network Equipment</option>
@@ -202,7 +206,9 @@
   <dialog id="modal-item">
     <table width="100%" border="0">
       <tr>
-        <td><h3 id="modal-title" style="margin: 0;">เพิ่มรายการใหม่</h3></td>
+        <td>
+          <h3 id="modal-title" style="margin: 0;">เพิ่มรายการใหม่</h3>
+        </td>
         <td align="right"><button type="button" onclick="closeItemModal()">X</button></td>
       </tr>
     </table>
@@ -264,11 +270,13 @@
   <dialog id="modal-confirm-delete">
     <h3 align="center">ยืนยันการลบข้อมูล</h3>
     <p align="center" id="delete-confirm-text">คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?</p>
-    
+
     <hr>
     <p align="center">
       <button type="button" onclick="closeDeleteModal()">ยกเลิก</button>
-      <button type="button" id="btn-confirm-delete" onclick="executeDelete()"><font color="red"><b>ยืนยันการลบ</b></font></button>
+      <button type="button" id="btn-confirm-delete" onclick="executeDelete()">
+        <font color="red"><b>ยืนยันการลบ</b></font>
+      </button>
     </p>
   </dialog>
 
@@ -283,15 +291,15 @@
     let deleteTargetId = null;
     let cachedItems = [];
 
-    // Helper: Toast Notifications (Native HTML alerts/messages)
-    function showToast(message, type = 'success') {
+    // แจ้งเตือนข้อความแบบง่ายสุดๆ ด้วย alert() มาตรฐาน
+    function showToast(message) {
+      alert(message);
+      // ฝากข้อความไว้ใน container สั้นๆ สำหรับ e2e test
       const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      toast.innerHTML = `<p><b>[${type === 'success' ? 'SUCCESS' : 'ERROR'}]</b> ${message}</p><hr>`;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.remove();
-      }, 3500);
+      if (container) {
+        container.innerText = message;
+        setTimeout(() => { container.innerText = ''; }, 3000);
+      }
     }
 
     // Login Form Submit
@@ -486,7 +494,7 @@
       document.getElementById('input-item-code').disabled = false;
       document.getElementById('modal-title').innerText = '+ เพิ่มรายการใหม่';
       document.getElementById('form-error-box').hidden = true;
-      
+
       const modal = document.getElementById('modal-item');
       if (typeof modal.showModal === 'function') {
         modal.showModal();
@@ -510,7 +518,7 @@
       document.getElementById('input-item-desc').value = item.description || '';
       document.getElementById('modal-title').innerText = `แก้ไขรายการ: ${item.item_code}`;
       document.getElementById('form-error-box').hidden = true;
-      
+
       const modal = document.getElementById('modal-item');
       if (typeof modal.showModal === 'function') {
         modal.showModal();
@@ -592,16 +600,11 @@
       }
     }
 
-    // Modal Delete Handlers (เกณฑ์ข้อ 4.6: มีแจ้งเตือนการลบข้อมูลได้)
-    function openDeleteModal(id, code) {
-      deleteTargetId = id;
-      document.getElementById('delete-confirm-text').innerText = `คุณแน่ใจหรือไม่ว่าต้องการลบรายการรหัส '${code}'?`;
-      
-      const modal = document.getElementById('modal-confirm-delete');
-      if (typeof modal.showModal === 'function') {
-        modal.showModal();
-      } else {
-        modal.hidden = false;
+    // ลบข้อมูลแบบง่ายสุดๆ: ถามยืนยันด้วย confirm() หน้าต่างระบบตรงๆ
+    async function openDeleteModal(id, code) {
+      if (confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบรายการรหัส '${code}'?`)) {
+        deleteTargetId = id;
+        await executeDelete();
       }
     }
 
@@ -650,4 +653,5 @@
     });
   </script>
 </body>
+
 </html>
