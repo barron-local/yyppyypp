@@ -1335,6 +1335,92 @@ deploy_job:
               <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b] italic">
                 *ไฟล์ทั้งหมดถูกจำลองและบันทึกไว้ในโฟลเดอร์: <code>modules/04_Fullstack_DevOps_App/</code>
               </div>
+
+              {/* Step-by-Step Execution Guide Box */}
+              <div className="mt-4 pt-4 border-t border-[#edece9] dark:border-[#2e2e2e] space-y-3">
+                <div className="flex items-center gap-2 font-bold text-sm text-[#37352f] dark:text-[#d4d4d4]">
+                  <Terminal className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <span>คู่มือและคำสั่งวิธีการรันระบบอย่างละเอียด (Execution & Testing Guide)</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {/* Mode 1: Local Development */}
+                  <div className="p-3 bg-[#f7f6f3] dark:bg-[#202020] border border-[#edece9] dark:border-[#2e2e2e] rounded-xl space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-xs text-indigo-600 dark:text-indigo-400">1. รันบนเครื่อง Local (Node.js)</span>
+                      <button 
+                        type="button"
+                        onClick={() => copyToClipboard(`cd modules/04_Fullstack_DevOps_App
+npm install
+npm start`, 'run-local')}
+                        className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-500"
+                        title="Copy commands"
+                      >
+                        {copiedId === 'run-local' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
+                      ใช้ทดสอบเขียนโค้ดและรันจำลองระบบทั้ง Frontend และ Backend พอร์ต 3000
+                    </p>
+                    <pre className="p-2 bg-[#1e1e1e] text-emerald-400 rounded text-[10px] font-mono overflow-x-auto">
+{`cd modules/04_Fullstack_DevOps_App
+npm install
+npm start
+# เปิดดูเว็บ: http://localhost:3000`}
+                    </pre>
+                  </div>
+
+                  {/* Mode 2: Automated Tests */}
+                  <div className="p-3 bg-[#f7f6f3] dark:bg-[#202020] border border-[#edece9] dark:border-[#2e2e2e] rounded-xl space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-xs text-emerald-600 dark:text-emerald-400">2. ทดสอบ Automated Test (5/5)</span>
+                      <button 
+                        type="button"
+                        onClick={() => copyToClipboard(`cd modules/04_Fullstack_DevOps_App
+npm test`, 'run-test')}
+                        className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-500"
+                        title="Copy commands"
+                      >
+                        {copiedId === 'run-test' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
+                      ทดสอบ Unit Test (bcrypt, jwt) และ Integration Test (Supertest) ตอบข้อ 4.6
+                    </p>
+                    <pre className="p-2 bg-[#1e1e1e] text-emerald-400 rounded text-[10px] font-mono overflow-x-auto">
+{`cd modules/04_Fullstack_DevOps_App
+npm test
+# ผลลัพธ์: pass 5 | fail 0 (100%)`}
+                    </pre>
+                  </div>
+
+                  {/* Mode 3: Docker & Compose */}
+                  <div className="p-3 bg-[#f7f6f3] dark:bg-[#202020] border border-[#edece9] dark:border-[#2e2e2e] rounded-xl space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-xs text-blue-600 dark:text-blue-400">3. รันบน Production ด้วย Docker</span>
+                      <button 
+                        type="button"
+                        onClick={() => copyToClipboard(`cd modules/04_Fullstack_DevOps_App
+docker compose up -d --build
+docker ps`, 'run-docker')}
+                        className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-500"
+                        title="Copy commands"
+                      >
+                        {copiedId === 'run-docker' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
+                      รัน Containerised App + MariaDB ตอบโจทย์ข้อ 2.5 และ CI/CD Pipeline
+                    </p>
+                    <pre className="p-2 bg-[#1e1e1e] text-emerald-400 rounded text-[10px] font-mono overflow-x-auto">
+{`cd modules/04_Fullstack_DevOps_App
+docker compose up -d --build
+docker ps
+# ตรวจสอบ Health: curl http://localhost:3000/api/health`}
+                    </pre>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Frontend & Automated Tests (ข้อ 4.6: 23 คะแนน) */}
