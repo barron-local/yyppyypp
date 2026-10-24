@@ -2,87 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบบริหารจัดการข้อมูล (Simple UI No-CSS)</title>
-  <style>
-    /* สไตล์พื้นฐานเรียบง่ายที่สุดสำหรับควบคุมการแสดงผลและโครงสร้าง ไม่ใช้ CSS framework ใดๆ */
-    body {
-      font-family: sans-serif;
-      margin: 20px;
-      line-height: 1.5;
-    }
-    .hidden {
-      display: none !important;
-    }
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
-    .modal-box {
-      background: #fff;
-      padding: 20px;
-      border: 2px solid #333;
-      max-width: 500px;
-      width: 90%;
-    }
-    #toast-container {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      z-index: 1000;
-    }
-    .toast-msg {
-      background: #333;
-      color: #fff;
-      padding: 10px 15px;
-      margin-bottom: 8px;
-      border-radius: 4px;
-      border: 1px solid #111;
-    }
-    .toast-success { background: #2e7d32; }
-    .toast-error { background: #c62828; }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #999;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background: #f0f0f0;
-    }
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #ccc;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-    }
-    .tabs-nav {
-      margin-bottom: 15px;
-    }
-    .tabs-nav button {
-      margin-right: 5px;
-      padding: 6px 12px;
-    }
-    .error-text {
-      color: red;
-      font-weight: bold;
-      margin-top: 5px;
-    }
-  </style>
+  <title>ระบบบริหารจัดการข้อมูล (DevOps No CSS)</title>
 </head>
 <body>
 
@@ -93,38 +13,41 @@
   <!-- VIEW 1: AUTHENTICATION / LOGIN SCREEN -->
   <!-- ========================================================================= -->
   <div id="view-login">
-    <h2>เข้าสู่ระบบ (Login)</h2>
+    <h1>เข้าสู่ระบบ (Login)</h1>
     <p>ระบบบริหารจัดการข้อมูลการแข่งขันทักษะเทคโนโลยีสารสนเทศ (DevOps Competition)</p>
 
     <!-- Quick Role Login (ปุ่มลัดสำหรับทดสอบสิทธิ์) -->
-    <fieldset style="margin-bottom: 15px;">
+    <fieldset>
       <legend>ปุ่มลัดสิทธิ์ผู้ใช้ (Demo Roles)</legend>
       <button type="button" id="btn-quick-admin" onclick="fillAndLogin('admin')">[👑 Admin]</button>
       <button type="button" id="btn-quick-officer" onclick="fillAndLogin('officer1')">[👤 User 1 (Officer)]</button>
       <button type="button" id="btn-quick-member" onclick="fillAndLogin('member1')">[👥 User 2 (Member)]</button>
     </fieldset>
 
+    <br>
+
     <!-- Login Form -->
     <form id="form-login" onsubmit="handleLoginSubmit(event)">
       <fieldset>
         <legend>กรอกข้อมูลเข้าสู่ระบบ</legend>
-        <div style="margin-bottom: 10px;">
+        <p>
           <label for="input-username">ชื่อผู้ใช้งาน (Username):</label><br>
           <input type="text" id="input-username" required placeholder="admin, officer1 หรือ member1">
-        </div>
+        </p>
 
-        <div style="margin-bottom: 10px;">
+        <p>
           <label for="input-password">รหัสผ่าน (Password):</label><br>
           <input type="password" id="input-password" required placeholder="รหัสผ่าน">
-        </div>
+        </p>
 
         <!-- Frontend Error Box -->
-        <div id="login-error-box" class="hidden error-text">
-          <span id="login-error-text">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</span>
-        </div>
+        <p id="login-error-box" hidden>
+          <font color="red"><b id="login-error-text">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</b></font>
+        </p>
 
-        <br>
-        <button type="submit" id="btn-login">เข้าสู่ระบบ (Sign In)</button>
+        <p>
+          <button type="submit" id="btn-login">เข้าสู่ระบบ (Sign In)</button>
+        </p>
       </fieldset>
     </form>
   </div>
@@ -132,42 +55,48 @@
   <!-- ========================================================================= -->
   <!-- VIEW 2: MAIN DASHBOARD & APPLICATION SHELL -->
   <!-- ========================================================================= -->
-  <div id="view-app" class="hidden">
+  <div id="view-app" hidden>
     
     <!-- Top Header -->
-    <div class="top-bar">
-      <div>
-        <h2 style="margin: 0;">DevOps Inventory Management System</h2>
-        <small>ระบบจัดการข้อมูลอุปกรณ์และโครงสร้างพื้นฐาน</small>
-      </div>
-      <div>
-        ผู้ใช้: <strong id="badge-user-name">Administrator</strong> | 
-        สิทธิ์: <span id="badge-user-role" style="background: #e0e0e0; padding: 2px 6px;">admin</span>
-        <button id="btn-logout" onclick="logout()" style="margin-left: 10px;">ออกจากระบบ</button>
-      </div>
-    </div>
-
-    <!-- Navigation Tabs -->
-    <div class="tabs-nav">
-      <button onclick="switchTab('inventory')" id="tab-inventory">📋 รายการข้อมูล (Inventory)</button>
-      <button onclick="switchTab('dashboard')" id="tab-dashboard">📊 ภาพรวม (Dashboard)</button>
-      <button onclick="switchTab('system-info')" id="tab-system-info">ℹ️ สิทธิ์และเกณฑ์การตรวจ</button>
-    </div>
+    <table width="100%" border="0">
+      <tr>
+        <td>
+          <h2 style="margin: 0;">DevOps Inventory Management System</h2>
+          <small>ระบบจัดการข้อมูลอุปกรณ์และโครงสร้างพื้นฐาน</small>
+        </td>
+        <td align="right">
+          ผู้ใช้: <b id="badge-user-name">Administrator</b> | 
+          สิทธิ์: <span id="badge-user-role">admin</span>
+          <button id="btn-logout" onclick="logout()">ออกจากระบบ</button>
+        </td>
+      </tr>
+    </table>
 
     <hr>
 
+    <!-- Navigation Tabs -->
+    <p>
+      <button onclick="switchTab('inventory')" id="tab-inventory">📋 รายการข้อมูล (Inventory)</button>
+      <button onclick="switchTab('dashboard')" id="tab-dashboard">📊 ภาพรวม (Dashboard)</button>
+      <button onclick="switchTab('system-info')" id="tab-system-info">ℹ️ สิทธิ์และเกณฑ์การตรวจ</button>
+    </p>
+
     <!-- SECTION B: INVENTORY MANAGEMENT TABLE (CRUD + SEARCH + FILTER + PAGINATION) -->
     <div id="section-inventory">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-        <h3>รายการข้อมูลและอุปกรณ์</h3>
-        <!-- ปุ่มเพิ่มข้อมูล: อนุญาตเฉพาะ admin และ user1 -->
-        <button id="btn-open-create-modal" onclick="openCreateModal()">+ เพิ่มรายการใหม่</button>
-      </div>
+      <table width="100%" border="0">
+        <tr>
+          <td><h3>รายการข้อมูลและอุปกรณ์</h3></td>
+          <td align="right">
+            <!-- ปุ่มเพิ่มข้อมูล: อนุญาตเฉพาะ admin และ user1 -->
+            <button id="btn-open-create-modal" onclick="openCreateModal()">+ เพิ่มรายการใหม่</button>
+          </td>
+        </tr>
+      </table>
 
       <!-- Filter & Search Toolbar -->
-      <fieldset style="margin-bottom: 15px;">
+      <fieldset>
         <legend>ค้นหาและกรองข้อมูล</legend>
-        <input type="text" id="input-search" oninput="handleSearchInput()" placeholder="ค้นหารหัส หรือชื่อรายการ..." style="width: 250px;">
+        <input type="text" id="input-search" oninput="handleSearchInput()" placeholder="ค้นหารหัส หรือชื่อรายการ...">
         
         <select id="select-category-filter" onchange="loadItems(1)">
           <option value="">ทุกหมวดหมู่ (All Categories)</option>
@@ -176,11 +105,13 @@
           <option value="3">IoT Devices</option>
         </select>
 
-        <button onclick="resetFilters()">ล้างค่าค้นหา</button>
+        <button type="button" onclick="resetFilters()">ล้างค่าค้นหา</button>
       </fieldset>
 
+      <br>
+
       <!-- Data Table -->
-      <table border="1" cellpadding="6" cellspacing="0">
+      <table border="1" cellpadding="6" cellspacing="0" width="100%">
         <thead>
           <tr>
             <th>รหัส (Code)</th>
@@ -197,43 +128,45 @@
       </table>
 
       <!-- Pagination Toolbar -->
-      <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-        <span id="span-page-info">กำลังแสดง 0 รายการ</span>
-        <div>
-          <button id="btn-prev-page" onclick="prevPage()">« ย้อนกลับ</button>
-          <span> หน้าที่ <strong id="span-current-page">1</strong> </span>
-          <button id="btn-next-page" onclick="nextPage()">ถัดไป »</button>
-        </div>
-      </div>
+      <table width="100%" border="0" style="margin-top: 10px;">
+        <tr>
+          <td><span id="span-page-info">กำลังแสดง 0 รายการ</span></td>
+          <td align="right">
+            <button id="btn-prev-page" onclick="prevPage()">« ย้อนกลับ</button>
+            <span> หน้าที่ <b id="span-current-page">1</b> </span>
+            <button id="btn-next-page" onclick="nextPage()">ถัดไป »</button>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <!-- SECTION A: DASHBOARD OVERVIEW -->
-    <div id="section-dashboard" class="hidden">
+    <div id="section-dashboard" hidden>
       <h3>ภาพรวมระบบ (Overview Dashboard)</h3>
-      <table border="1" cellpadding="8" cellspacing="0" style="max-width: 600px;">
+      <table border="1" cellpadding="8" cellspacing="0">
         <tr>
           <th>รายการทั้งหมด (Total Items)</th>
-          <td><strong id="kpi-total-items">0</strong> รายการ</td>
+          <td><b id="kpi-total-items">0</b> รายการ</td>
         </tr>
         <tr>
           <th>หมวดหมู่ระบบ (Categories)</th>
-          <td><strong id="kpi-categories">3</strong> หมวดหมู่</td>
+          <td><b id="kpi-categories">3</b> หมวดหมู่</td>
         </tr>
         <tr>
           <th>สถานะพร้อมใช้งาน (Active Items)</th>
-          <td><strong id="kpi-active-items">0</strong> รายการ</td>
+          <td><b id="kpi-active-items">0</b> รายการ</td>
         </tr>
         <tr>
           <th>มูลค่าทรัพย์สินรวม (Total Value)</th>
-          <td><strong id="kpi-total-value">฿0.00</strong></td>
+          <td><b id="kpi-total-value">฿0.00</b></td>
         </tr>
       </table>
     </div>
 
     <!-- SECTION C: SYSTEM INFO & RUBRIC DETAILS -->
-    <div id="section-system-info" class="hidden">
+    <div id="section-system-info" hidden>
       <h3>ตารางการแยกระดับสิทธิ์ผู้ใช้งาน (RBAC Matrix)</h3>
-      <table border="1" cellpadding="6" cellspacing="0">
+      <table border="1" cellpadding="6" cellspacing="0" width="100%">
         <thead>
           <tr>
             <th>บทบาท (Role)</th>
@@ -245,21 +178,21 @@
         </thead>
         <tbody>
           <tr>
-            <td><strong>Admin</strong></td>
+            <td><b>Admin</b></td>
             <td>อนุญาต</td>
             <td>อนุญาต</td>
             <td>อนุญาต</td>
             <td>อนุญาต</td>
           </tr>
           <tr>
-            <td><strong>User 1 (Officer)</strong></td>
+            <td><b>User 1 (Officer)</b></td>
             <td>อนุญาต</td>
             <td>อนุญาต</td>
             <td>อนุญาต</td>
             <td>ไม่อนุญาต (403)</td>
           </tr>
           <tr>
-            <td><strong>User 2 (Member)</strong></td>
+            <td><b>User 2 (Member)</b></td>
             <td>อนุญาต</td>
             <td>ไม่อนุญาต (403)</td>
             <td>ไม่อนุญาต (403)</td>
@@ -272,79 +205,80 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- MODAL: ADD / EDIT ITEM (WITH FILE ATTACHMENT & CLIENT VALIDATION) -->
+  <!-- MODAL: ADD / EDIT ITEM (USING HTML5 NATIVE <dialog> WITHOUT ANY CSS) -->
   <!-- ========================================================================= -->
-  <div id="modal-item" class="modal-overlay hidden">
-    <div class="modal-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
-        <h3 id="modal-title" style="margin: 0;">เพิ่มรายการใหม่</h3>
-        <button type="button" onclick="closeItemModal()">X</button>
-      </div>
+  <dialog id="modal-item">
+    <table width="100%" border="0">
+      <tr>
+        <td><h3 id="modal-title" style="margin: 0;">เพิ่มรายการใหม่</h3></td>
+        <td align="right"><button type="button" onclick="closeItemModal()">X</button></td>
+      </tr>
+    </table>
+    <hr>
 
-      <form id="form-item" onsubmit="handleItemFormSubmit(event)" style="margin-top: 15px;">
-        <input type="hidden" id="item-form-id">
+    <form id="form-item" onsubmit="handleItemFormSubmit(event)">
+      <input type="hidden" id="item-form-id">
 
-        <div style="margin-bottom: 10px;">
-          <label>รหัสอุปกรณ์ (Item Code) *</label><br>
-          <input type="text" id="input-item-code" required placeholder="เช่น NET-002" style="width: 100%;">
-        </div>
+      <p>
+        <label for="input-item-code">รหัสอุปกรณ์ (Item Code) *</label><br>
+        <input type="text" id="input-item-code" required placeholder="เช่น NET-002">
+      </p>
 
-        <div style="margin-bottom: 10px;">
-          <label>หมวดหมู่ (Category) *</label><br>
-          <select id="select-item-category" required style="width: 100%;">
-            <option value="1">Network Equipment</option>
-            <option value="2">Server & Storage</option>
-            <option value="3">IoT Devices</option>
-          </select>
-        </div>
+      <p>
+        <label for="select-item-category">หมวดหมู่ (Category) *</label><br>
+        <select id="select-item-category" required>
+          <option value="1">Network Equipment</option>
+          <option value="2">Server & Storage</option>
+          <option value="3">IoT Devices</option>
+        </select>
+      </p>
 
-        <div style="margin-bottom: 10px;">
-          <label>ชื่อรายการ (Title) *</label><br>
-          <input type="text" id="input-item-title" required placeholder="เช่น Cisco Switch 24 Port" style="width: 100%;">
-        </div>
+      <p>
+        <label for="input-item-title">ชื่อรายการ (Title) *</label><br>
+        <input type="text" id="input-item-title" required placeholder="เช่น Cisco Switch 24 Port" size="40">
+      </p>
 
-        <div style="margin-bottom: 10px;">
-          <label>มูลค่า / ราคา (บาท) *</label><br>
-          <input type="number" step="0.01" id="input-item-value" required placeholder="0.00" style="width: 100%;">
-        </div>
+      <p>
+        <label for="input-item-value">มูลค่า / ราคา (บาท) *</label><br>
+        <input type="number" step="0.01" id="input-item-value" required placeholder="0.00">
+      </p>
 
-        <div style="margin-bottom: 10px;">
-          <label>ไฟล์แนบ (เอกสาร/รูปภาพ)</label><br>
-          <input type="file" id="input-item-file" style="width: 100%;">
-        </div>
+      <p>
+        <label for="input-item-file">ไฟล์แนบ (เอกสาร/รูปภาพ)</label><br>
+        <input type="file" id="input-item-file">
+      </p>
 
-        <div style="margin-bottom: 10px;">
-          <label>รายละเอียด (Description)</label><br>
-          <textarea id="input-item-desc" rows="3" placeholder="รายละเอียดคุณสมบัติ..." style="width: 100%;"></textarea>
-        </div>
+      <p>
+        <label for="input-item-desc">รายละเอียด (Description)</label><br>
+        <textarea id="input-item-desc" rows="3" cols="40" placeholder="รายละเอียดคุณสมบัติ..."></textarea>
+      </p>
 
-        <!-- Form Error Alert -->
-        <div id="form-error-box" class="hidden error-text">
-          <span id="form-error-text"></span>
-        </div>
+      <!-- Form Error Alert -->
+      <p id="form-error-box" hidden>
+        <font color="red"><b id="form-error-text"></b></font>
+      </p>
 
-        <div style="text-align: right; margin-top: 15px;">
-          <button type="button" onclick="closeItemModal()">ยกเลิก</button>
-          <button type="submit" id="btn-submit-item">บันทึกข้อมูล</button>
-        </div>
-      </form>
-    </div>
-  </div>
+      <hr>
+      <p align="right">
+        <button type="button" onclick="closeItemModal()">ยกเลิก</button>
+        <button type="submit" id="btn-submit-item">บันทึกข้อมูล</button>
+      </p>
+    </form>
+  </dialog>
 
   <!-- ========================================================================= -->
   <!-- MODAL: CONFIRM DELETE (เกณฑ์ข้อ 4.6: มีแจ้งเตือนการลบข้อมูลได้) -->
   <!-- ========================================================================= -->
-  <div id="modal-confirm-delete" class="modal-overlay hidden">
-    <div class="modal-box" style="text-align: center;">
-      <h3>ยืนยันการลบข้อมูล</h3>
-      <p id="delete-confirm-text">คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?</p>
-      
-      <div style="margin-top: 20px;">
-        <button type="button" onclick="closeDeleteModal()">ยกเลิก</button>
-        <button type="button" id="btn-confirm-delete" onclick="executeDelete()" style="color: red; font-weight: bold; margin-left: 10px;">ยืนยันการลบ</button>
-      </div>
-    </div>
-  </div>
+  <dialog id="modal-confirm-delete">
+    <h3 align="center">ยืนยันการลบข้อมูล</h3>
+    <p align="center" id="delete-confirm-text">คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?</p>
+    
+    <hr>
+    <p align="center">
+      <button type="button" onclick="closeDeleteModal()">ยกเลิก</button>
+      <button type="button" id="btn-confirm-delete" onclick="executeDelete()"><font color="red"><b>ยืนยันการลบ</b></font></button>
+    </p>
+  </dialog>
 
   <!-- ========================================================================= -->
   <!-- JAVASCRIPT FRONTEND APPLICATION LOGIC -->
@@ -357,12 +291,11 @@
     let deleteTargetId = null;
     let cachedItems = [];
 
-    // Helper: Toast Notifications
+    // Helper: Toast Notifications (Native HTML alerts/messages)
     function showToast(message, type = 'success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      toast.className = `toast-msg ${type === 'success' ? 'toast-success' : 'toast-error'}`;
-      toast.innerText = message;
+      toast.innerHTML = `<p><b>[${type === 'success' ? 'SUCCESS' : 'ERROR'}]</b> ${message}</p><hr>`;
       container.appendChild(toast);
       setTimeout(() => {
         toast.remove();
@@ -386,7 +319,7 @@
       e.preventDefault();
       const errBox = document.getElementById('login-error-box');
       const errText = document.getElementById('login-error-text');
-      errBox.classList.add('hidden');
+      errBox.hidden = true;
 
       const username = document.getElementById('input-username').value.trim();
       const password = document.getElementById('input-password').value;
@@ -394,7 +327,7 @@
       // Frontend Validation
       if (!username || !password) {
         errText.innerText = "กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน";
-        errBox.classList.remove('hidden');
+        errBox.hidden = false;
         return;
       }
 
@@ -415,11 +348,11 @@
           initApp();
         } else {
           errText.innerText = data.message || "การเข้าสู่ระบบล้มเหลว กรุณาตรวจสอบข้อมูล";
-          errBox.classList.remove('hidden');
+          errBox.hidden = false;
         }
       } catch (err) {
         errText.innerText = "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ Backend ได้ กรุณาลองใหม่";
-        errBox.classList.remove('hidden');
+        errBox.hidden = false;
       }
     }
 
@@ -429,23 +362,23 @@
       localStorage.removeItem('devops_user');
       currentToken = null;
       currentUser = null;
-      document.getElementById('view-app').classList.add('hidden');
-      document.getElementById('view-login').classList.remove('hidden');
+      document.getElementById('view-app').hidden = true;
+      document.getElementById('view-login').hidden = false;
       showToast('ออกจากระบบเรียบร้อยแล้ว');
     }
 
     // Tab Navigation
     function switchTab(tabId) {
       ['dashboard', 'inventory', 'system-info'].forEach(t => {
-        document.getElementById(`section-${t}`).classList.add('hidden');
+        document.getElementById(`section-${t}`).hidden = true;
       });
-      document.getElementById(`section-${tabId}`).classList.remove('hidden');
+      document.getElementById(`section-${tabId}`).hidden = false;
     }
 
     // Initialize App after Login
     function initApp() {
-      document.getElementById('view-login').classList.add('hidden');
-      document.getElementById('view-app').classList.remove('hidden');
+      document.getElementById('view-login').hidden = true;
+      document.getElementById('view-app').hidden = false;
 
       document.getElementById('badge-user-name').innerText = currentUser.full_name;
       document.getElementById('badge-user-role').innerText = currentUser.role.toUpperCase();
@@ -453,9 +386,9 @@
       // Role Permission Matrix on UI
       const btnCreate = document.getElementById('btn-open-create-modal');
       if (currentUser.role === 'user2') {
-        btnCreate.classList.add('hidden'); // Level 2 can only view
+        btnCreate.hidden = true; // Level 2 can only view
       } else {
-        btnCreate.classList.remove('hidden');
+        btnCreate.hidden = false;
       }
 
       switchTab('inventory');
@@ -509,7 +442,7 @@
       tbody.innerHTML = '';
 
       if (items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #777;">ไม่พบรายการข้อมูลที่ตรงกับเงื่อนไข</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" align="center">ไม่พบรายการข้อมูลที่ตรงกับเงื่อนไข</td></tr>`;
         return;
       }
 
@@ -524,7 +457,7 @@
         if (currentUser.role === 'admin') {
           actionButtons = `
             <button type="button" onclick="openEditModal(${item.id})">แก้ไข</button>
-            <button type="button" onclick="openDeleteModal(${item.id}, '${item.item_code}')" style="color: red;">ลบ</button>
+            <button type="button" onclick="openDeleteModal(${item.id}, '${item.item_code}')"><font color="red">ลบ</font></button>
           `;
         } else if (currentUser.role === 'user1') {
           actionButtons = `
@@ -536,7 +469,7 @@
         }
 
         tr.innerHTML = `
-          <td><strong>${item.item_code}</strong></td>
+          <td><b>${item.item_code}</b></td>
           <td>${item.title}</td>
           <td>${item.category_name}</td>
           <td>฿${parseFloat(item.value_amount).toLocaleString('th-TH', { minimumFractionDigits: 2 })}</td>
@@ -572,8 +505,14 @@
       document.getElementById('item-form-id').value = '';
       document.getElementById('input-item-code').disabled = false;
       document.getElementById('modal-title').innerText = '+ เพิ่มรายการใหม่';
-      document.getElementById('form-error-box').classList.add('hidden');
-      document.getElementById('modal-item').classList.remove('hidden');
+      document.getElementById('form-error-box').hidden = true;
+      
+      const modal = document.getElementById('modal-item');
+      if (typeof modal.showModal === 'function') {
+        modal.showModal();
+      } else {
+        modal.hidden = false;
+      }
     }
 
     // Open Edit Modal
@@ -590,12 +529,23 @@
       document.getElementById('input-item-value').value = item.value_amount;
       document.getElementById('input-item-desc').value = item.description || '';
       document.getElementById('modal-title').innerText = `แก้ไขรายการ: ${item.item_code}`;
-      document.getElementById('form-error-box').classList.add('hidden');
-      document.getElementById('modal-item').classList.remove('hidden');
+      document.getElementById('form-error-box').hidden = true;
+      
+      const modal = document.getElementById('modal-item');
+      if (typeof modal.showModal === 'function') {
+        modal.showModal();
+      } else {
+        modal.hidden = false;
+      }
     }
 
     function closeItemModal() {
-      document.getElementById('modal-item').classList.add('hidden');
+      const modal = document.getElementById('modal-item');
+      if (typeof modal.close === 'function') {
+        modal.close();
+      } else {
+        modal.hidden = true;
+      }
     }
 
     // Handle Form Submit (Add / Edit) with Frontend Validation
@@ -611,18 +561,18 @@
 
       const errBox = document.getElementById('form-error-box');
       const errText = document.getElementById('form-error-text');
-      errBox.classList.add('hidden');
+      errBox.hidden = true;
 
       // Frontend Form Validation (เกณฑ์ข้อ 4.6)
       if (!title || !category_id || (!id && !item_code)) {
         errText.innerText = "กรุณากรอกข้อมูลที่มีเครื่องหมาย * ให้ครบถ้วน";
-        errBox.classList.remove('hidden');
+        errBox.hidden = false;
         return;
       }
 
       if (parseFloat(value_amount) < 0) {
         errText.innerText = "มูลค่าหรือราคาต้องเป็นค่าบวกเท่านั้น";
-        errBox.classList.remove('hidden');
+        errBox.hidden = false;
         return;
       }
 
@@ -654,11 +604,11 @@
           loadItems(currentPage);
         } else {
           errText.innerText = result.message || "ไม่สามารถบันทึกข้อมูลได้";
-          errBox.classList.remove('hidden');
+          errBox.hidden = false;
         }
       } catch (err) {
         errText.innerText = "เกิดข้อผิดพลาดในการเชื่อมต่อ: " + err.message;
-        errBox.classList.remove('hidden');
+        errBox.hidden = false;
       }
     }
 
@@ -666,12 +616,23 @@
     function openDeleteModal(id, code) {
       deleteTargetId = id;
       document.getElementById('delete-confirm-text').innerText = `คุณแน่ใจหรือไม่ว่าต้องการลบรายการรหัส '${code}'?`;
-      document.getElementById('modal-confirm-delete').classList.remove('hidden');
+      
+      const modal = document.getElementById('modal-confirm-delete');
+      if (typeof modal.showModal === 'function') {
+        modal.showModal();
+      } else {
+        modal.hidden = false;
+      }
     }
 
     function closeDeleteModal() {
       deleteTargetId = null;
-      document.getElementById('modal-confirm-delete').classList.add('hidden');
+      const modal = document.getElementById('modal-confirm-delete');
+      if (typeof modal.close === 'function') {
+        modal.close();
+      } else {
+        modal.hidden = true;
+      }
     }
 
     async function executeDelete() {

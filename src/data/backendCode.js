@@ -96,9 +96,9 @@ volumes:
         path: "frontend/index.html",
         name: "index.html",
         badge: "Frontend UI",
-        desc: "หน้าเว็บหลักแบบเรียบง่าย Simple (No CSS Framework): Login แยก 3 สิทธิ์, ตาราง CRUD, แนบไฟล์, Modal ยืนยันลบ",
+        desc: "หน้าเว็บหลักแบบ Pure HTML (100% No-CSS): Login แยก 3 สิทธิ์, ตาราง CRUD, แนบไฟล์, Native Dialog ยืนยันลบ",
         code: `<!-- ========================================================================= -->
-<!-- FRONTEND UI: frontend/index.html (Simple HTML / No CSS Framework)        -->
+<!-- FRONTEND UI: frontend/index.html (Pure HTML / 100% No CSS)                -->
 <!-- เกณฑ์ข้อ 4.6: Responsive, JWT Login 3 Roles, CRUD, แนบไฟล์, Modal ลบ     -->
 <!-- ========================================================================= -->
 
@@ -106,22 +106,7 @@ volumes:
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DevOps Inventory System (Simple UI)</title>
-  <style>
-    body { font-family: sans-serif; margin: 20px; line-height: 1.5; }
-    .hidden { display: none !important; }
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; }
-    .modal-box { background: #fff; padding: 20px; border: 2px solid #333; max-width: 500px; width: 90%; }
-    #toast-container { position: fixed; top: 15px; right: 15px; z-index: 1000; }
-    .toast-msg { background: #333; color: #fff; padding: 10px 15px; margin-bottom: 8px; border-radius: 4px; }
-    .toast-success { background: #2e7d32; }
-    .toast-error { background: #c62828; }
-    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-    th, td { border: 1px solid #999; padding: 8px; text-align: left; }
-    th { background: #f0f0f0; }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 15px; }
-  </style>
+  <title>DevOps Inventory System (100% No CSS)</title>
 </head>
 <body>
 
@@ -130,47 +115,53 @@ volumes:
   <!-- VIEW 1: LOGIN -->
   <div id="view-login">
     <h2>เข้าสู่ระบบ (Login)</h2>
-    <fieldset style="margin-bottom: 15px;">
+    <fieldset>
       <legend>ปุ่มลัดสิทธิ์ผู้ใช้ (Demo Roles)</legend>
       <button type="button" id="btn-quick-admin" onclick="fillAndLogin('admin')">[👑 Admin]</button>
       <button type="button" id="btn-quick-officer" onclick="fillAndLogin('officer1')">[👤 User 1]</button>
       <button type="button" id="btn-quick-member" onclick="fillAndLogin('member1')">[👥 User 2]</button>
     </fieldset>
 
+    <br>
     <form id="form-login" onsubmit="handleLoginSubmit(event)">
       <fieldset>
         <legend>กรอกข้อมูลเข้าสู่ระบบ</legend>
         <p>ชื่อผู้ใช้: <input type="text" id="input-username" required placeholder="admin"></p>
         <p>รหัสผ่าน: <input type="password" id="input-password" required placeholder="••••••••"></p>
-        <div id="login-error-box" class="hidden" style="color: red;"><span id="login-error-text"></span></div>
+        <p id="login-error-box" hidden><font color="red"><b id="login-error-text"></b></font></p>
         <button type="submit" id="btn-login">เข้าสู่ระบบ (Sign In)</button>
       </fieldset>
     </form>
-  </div>
-
   <!-- VIEW 2: APP / DASHBOARD -->
-  <div id="view-app" class="hidden">
-    <div class="top-bar">
-      <div><h2>DevOps Asset Center</h2></div>
-      <div>
-        ผู้ใช้: <strong id="badge-user-name">Admin</strong> | 
-        สิทธิ์: <span id="badge-user-role">admin</span>
-        <button onclick="logout()">ออกจากระบบ</button>
-      </div>
-    </div>
+  <div id="view-app" hidden>
+    <table width="100%" border="0">
+      <tr>
+        <td><h2>DevOps Asset Center</h2></td>
+        <td align="right">
+          ผู้ใช้: <b id="badge-user-name">Admin</b> | 
+          สิทธิ์: <span id="badge-user-role">admin</span>
+          <button onclick="logout()">ออกจากระบบ</button>
+        </td>
+      </tr>
+    </table>
+    <hr>
 
-    <div>
+    <p>
       <button onclick="switchTab('inventory')" id="tab-inventory">📋 รายการข้อมูล</button>
       <button onclick="switchTab('dashboard')" id="tab-dashboard">📊 ภาพรวม</button>
       <button onclick="switchTab('system-info')" id="tab-system-info">ℹ️ สิทธิ์การใช้งาน</button>
-    </div>
+    </p>
 
     <!-- INVENTORY TAB -->
     <div id="section-inventory">
-      <div style="display: flex; justify-content: space-between; margin: 15px 0;">
-        <h3>รายการข้อมูลและอุปกรณ์</h3>
-        <button id="btn-open-create-modal" onclick="openCreateModal()">+ เพิ่มรายการใหม่</button>
-      </div>
+      <table width="100%" border="0">
+        <tr>
+          <td><h3>รายการข้อมูลและอุปกรณ์</h3></td>
+          <td align="right">
+            <button id="btn-open-create-modal" onclick="openCreateModal()">+ เพิ่มรายการใหม่</button>
+          </td>
+        </tr>
+      </table>
 
       <fieldset>
         <legend>ค้นหา</legend>
@@ -182,56 +173,60 @@ volumes:
         </select>
         <button onclick="resetFilters()">ล้างการค้นหา</button>
       </fieldset>
+      <br>
 
-      <table border="1">
+      <table border="1" cellpadding="6" cellspacing="0" width="100%">
         <thead>
           <tr><th>รหัส</th><th>ชื่อรายการ</th><th>หมวดหมู่</th><th>มูลค่า</th><th>ไฟล์แนบ</th><th>จัดการ</th></tr>
         </thead>
         <tbody id="table-items-body"></tbody>
       </table>
 
-      <div style="margin-top: 10px;">
-        <span id="span-page-info"></span>
-        <button id="btn-prev-page" onclick="prevPage()">« ย้อนกลับ</button>
-        <span id="span-current-page">1</span>
-        <button id="btn-next-page" onclick="nextPage()">ถัดไป »</button>
-      </div>
+      <table width="100%" border="0" style="margin-top: 10px;">
+        <tr>
+          <td><span id="span-page-info"></span></td>
+          <td align="right">
+            <button id="btn-prev-page" onclick="prevPage()">« ย้อนกลับ</button>
+            <span> หน้าที่ <b id="span-current-page">1</b> </span>
+            <button id="btn-next-page" onclick="nextPage()">ถัดไป »</button>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 
-  <!-- MODAL CREATE/EDIT -->
-  <div id="modal-item" class="modal-overlay hidden">
-    <div class="modal-box">
-      <h3 id="modal-title">เพิ่มรายการใหม่</h3>
-      <form id="form-item" onsubmit="handleItemFormSubmit(event)">
-        <input type="hidden" id="item-form-id">
-        <p>รหัส: <input type="text" id="input-item-code" required></p>
-        <p>หมวดหมู่: 
-          <select id="select-item-category" required>
-            <option value="1">Network Equipment</option>
-            <option value="2">Server & Storage</option>
-          </select>
-        </p>
-        <p>ชื่อรายการ: <input type="text" id="input-item-title" required></p>
-        <p>มูลค่า: <input type="number" step="0.01" id="input-item-value" required></p>
-        <p>ไฟล์แนบ: <input type="file" id="input-item-file"></p>
-        <p>รายละเอียด: <textarea id="input-item-desc"></textarea></p>
-        <div id="form-error-box" class="hidden" style="color: red;"><span id="form-error-text"></span></div>
-        <button type="button" onclick="closeItemModal()">ยกเลิก</button>
-        <button type="submit" id="btn-submit-item">บันทึกข้อมูล</button>
-      </form>
-    </div>
-  </div>
+  <!-- NATIVE HTML5 DIALOG FOR MODALS -->
+  <dialog id="modal-item">
+    <h3>เพิ่มรายการใหม่</h3>
+    <form id="form-item" onsubmit="handleItemFormSubmit(event)">
+      <input type="hidden" id="item-form-id">
+      <p>รหัส: <input type="text" id="input-item-code" required></p>
+      <p>หมวดหมู่: 
+        <select id="select-item-category" required>
+          <option value="1">Network Equipment</option>
+          <option value="2">Server & Storage</option>
+        </select>
+      </p>
+      <p>ชื่อรายการ: <input type="text" id="input-item-title" required></p>
+      <p>มูลค่า: <input type="number" step="0.01" id="input-item-value" required></p>
+      <p>ไฟล์แนบ: <input type="file" id="input-item-file"></p>
+      <p>รายละเอียด: <textarea id="input-item-desc"></textarea></p>
+      <p id="form-error-box" hidden><font color="red"><b id="form-error-text"></b></font></p>
+      <hr>
+      <button type="button" onclick="closeItemModal()">ยกเลิก</button>
+      <button type="submit" id="btn-submit-item">บันทึกข้อมูล</button>
+    </form>
+  </dialog>
 
-  <!-- MODAL DELETE -->
-  <div id="modal-confirm-delete" class="modal-overlay hidden">
-    <div class="modal-box" style="text-align: center;">
-      <h3>ยืนยันการลบข้อมูล?</h3>
-      <p id="delete-confirm-text"></p>
+  <dialog id="modal-confirm-delete">
+    <h3 align="center">ยืนยันการลบข้อมูล?</h3>
+    <p align="center" id="delete-confirm-text"></p>
+    <hr>
+    <p align="center">
       <button type="button" onclick="closeDeleteModal()">ยกเลิก</button>
-      <button type="button" id="btn-confirm-delete" onclick="executeDelete()" style="color: red;">ยืนยันลบ</button>
-    </div>
-  </div>
+      <button type="button" id="btn-confirm-delete" onclick="executeDelete()"><font color="red"><b>ยืนยันลบ</b></font></button>
+    </p>
+  </dialog>
 
 </body>
 </html>`
