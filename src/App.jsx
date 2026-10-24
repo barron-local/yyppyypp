@@ -26,13 +26,16 @@ import {
   Users,
   FileQuestion,
   HelpCircle,
-  AlertTriangle
+  AlertTriangle,
+  Folder,
+  FileCode,
+  FileText
 } from 'lucide-react';
-import { backendCodeFiles, projectStructureTree } from './data/backendCode';
+import { projectFileTree, allProjectFiles } from './data/backendCode';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('all');
-  const [activeBackendFile, setActiveBackendFile] = useState('controllers/auth.controller.js');
+  const [activeBackendFile, setActiveBackendFile] = useState('backend/controllers/auth.controller.js');
   const [searchQuery, setSearchQuery] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -1203,65 +1206,112 @@ deploy_job:
                 </div>
               </div>
 
-              <div className="font-semibold text-[#37352f] dark:text-[#d4d4d4] flex items-center justify-between">
-                <span>คำตอบและซอร์สโค้ด Backend REST API ที่สร้างไว้ในโปรเจกต์:</span>
-                <span className="text-[11px] font-normal text-indigo-600 dark:text-indigo-400">คลิกเลือกไฟล์เพื่อดู Source Code</span>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                  <span className="font-bold text-sm text-[#37352f] dark:text-[#d4d4d4]">
+                    โครงสร้างโฟลเดอร์ของโปรเจกต์ทั้งหมด (คลิกเลือกไฟล์เพื่อดูซอร์สโค้ดทันที)
+                  </span>
+                  <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
+                    คลิกที่ชื่อไฟล์ในผังต้นไม้ด้านล่างเพื่อสลับ Source Code ในกล่องข้อความ
+                  </div>
+                </div>
               </div>
 
-              {/* Tabs for choosing which backend file to view (All 9 Files) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                {backendCodeFiles.map((item) => {
-                  const isSelected = activeBackendFile === item.path;
-                  return (
-                    <button
-                      key={item.path}
-                      type="button"
-                      onClick={() => setActiveBackendFile(item.path)}
-                      className={`p-2.5 rounded-lg border text-left transition flex flex-col justify-between gap-1.5 ${
-                        isSelected
-                          ? 'border-indigo-500 bg-indigo-50/70 dark:bg-indigo-950/40 shadow-sm ring-1 ring-indigo-500'
-                          : 'border-[#edece9] dark:border-[#2e2e2e] bg-[#f7f6f3] dark:bg-[#252525] hover:bg-slate-200/60 dark:hover:bg-[#2c2c2c]'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="font-mono text-[11px] font-bold text-indigo-700 dark:text-indigo-300 truncate">
-                          {item.path}
-                        </span>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-200 shrink-0">
-                          {item.badge}
-                        </span>
+              {/* Interactive Visual Project File Tree (ON TOP) */}
+              <div className="p-3 bg-[#f7f6f3] dark:bg-[#202020] border border-[#edece9] dark:border-[#2e2e2e] rounded-xl space-y-2">
+                <div className="flex items-center gap-2 font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400 pb-1 border-b border-[#edece9] dark:border-[#2e2e2e]">
+                  <Folder className="w-4 h-4 text-amber-500" />
+                  <span>modules/04_Fullstack_DevOps_App/</span>
+                </div>
+
+                <div className="space-y-1.5 pl-2 font-mono text-xs">
+                  {/* Root Files (Dockerfile, compose) */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {projectFileTree.filter(item => item.type === 'file').map((file) => {
+                      const isSelected = activeBackendFile === file.path;
+                      return (
+                        <button
+                          key={file.path}
+                          type="button"
+                          onClick={() => setActiveBackendFile(file.path)}
+                          className={`px-2.5 py-1.5 rounded-lg border flex items-center gap-1.5 transition text-left ${
+                            isSelected
+                              ? 'border-indigo-500 bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-400 font-semibold'
+                              : 'border-[#edece9] dark:border-[#2e2e2e] bg-white dark:bg-[#191919] hover:bg-slate-200 dark:hover:bg-[#2c2c2c] text-[#37352f] dark:text-[#d4d4d4]'
+                          }`}
+                        >
+                          <FileCode className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-blue-500'}`} />
+                          <span>{file.name}</span>
+                          <span className={`text-[9px] px-1.5 py-0.2 rounded font-medium ${
+                            isSelected ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
+                          }`}>
+                            {file.badge}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Folders (frontend, backend, tests) */}
+                  {projectFileTree.filter(item => item.type === 'folder').map((folder) => (
+                    <div key={folder.name} className="pt-1.5 space-y-1">
+                      <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-semibold text-[11px]">
+                        <Folder className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                        <span>{folder.name}</span>
                       </div>
-                      <p className="text-[10px] text-[#787774] dark:text-[#9b9b9b] line-clamp-2 leading-tight">
-                        {item.desc}
-                      </p>
-                    </button>
-                  );
-                })}
+                      <div className="pl-4 flex flex-wrap gap-1.5">
+                        {folder.files.map((file) => {
+                          const isSelected = activeBackendFile === file.path;
+                          return (
+                            <button
+                              key={file.path}
+                              type="button"
+                              onClick={() => setActiveBackendFile(file.path)}
+                              className={`px-2.5 py-1.5 rounded-lg border flex items-center gap-1.5 transition text-left ${
+                                isSelected
+                                  ? 'border-indigo-500 bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-400 font-semibold'
+                                  : 'border-[#edece9] dark:border-[#2e2e2e] bg-white dark:bg-[#191919] hover:bg-slate-200 dark:hover:bg-[#2c2c2c] text-[#37352f] dark:text-[#d4d4d4]'
+                              }`}
+                            >
+                              <FileCode className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-indigo-500'}`} />
+                              <span>{file.name}</span>
+                              <span className={`text-[9px] px-1.5 py-0.2 rounded font-medium ${
+                                isSelected ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
+                              }`}>
+                                {file.badge}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Active File Source Code Display */}
+              {/* Active File Source Code Display Box (DISPLAY RIGHT UNDER THE TREE) */}
               {(() => {
-                const currentFile = backendCodeFiles.find(f => f.path === activeBackendFile) || backendCodeFiles[0];
+                const currentFile = allProjectFiles.find(f => f.path === activeBackendFile) || allProjectFiles[0];
                 return (
-                  <div className="mt-2 space-y-2">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 p-2.5 rounded bg-slate-100 dark:bg-[#202020] border border-[#edece9] dark:border-[#2e2e2e]">
+                  <div className="mt-3 space-y-2">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 p-3 rounded-xl bg-slate-100 dark:bg-[#202020] border border-[#edece9] dark:border-[#2e2e2e]">
                       <div className="flex items-center gap-2">
-                        <Terminal className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                        <Terminal className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
                         <div>
                           <div className="font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                            modules/04_Fullstack_DevOps_App/backend/{currentFile.path}
+                            modules/04_Fullstack_DevOps_App/{currentFile.path}
                           </div>
-                          <div className="text-[10px] text-[#787774] dark:text-[#9b9b9b]">
+                          <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b]">
                             {currentFile.desc}
                           </div>
                         </div>
                       </div>
                       <button
                         type="button"
-                        onClick={() => copyToClipboard(currentFile.code, `backend-${currentFile.path}`)}
-                        className="px-2.5 py-1 rounded bg-white dark:bg-[#191919] border border-[#edece9] dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 text-[11px] font-medium flex items-center gap-1.5 shrink-0 transition"
+                        onClick={() => copyToClipboard(currentFile.code, `project-${currentFile.path}`)}
+                        className="px-3 py-1.5 rounded-lg bg-white dark:bg-[#191919] border border-[#edece9] dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-medium flex items-center gap-1.5 shrink-0 transition shadow-sm"
                       >
-                        {copiedId === `backend-${currentFile.path}` ? (
+                        {copiedId === `project-${currentFile.path}` ? (
                           <>
                             <Check className="w-3.5 h-3.5 text-emerald-500" />
                             <span className="text-emerald-600 dark:text-emerald-400 font-semibold">คัดลอกสำเร็จ!</span>
@@ -1283,39 +1333,7 @@ deploy_job:
               })()}
 
               <div className="text-[11px] text-[#787774] dark:text-[#9b9b9b] italic">
-                *ไฟล์ต้นฉบับจริงในโปรเจกต์อยู่ที่โฟลเดอร์: <code>modules/04_Fullstack_DevOps_App/backend/</code>
-              </div>
-
-              {/* Project Architecture & Directory Structure */}
-              <div className="mt-4 pt-4 border-t border-[#edece9] dark:border-[#2e2e2e] space-y-2.5">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                  <div className="flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                    <span className="font-bold text-xs text-[#37352f] dark:text-[#d4d4d4]">
-                      โครงสร้างโฟลเดอร์ของโปรเจกต์ทั้งหมด (Project Architecture)
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => copyToClipboard(projectStructureTree, 'project-tree')}
-                    className="px-2.5 py-1 rounded bg-[#f7f6f3] dark:bg-[#252525] border border-[#edece9] dark:border-[#2e2e2e] hover:bg-slate-200 dark:hover:bg-slate-700 text-[11px] font-medium flex items-center gap-1.5 shrink-0 transition"
-                  >
-                    {copiedId === 'project-tree' ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-500" />
-                        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">คัดลอกผังสำเร็จ!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>คัดลอกโครงสร้างโฟลเดอร์</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-                <pre className="p-3 bg-[#f7f6f3] dark:bg-[#202020] border border-[#edece9] dark:border-[#2e2e2e] rounded-lg text-[11px] font-mono overflow-x-auto text-slate-800 dark:text-slate-200 leading-relaxed max-h-[350px] overflow-y-auto">
-                  {projectStructureTree}
-                </pre>
+                *ไฟล์ทั้งหมดถูกจำลองและบันทึกไว้ในโฟลเดอร์: <code>modules/04_Fullstack_DevOps_App/</code>
               </div>
             </div>
 
