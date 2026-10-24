@@ -29,7 +29,8 @@ import {
   AlertTriangle,
   Folder,
   FileCode,
-  FileText
+  FileText,
+  Download
 } from 'lucide-react';
 import { projectFileTree, allProjectFiles } from './data/backendCode';
 
@@ -1206,7 +1207,7 @@ deploy_job:
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <div>
                   <span className="font-bold text-sm text-[#37352f] dark:text-[#d4d4d4]">
                     โครงสร้างโฟลเดอร์ของโปรเจกต์ทั้งหมด (คลิกเลือกไฟล์เพื่อดูซอร์สโค้ดทันที)
@@ -1215,6 +1216,17 @@ deploy_job:
                     คลิกที่ชื่อไฟล์ในผังต้นไม้ด้านล่างเพื่อสลับ Source Code ในกล่องข้อความ
                   </div>
                 </div>
+
+                {/* Download Project ZIP Button */}
+                <a
+                  href="/04_Fullstack_DevOps_App.zip"
+                  download="04_Fullstack_DevOps_App.zip"
+                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-medium text-xs flex items-center gap-2 shadow-sm transition hover:shadow-md shrink-0"
+                  title="ดาวน์โหลดไฟล์โปรเจกต์ทั้งหมด (ครบทุกไฟล์ ยกเว้น node_modules)"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>ดาวน์โหลดโปรเจกต์เต็ม (ZIP)</span>
+                </a>
               </div>
 
               {/* Interactive Visual Project File Tree (ON TOP) */}
