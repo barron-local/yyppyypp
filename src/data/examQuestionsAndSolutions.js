@@ -519,8 +519,8 @@ export const examQuestionsAndSolutions = [
           "คลิก Customize Hardware... > CD/DVD > เลือก Use ISO image ชี้ไปที่ไฟล์ Ubuntu Server ISO > Close > Finish"
         ],
         "lang": "powershell",
-        "code": "# ตรวจสอบสเปกไฟล์คอนฟิก .vmx บน VMware:\nGet-Content \"C:\\VMs\\devops-server\\devops-server.vmx\" | Select-String \"memsize|numvcpus|ethernet0.connectionType\"",
-        "verify": "เปิด VMware Workstation ตรวจดูแท็บ Summary ของ devops-server แสดง Memory 4GB, 2 CPUs"
+        "code": "# ค้นหาไฟล์ .vmx ในโฟลเดอร์ Documents Virtual Machines:\nGet-ChildItem -Path \"$HOME\\Documents\\Virtual Machines\" -Recurse -Filter \"*.vmx\" | Select-Object FullName\n\n# ตรวจสอบสเปกไฟล์คอนฟิก .vmx บน VMware:\nGet-Content \"$HOME\\Documents\\Virtual Machines\\devops-server\\devops-server.vmx\" | Select-String \"memsize|numvcpus|ethernet0\"",
+        "verify": "ผลลัพธ์แสดง memsize = \"4096\" (4GB RAM), numvcpus = \"2\" (2 vCPUs) และ ethernet0"
       },
       {
         "id": "proxmox",
@@ -681,7 +681,7 @@ export const examQuestionsAndSolutions = [
           "หรือใช้คำสั่ง vmrun -T ws start ... nogui ในสคริปต์ Startup ของระบบ"
         ],
         "lang": "powershell",
-        "code": "# คำสั่งสตาร์ต VM เบื้องหลังผ่าน vmrun CLI:\n& \"C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\" -T ws start \"C:\\VMs\\devops-server\\devops-server.vmx\" nogui\n\n# ตรวจสอบสถานะ VM ที่เปิดอยู่:\n& \"C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\" list",
+        "code": "# คำสั่งสตาร์ต VM เบื้องหลังผ่าน vmrun CLI (ใช้ Path จริงของ VMware Workstation):\n& \"C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\" -T ws start \"$HOME\\Documents\\Virtual Machines\\devops-server\\devops-server.vmx\" nogui\n\n# ตรวจสอบสถานะ VM ที่เปิดอยู่:\n& \"C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\" list",
         "verify": "vmrun list แสดง devops-server.vmx ในรายการ Running VMs"
       },
       {
