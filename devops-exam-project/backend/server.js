@@ -6,6 +6,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -26,7 +27,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
+// ให้บริการ Static Web (ตรวจหา frontend/dist สำหรับ React SPA หรือโฟลเดอร์ frontend)
+const distPath = path.join(__dirname, '..', 'frontend', 'dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+} else {
+  app.use(express.static(path.join(__dirname, '..', 'frontend')));
+}
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: "success", message: "Server is healthy and running" });
@@ -35,6 +43,18 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/categories', categoryRoutes);
+
+// Fallback SPA Routing
+app.get('*', (req, res, next) => {
+  if (req.url.startsWith('/api') || req.url.startsWith('/uploads')) return next();
+  const indexPath = fs.existsSync(distPath)
+    ? path.join(distPath, 'index.html')
+    : path.join(__dirname, '..', 'frontend', 'index.html');
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+  next();
+});
 
 app.use(notFoundHandler);
 app.use(errorHandler);

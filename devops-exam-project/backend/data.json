@@ -44,17 +44,6 @@
   ],
   "items": [
     {
-      "id": 4,
-      "category_id": 1,
-      "created_by": 2,
-      "item_code": "TEST-OFF-01",
-      "title": "Item created by Officer",
-      "description": "",
-      "value_amount": 1500,
-      "attachment_path": null,
-      "created_at": "2026-10-24T14:11:53.264Z"
-    },
-    {
       "id": 5,
       "category_id": 1,
       "created_by": 2,
@@ -75,6 +64,17 @@
       "value_amount": 32000,
       "attachment_path": null,
       "created_at": "2026-10-24T14:14:06.549Z"
+    },
+    {
+      "id": 7,
+      "category_id": 1,
+      "created_by": 2,
+      "item_code": "UNIT-3014",
+      "title": "Router Cisco ISR 4331",
+      "description": "",
+      "value_amount": 32000,
+      "attachment_path": null,
+      "created_at": "2026-10-25T06:06:43.023Z"
     }
   ]
 }

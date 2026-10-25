@@ -1,0 +1,15 @@
+{
+  local_certs
+}
+
+app.competition.lab {
+  reverse_proxy host.docker.internal:3000
+}
+
+registry.competition.lab {
+  reverse_proxy host.docker.internal:5000
+}
+
+gitlab.competition.lab {
+  reverse_proxy host.docker.internal:8080
+}

@@ -1,5 +1,7 @@
 // ==============================================================================
-// EXACT RUBRIC & SOLUTIONS DATA (100 PTS) DIRECTLY FROM OFFICIAL PDF (ITEM 58)
+// EXACT RUBRIC & SOLUTIONS DATA DIRECTLY FROM OFFICIAL PDF (ITEM 58)
+// ทักษะเทคโนโลยีสารสนเทศด้านโปรแกรมและเครือข่ายด้วยกระบวนการ DevOps ระดับ ปวส.
+// ปีการศึกษา 2568 - 2572 (100 คะแนนเต็ม พร้อมระบบลำดับการปฏิบัติงานจริง 10 ขั้น)
 // ==============================================================================
 
 export const sectionsMeta = [
@@ -18,6 +20,13 @@ export const sectionsMeta = [
     desc: 'Virtualization, Linux Server (Ubuntu), DNS Server บน Docker, SSH 2 Users, Sudo NOPASSWD, UFW Firewall, Docker & GitLab, Compose HTTPS Reverse Proxy, GitLab CI/CD Pipeline 4 Stages'
   },
   {
+    id: 'sec3',
+    title: 'ส่วนที่ 3 ติดตั้งและทดสอบ MQTT Server, Node-RED, Hardware, Dashboard (โหมดมี IoT 10 คะแนน)',
+    totalPts: 10,
+    pdfPages: [13, 22],
+    desc: 'ติดตั้ง MQTT Server (EMQX/Mosquitto) พร้อม ACL, Node-RED, เชื่อมต่อ ESP32 + Sensor, Database Logging ลง MySQL, Node-RED Dashboard และ Web Dashboard 5 รูปแบบ'
+  },
+  {
     id: 'sec4',
     title: 'ส่วนที่ 4 ซอฟต์แวร์และการประยุกต์',
     totalPts: 53,
@@ -33,2010 +42,2324 @@ export const sectionsMeta = [
   }
 ];
 
+export const executionPhases = [
+  {
+    phase: 1,
+    id: 'phase-1',
+    title: 'Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3',
+    shortTitle: '1. เครือข่าย & สวิตช์ L3',
+    timeAllotment: '09:00 - 10:15 (1.25 ชม.)',
+    pts: 13,
+    itemCount: 12,
+    icon: 'Network',
+    color: 'blue',
+    summary: 'เริ่มทำก่อนอันดับแรก: ตั้งค่า Cisco Layer 3 Switch: VLAN 10, 20, 30, Inter-VLAN Routing, DHCP Server, DHCP Snooping, NAT ออกเน็ตกรรมการ, ACL และ STP Loop Guard'
+  },
+  {
+    phase: 2,
+    id: 'phase-2',
+    title: 'Phase 2: เซิร์ฟเวอร์เสมือนและระบบปฏิบัติการหลัก',
+    shortTitle: '2. Hypervisor & Ubuntu OS',
+    timeAllotment: '10:15 - 11:00 (45 นาที)',
+    pts: 6,
+    itemCount: 6,
+    icon: 'Server',
+    color: 'emerald',
+    summary: 'ติดตั้ง Proxmox VE 8 / VMware Workstation Pro 17+, สร้าง VM devops-server (2 vCPU, RAM 4GB), On-Boot Autostart, ติดตั้ง Ubuntu Server, Netplan Static IP, Hostname'
+  },
+  {
+    phase: 3,
+    id: 'phase-3',
+    title: 'Phase 3: ความปลอดภัยและการรีโมตเซิร์ฟเวอร์',
+    shortTitle: '3. SSH, Users & Firewall',
+    timeAllotment: '11:00 - 11:30 (30 นาที)',
+    pts: 5,
+    itemCount: 5,
+    icon: 'ShieldCheck',
+    color: 'amber',
+    summary: 'เปิด OpenSSH Server, สร้าง Users (devops, auditor), ตั้งค่า SSH Port, UFW Firewall (เปิด 22, 80, 443, 53, 5000, 2222, 5380), Sudo NOPASSWD'
+  },
+  {
+    phase: 4,
+    id: 'phase-4',
+    title: 'Phase 4: ระบบชื่อโดเมนภายใน (Technitium DNS & ACL)',
+    shortTitle: '4. DNS Server & ACL',
+    timeAllotment: '11:30 - 12:00 (30 นาที)',
+    pts: 2,
+    itemCount: 2,
+    icon: 'Globe',
+    color: 'teal',
+    summary: 'ปลดล็อกพอร์ต 53 บน Ubuntu (systemd-resolved), รัน Technitium DNS บน Docker, สร้าง Primary Zone & A Records (gitlab, registry, app), กำหนด DNS ACL (Restricted)'
+  },
+  {
+    phase: 5,
+    id: 'phase-5',
+    title: 'Phase 5: แพลตฟอร์ม DevOps & Git Central (Docker, GitLab & Registry)',
+    shortTitle: '5. Docker, GitLab & Registry',
+    timeAllotment: '12:00 - 13:00 (1 ชม.)',
+    pts: 5,
+    itemCount: 5,
+    icon: 'GitBranch',
+    color: 'indigo',
+    summary: 'ติดตั้ง Docker Engine, Private Registry v2 + UI (5000/8080), Insecure Registry daemon.json, GitLab CE Compose, GitLab Runner (Docker executor), Caddy HTTPS Reverse Proxy (tls internal) & Root CA'
+  },
+  {
+    phase: 6,
+    id: 'phase-6',
+    title: 'Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe',
+    shortTitle: '6. ออกแบบระบบ & Wireframe',
+    timeAllotment: '13:30 - 14:15 (45 นาที)',
+    pts: 20,
+    itemCount: 20,
+    icon: 'Layers',
+    color: 'purple',
+    summary: 'จัดทำ Flowchart 5 ผังด้วย Draw.io, ออกแบบฐานข้อมูล Relational อย่างน้อย 3 ตาราง & Class Diagram, วาด Wireframe Draw.io 5 หน้าจอ, ออกแบบ RESTful API Spec'
+  },
+  {
+    phase: 7,
+    id: 'phase-7',
+    title: 'Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)',
+    shortTitle: '7. Database & Backend API',
+    timeAllotment: '14:15 - 15:15 (1 ชม.)',
+    pts: 10,
+    itemCount: 10,
+    icon: 'Database',
+    color: 'cyan',
+    summary: 'สร้าง Database MySQL 8, เขียน Backend API (Node.js Express), ระบบ Login Authentication (JWT, bcrypt), CRUD APIs, RBAC 3 สิทธิ์ (Admin, Officer1, User2), Unit Tests'
+  },
+  {
+    phase: 8,
+    id: 'phase-8',
+    title: 'Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)',
+    shortTitle: '8. Frontend UI & Tests',
+    timeAllotment: '15:15 - 16:00 (45 นาที)',
+    pts: 16,
+    itemCount: 16,
+    icon: 'Layout',
+    color: 'pink',
+    summary: 'พัฒนา Frontend UI (Vue/React/HTML) Responsive, หน้าจอ Login เชื่อมต่อ JWT, Dashboard สรุปข้อมูล, ตาราง CRUD, Git Branch Strategy, E2E Testing 2 ข้อ'
+  },
+  {
+    phase: 9,
+    id: 'phase-9',
+    title: 'Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production',
+    shortTitle: '9. CI/CD & Production Deploy',
+    timeAllotment: '16:00 - 16:30 (30 นาที)',
+    pts: 8,
+    itemCount: 10,
+    icon: 'Rocket',
+    color: 'rose',
+    summary: 'เขียน Dockerfile Multi-stage, Docker Compose รวม App+DB บน Production, .gitlab-ci.yml 4 Stages (build, test, push, deploy), Git Push Auto Trigger, ตรวจสอบ Passed สีเขียวทั้ง 4 สเตจ และตรวจสอบ Image บน Registry'
+  },
+  {
+    phase: 10,
+    id: 'phase-10',
+    title: 'Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ',
+    shortTitle: '10. IoT & นำเสนอส่งมอบ',
+    timeAllotment: '16:30 - 17:00 (30 นาที)',
+    pts: 10,
+    itemCount: 12,
+    icon: 'Presentation',
+    color: 'orange',
+    summary: 'ตั้งค่า MQTT + Node-RED + ESP32 Dashboard (ถ้ามี), ตรวจสอบใบคะแนนตนเอง 100 คะแนนเต็ม, ซ้อมตอบคำถาม 3 ข้อ (Backend, Frontend, DevOps Troubleshooting 5 นาที), นำเสนอการทำงานร่วมกัน'
+  }
+];
+
 export const examQuestionsAndSolutions = [
-  // ==========================================================================
-  // ส่วนที่ 1: Network (13 คะแนนเต็ม) - หน้า 9-10
-  // ==========================================================================
   {
-    id: 'c1',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.1',
-    pdfPage: 9,
-    questionText: 'VLAN Configuration\n- มี VLAN server, dev, guest เท่านั้น และไม่ใช่ Default VLAN',
-    pts: 1,
-    note: 'VLAN ละ 0.33 คะแนน',
-    explanation: 'สร้าง VLAN 3 วงตามชื่อที่กำหนดบน Cisco Layer 3 Switch โดยห้ามใช้ VLAN 1 (Default): VLAN 10 (server), VLAN 20 (dev), VLAN 30 (guest)',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `enable
-configure terminal
-
-! สร้าง VLAN 3 วงตามเกณฑ์ทางการ
-vlan 10
- name server
-exit
-vlan 20
- name dev
-exit
-vlan 30
- name guest
-exit`,
-    verify: 'show vlan brief'
+    "id": "c1",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.1",
+    "pdfPage": 9,
+    "questionText": "VLAN Configuration\n- มี VLAN server, dev, guest เท่านั้น และไม่ใช่ Default VLAN",
+    "pts": 1,
+    "note": "VLAN ละ 0.33 คะแนน",
+    "explanation": "สร้าง VLAN 3 วงตามชื่อที่กำหนดบน Cisco Layer 3 Switch โดยห้ามใช้ VLAN 1 (Default): VLAN 10 (server), VLAN 20 (dev), VLAN 30 (guest)",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "enable\nconfigure terminal\n\n! สร้าง VLAN 3 วงตามเกณฑ์ทางการ\nvlan 10\n name server\nexit\nvlan 20\n name dev\nexit\nvlan 30\n name guest\nexit",
+    "verify": "show vlan brief",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 1,
+    "execOrderDesc": "เริ่มทำก่อนอันดับแรก: สร้าง VLAN 10 (server), 20 (dev), 30 (guest) บน Cisco Switch"
   },
   {
-    id: 'c2_1',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.2',
-    pdfPage: 9,
-    questionText: 'Inter-VLAN Routing - การตั้งค่า IP Interface\n- มี IP ทั้ง VLAN server, dev, guest',
-    pts: 2,
-    note: 'ไม่ครบได้ 0 คะแนน',
-    explanation: 'สร้าง Switch Virtual Interface (SVI) พร้อมกำหนด IP Address ให้เป็น Default Gateway ครบทั้ง 3 วง',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `configure terminal
-ip routing
-
-interface vlan 10
- description Gateway Server Network
- ip address 192.168.10.1 255.255.255.0
- no shutdown
-exit
-
-interface vlan 20
- description Gateway Dev Network
- ip address 192.168.20.1 255.255.255.0
- no shutdown
-exit
-
-interface vlan 30
- description Gateway Guest Network
- ip address 192.168.30.1 255.255.255.0
- no shutdown
-exit`,
-    verify: 'show ip interface brief'
+    "id": "c2_1",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.2",
+    "pdfPage": 9,
+    "questionText": "Inter-VLAN Routing - การตั้งค่า IP Interface\n- มี IP ทั้ง VLAN server, dev, guest",
+    "pts": 2,
+    "note": "ไม่ครบได้ 0 คะแนน",
+    "explanation": "สร้าง Switch Virtual Interface (SVI) พร้อมกำหนด IP Address ให้เป็น Default Gateway ครบทั้ง 3 วง",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "configure terminal\nip routing\n\ninterface vlan 10\n description Gateway Server Network\n ip address 192.168.10.1 255.255.255.0\n no shutdown\nexit\n\ninterface vlan 20\n description Gateway Dev Network\n ip address 192.168.20.1 255.255.255.0\n no shutdown\nexit\n\ninterface vlan 30\n description Gateway Guest Network\n ip address 192.168.30.1 255.255.255.0\n no shutdown\nexit",
+    "verify": "show ip interface brief",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 2,
+    "execOrderDesc": "กำหนด SVI IP Interface เป็น Default Gateway ให้แต่ละ VLAN"
   },
   {
-    id: 'c2_2',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.2',
-    pdfPage: 9,
-    questionText: 'Inter-VLAN Routing - การทำ Routing ระหว่าง VLAN\n- ทำ Routing ระหว่าง VLAN ได้ ครบทั้งสาม',
-    pts: 1,
-    note: 'ไม่ครบได้ 0 คะแนน',
-    explanation: 'เมื่อเปิดคำสั่ง ip routing Switch L3 จะ Route ข้าม VLAN 10, 20, 30 อัตโนมัติ ตรวจสอบ Routing Table และทดสอบ Ping ข้าม VLAN',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `! คำสั่งเปิด Routing บน Switch Layer 3
-ip routing
-
-! ตรวจสอบตาราง Routing จะพบเส้นทางแบบ Connected ครบทั้ง 3 วง
-do show ip route connected
-! C    192.168.10.0/24 is directly connected, Vlan10
-! C    192.168.20.0/24 is directly connected, Vlan20
-! C    192.168.30.0/24 is directly connected, Vlan30`,
-    verify: 'ping 192.168.10.1 และ ping 192.168.20.1 และ ping 192.168.30.1'
+    "id": "c2_2",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.2",
+    "pdfPage": 9,
+    "questionText": "Inter-VLAN Routing - การทำ Routing ระหว่าง VLAN\n- ทำ Routing ระหว่าง VLAN ได้ ครบทั้งสาม",
+    "pts": 1,
+    "note": "ไม่ครบได้ 0 คะแนน",
+    "explanation": "เมื่อเปิดคำสั่ง ip routing Switch L3 จะ Route ข้าม VLAN 10, 20, 30 อัตโนมัติ ตรวจสอบ Routing Table และทดสอบ Ping ข้าม VLAN",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "! คำสั่งเปิด Routing บน Switch Layer 3\nip routing\n\n! ตรวจสอบตาราง Routing จะพบเส้นทางแบบ Connected ครบทั้ง 3 วง\ndo show ip route connected\n! C    192.168.10.0/24 is directly connected, Vlan10\n! C    192.168.20.0/24 is directly connected, Vlan20\n! C    192.168.30.0/24 is directly connected, Vlan30",
+    "verify": "ping 192.168.10.1 และ ping 192.168.20.1 และ ping 192.168.30.1",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 3,
+    "execOrderDesc": "เปิดคำสั่ง ip routing เพื่อให้แต่ละ VLAN สื่อสารข้ามวงกันได้"
   },
   {
-    id: 'c3_1',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.3',
-    pdfPage: 9,
-    questionText: 'DHCP ด้วย Server เครื่องเดียวที่รับผิดชอบ\n- แจก DHCP ได้ 1 VLAN (VLAN Dev หรือ Server)',
-    pts: 1,
-    note: '',
-    explanation: 'ตั้งค่า DHCP Pool ให้แจก IP ในวง VLAN Server (หรือ Dev) โดยกำหนด Gateway และ DNS Server อย่างถูกต้อง',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `configure terminal
-ip dhcp excluded-address 192.168.10.1 192.168.10.50
-
-ip dhcp pool POOL_SERVER
- network 192.168.10.0 255.255.255.0
- default-router 192.168.10.1
- dns-server 192.168.10.10
-exit`,
-    verify: 'show ip dhcp binding'
+    "id": "c3_1",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.3",
+    "pdfPage": 9,
+    "questionText": "DHCP ด้วย Server เครื่องเดียวที่รับผิดชอบ\n- แจก DHCP ได้ 1 VLAN (VLAN Dev หรือ Server)",
+    "pts": 1,
+    "note": "",
+    "explanation": "ตั้งค่า DHCP Pool ให้แจก IP ในวง VLAN Server (หรือ Dev) โดยกำหนด Gateway และ DNS Server อย่างถูกต้อง",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "configure terminal\nip dhcp excluded-address 192.168.10.1 192.168.10.50\n\nip dhcp pool POOL_SERVER\n network 192.168.10.0 255.255.255.0\n default-router 192.168.10.1\n dns-server 192.168.10.10\nexit",
+    "verify": "show ip dhcp binding",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 4,
+    "execOrderDesc": "สร้าง DHCP Pool แจก IP ให้กับ VLAN Dev หรือ Server"
   },
   {
-    id: 'c3_2',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.3',
-    pdfPage: 9,
-    questionText: 'DHCP ด้วย Server เครื่องเดียวที่รับผิดชอบ\n- แจก DHCP ได้ 2 VLAN (VLAN Dev และ Server)',
-    pts: 1,
-    note: '',
-    explanation: 'สร้าง DHCP Pool เพิ่มให้ครอบคลุมทั้งวง Dev และ Guest (สามารถใส่ ip helper-address กรณีใช้ Linux DHCP Server ภายนอก)',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `configure terminal
-ip dhcp excluded-address 192.168.20.1 192.168.20.20
-ip dhcp excluded-address 192.168.30.1 192.168.30.20
-
-ip dhcp pool POOL_DEV
- network 192.168.20.0 255.255.255.0
- default-router 192.168.20.1
- dns-server 192.168.10.10
-exit
-
-ip dhcp pool POOL_GUEST
- network 192.168.30.0 255.255.255.0
- default-router 192.168.30.1
- dns-server 192.168.10.10
-exit`,
-    verify: 'show ip dhcp pool'
+    "id": "c3_2",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.3",
+    "pdfPage": 9,
+    "questionText": "DHCP ด้วย Server เครื่องเดียวที่รับผิดชอบ\n- แจก DHCP ได้ 2 VLAN (VLAN Dev และ Server)",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้าง DHCP Pool เพิ่มให้ครอบคลุมทั้งวง Dev และ Guest (สามารถใส่ ip helper-address กรณีใช้ Linux DHCP Server ภายนอก)",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "configure terminal\nip dhcp excluded-address 192.168.20.1 192.168.20.20\nip dhcp excluded-address 192.168.30.1 192.168.30.20\n\nip dhcp pool POOL_DEV\n network 192.168.20.0 255.255.255.0\n default-router 192.168.20.1\n dns-server 192.168.10.10\nexit\n\nip dhcp pool POOL_GUEST\n network 192.168.30.0 255.255.255.0\n default-router 192.168.30.1\n dns-server 192.168.10.10\nexit",
+    "verify": "show ip dhcp pool",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 5,
+    "execOrderDesc": "สร้าง DHCP Pool แจก IP ให้ครบทั้ง 2 VLAN (Dev และ Server)"
   },
   {
-    id: 'c3_3',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.3',
-    pdfPage: 9,
-    questionText: 'DHCP Snooping & Trust Port\n- ให้ Switch ยอมรับการใช้งาน DHCP Server เฉพาะ Port ที่กำหนดได้',
-    pts: 1,
-    note: '',
-    explanation: 'เปิดใช้งาน DHCP Snooping ป้องกัน Rogue DHCP Server และกำหนดให้ Port Fa0/1 ที่เชื่อมต่อ Server ตัวจริงเป็น Trust Port',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `configure terminal
-ip dhcp snooping
-ip dhcp snooping vlan 10,20,30
-no ip dhcp snooping information option
-
-! กำหนด Port Fa0/1 ที่ต่อกับเครื่อง Server ให้เป็น Trust Port
-interface FastEthernet 0/1
- ip dhcp snooping trust
-exit
-
-! จำกัด Rate บน Port อื่นๆ เพื่อป้องกัน DHCP Starvation Attack
-interface range FastEthernet 0/2 - 24
- ip dhcp snooping limit rate 15
-exit`,
-    verify: 'show ip dhcp snooping'
+    "id": "c3_3",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.3",
+    "pdfPage": 9,
+    "questionText": "DHCP Snooping & Trust Port\n- ให้ Switch ยอมรับการใช้งาน DHCP Server เฉพาะ Port ที่กำหนดได้",
+    "pts": 1,
+    "note": "",
+    "explanation": "เปิดใช้งาน DHCP Snooping ป้องกัน Rogue DHCP Server และกำหนดให้ Port Fa0/1 ที่เชื่อมต่อ Server ตัวจริงเป็น Trust Port",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "configure terminal\nip dhcp snooping\nip dhcp snooping vlan 10,20,30\nno ip dhcp snooping information option\n\n! กำหนด Port Fa0/1 ที่ต่อกับเครื่อง Server ให้เป็น Trust Port\ninterface FastEthernet 0/1\n ip dhcp snooping trust\nexit\n\n! จำกัด Rate บน Port อื่นๆ เพื่อป้องกัน DHCP Starvation Attack\ninterface range FastEthernet 0/2 - 24\n ip dhcp snooping limit rate 15\nexit",
+    "verify": "show ip dhcp snooping",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 6,
+    "execOrderDesc": "เปิด DHCP Snooping และกำหนด Trust Port เพื่อป้องกัน Rogue DHCP"
   },
   {
-    id: 'c4',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.4',
-    pdfPage: 9,
-    questionText: 'การทำ NAT เพื่อติดต่อกับเครื่องของกรรมการได้\nใช้ NAT เพื่อให้อุปกรณ์เชื่อมต่อเครือข่ายที่จัดเตรียมได้\n- NAT ได้ ทุก VLAN เพื่อใช้งานเครือข่ายภายนอก (กรณีที่ไม่แข่งขันด้าน IoT)',
-    pts: 1,
-    note: '',
-    explanation: 'ตั้งค่า NAT Overload (PAT) บนเราเตอร์ขาออกนอก ให้อนุญาต Subnet ของทั้ง 3 VLAN ออกไปเชื่อมต่อกับเครือข่ายกรรมการหรืออินเทอร์เน็ตได้',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `! ทำบน Cisco Router เชื่อมต่อภายนอก
-configure terminal
-access-list 1 permit 192.168.10.0 0.0.0.255
-access-list 1 permit 192.168.20.0 0.0.0.255
-access-list 1 permit 192.168.30.0 0.0.0.255
-
-interface GigabitEthernet 0/0
- description Inside LAN
- ip nat inside
-exit
-
-interface GigabitEthernet 0/1
- description Outside to Judge / Internet
- ip nat outside
-exit
-
-ip nat inside source list 1 interface GigabitEthernet 0/1 overload`,
-    verify: 'show ip nat translations'
+    "id": "c4",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.4",
+    "pdfPage": 9,
+    "questionText": "การทำ NAT เพื่อติดต่อกับเครื่องของกรรมการได้\nใช้ NAT เพื่อให้อุปกรณ์เชื่อมต่อเครือข่ายที่จัดเตรียมได้\n- NAT ได้ ทุก VLAN เพื่อใช้งานเครือข่ายภายนอก (กรณีที่ไม่แข่งขันด้าน IoT)",
+    "pts": 1,
+    "note": "",
+    "explanation": "ตั้งค่า NAT Overload (PAT) บนเราเตอร์ขาออกนอก ให้อนุญาต Subnet ของทั้ง 3 VLAN ออกไปเชื่อมต่อกับเครือข่ายกรรมการหรืออินเทอร์เน็ตได้",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "! ทำบน Cisco Router เชื่อมต่อภายนอก\nconfigure terminal\naccess-list 1 permit 192.168.10.0 0.0.0.255\naccess-list 1 permit 192.168.20.0 0.0.0.255\naccess-list 1 permit 192.168.30.0 0.0.0.255\n\ninterface GigabitEthernet 0/0\n description Inside LAN\n ip nat inside\nexit\n\ninterface GigabitEthernet 0/1\n description Outside to Judge / Internet\n ip nat outside\nexit\n\nip nat inside source list 1 interface GigabitEthernet 0/1 overload",
+    "verify": "show ip nat translations",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 7,
+    "execOrderDesc": "ตั้งค่า NAT เพื่อให้ทุก VLAN ออกสู่เครือข่ายภายนอก/เครือข่ายกรรมการได้"
   },
   {
-    id: 'c5_1',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.5',
-    pdfPage: 10,
-    questionText: 'การทำ ACL ควบคุมการสื่อสารภายในเครือข่าย\n- Standard ACL',
-    pts: 1,
-    note: 'Standard ACL',
-    explanation: 'สร้าง Standard Access-List กรอง IP Address ต้นทาง เพื่อควบคุมสิทธิ์การสื่อสารภายในเครือข่าย',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `configure terminal
-! Standard ACL อนุญาตเฉพาะวง dev (192.168.20.0/24)
-access-list 10 permit 192.168.20.0 0.0.0.255
-access-list 10 deny any`,
-    verify: 'show access-lists 10'
+    "id": "c5_1",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.5",
+    "pdfPage": 10,
+    "questionText": "การทำ ACL ควบคุมการสื่อสารภายในเครือข่าย\n- Standard ACL",
+    "pts": 1,
+    "note": "Standard ACL",
+    "explanation": "สร้าง Standard Access-List กรอง IP Address ต้นทาง เพื่อควบคุมสิทธิ์การสื่อสารภายในเครือข่าย",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "configure terminal\n! Standard ACL อนุญาตเฉพาะวง dev (192.168.20.0/24)\naccess-list 10 permit 192.168.20.0 0.0.0.255\naccess-list 10 deny any",
+    "verify": "show access-lists 10",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 8,
+    "execOrderDesc": "สร้าง Standard ACL ควบคุมทราฟฟิกเครือข่ายพื้นฐาน"
   },
   {
-    id: 'c5_2',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.5',
-    pdfPage: 10,
-    questionText: 'การทำ ACL อนุญาตเฉพาะ Service ที่กำหนด\n- Extended ACL',
-    pts: 1,
-    note: 'Extended ACL',
-    explanation: 'สร้าง Extended Access-List อนุญาตเฉพาะพอร์ตบริการที่ใช้งานจริง เช่น Web (80, 443) และ DNS (53)',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `configure terminal
-ip access-list extended ACL_SERVICES
- permit tcp any any eq 80
- permit tcp any any eq 443
- permit udp any any eq 53
- permit tcp any any eq 53
- deny ip any any
-exit`,
-    verify: 'show access-lists ACL_SERVICES'
+    "id": "c5_2",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.5",
+    "pdfPage": 10,
+    "questionText": "การทำ ACL อนุญาตเฉพาะ Service ที่กำหนด\n- Extended ACL",
+    "pts": 1,
+    "note": "Extended ACL",
+    "explanation": "สร้าง Extended Access-List อนุญาตเฉพาะพอร์ตบริการที่ใช้งานจริง เช่น Web (80, 443) และ DNS (53)",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "configure terminal\nip access-list extended ACL_SERVICES\n permit tcp any any eq 80\n permit tcp any any eq 443\n permit udp any any eq 53\n permit tcp any any eq 53\n deny ip any any\nexit",
+    "verify": "show access-lists ACL_SERVICES",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 9,
+    "execOrderDesc": "สร้าง Extended ACL อนุญาตเฉพาะ Service ที่กำหนด (SSH, HTTP, DNS)"
   },
   {
-    id: 'c5_3',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.5',
-    pdfPage: 10,
-    questionText: 'การทำ ACL ป้องกันการเข้าถึง Server',
-    pts: 1,
-    note: '',
-    explanation: 'สร้าง Extended ACL กั้นไม่ให้วง Guest เข้าถึงเครื่องในวง Server ยกเว้นเฉพาะพอร์ตบริการเว็บและ DNS',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `configure terminal
-ip access-list extended ACL_PROTECT_SERVER
- permit tcp 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 80
- permit tcp 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 443
- permit udp 192.168.30.0 0.0.0.255 host 192.168.10.10 eq 53
- deny ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255
- permit ip 192.168.30.0 0.0.0.255 any
-exit
-
-interface vlan 30
- ip access-group ACL_PROTECT_SERVER in
-exit`,
-    verify: 'show ip access-lists ACL_PROTECT_SERVER'
+    "id": "c5_3",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.5",
+    "pdfPage": 10,
+    "questionText": "การทำ ACL ป้องกันการเข้าถึง Server",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้าง Extended ACL กั้นไม่ให้วง Guest เข้าถึงเครื่องในวง Server ยกเว้นเฉพาะพอร์ตบริการเว็บและ DNS",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "configure terminal\nip access-list extended ACL_PROTECT_SERVER\n permit tcp 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 80\n permit tcp 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255 eq 443\n permit udp 192.168.30.0 0.0.0.255 host 192.168.10.10 eq 53\n deny ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255\n permit ip 192.168.30.0 0.0.0.255 any\nexit\n\ninterface vlan 30\n ip access-group ACL_PROTECT_SERVER in\nexit",
+    "verify": "show ip access-lists ACL_PROTECT_SERVER",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 10,
+    "execOrderDesc": "นำ ACL ไป Apply ผูกกับ Interface เพื่อป้องกันการเข้าถึง Server โดยไม่ได้รับอนุญาต"
   },
   {
-    id: 'c5_4',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.5',
-    pdfPage: 10,
-    questionText: 'การทำ ACL สำหรับ Management VLAN',
-    pts: 1,
-    note: '',
-    explanation: 'นำ Standard ACL ไปผูกไว้ที่ line vty 0 4 เพื่อจำกัดให้เฉพาะเครื่องจากวง Dev เท่านั้นที่สามารถ Telnet/SSH เข้ามาบริหาร Switch ได้',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `configure terminal
-line vty 0 4
- access-class 10 in
- transport input ssh
-exit`,
-    verify: 'show running-config | section line vty'
+    "id": "c5_4",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.5",
+    "pdfPage": 10,
+    "questionText": "การทำ ACL สำหรับ Management VLAN",
+    "pts": 1,
+    "note": "",
+    "explanation": "นำ Standard ACL ไปผูกไว้ที่ line vty 0 4 เพื่อจำกัดให้เฉพาะเครื่องจากวง Dev เท่านั้นที่สามารถ Telnet/SSH เข้ามาบริหาร Switch ได้",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "configure terminal\nline vty 0 4\n access-class 10 in\n transport input ssh\nexit",
+    "verify": "show running-config | section line vty",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 11,
+    "execOrderDesc": "ตั้งค่า ACL จำกัดการเข้าถึง Management VLAN เฉพาะเครื่องผู้ดูแล"
   },
   {
-    id: 'c5_5',
-    secId: 'sec1',
-    qNum: 'ข้อ 1.5',
-    pdfPage: 10,
-    questionText: 'การตั้งค่าเพื่อป้องกัน Loop บน Switch',
-    pts: 1,
-    note: '',
-    explanation: 'เปิดใช้งาน Spanning-Tree Rapid-PVST พร้อมตั้งค่า PortFast และ BPDU Guard เพื่อป้องกันการเกิด Switching Loop อย่างมีประสิทธิภาพ',
-    solutionType: 'code',
-    lang: 'cisco',
-    code: `configure terminal
-spanning-tree mode rapid-pvst
-spanning-tree portfast default
-spanning-tree portfast bpduguard default
-end
-write memory`,
-    verify: 'show spanning-tree summary'
+    "id": "c5_5",
+    "secId": "sec1",
+    "qNum": "ข้อ 1.5",
+    "pdfPage": 10,
+    "questionText": "การตั้งค่าเพื่อป้องกัน Loop บน Switch",
+    "pts": 1,
+    "note": "",
+    "explanation": "เปิดใช้งาน Spanning-Tree Rapid-PVST พร้อมตั้งค่า PortFast และ BPDU Guard เพื่อป้องกันการเกิด Switching Loop อย่างมีประสิทธิภาพ",
+    "solutionType": "code",
+    "lang": "cisco",
+    "code": "configure terminal\nspanning-tree mode rapid-pvst\nspanning-tree portfast default\nspanning-tree portfast bpduguard default\nend\nwrite memory",
+    "verify": "show spanning-tree summary",
+    "executionPhase": 1,
+    "phaseName": "Phase 1: โครงสร้างเครือข่ายกายภาพและสวิตช์ L3",
+    "executionStep": 12,
+    "execOrderDesc": "ตั้งค่า Spanning Tree (PortFast / BPDU Guard) ป้องกันการเกิด Loop บน Switch"
   },
-
-  // ==========================================================================
-  // ส่วนที่ 2: ตั้งค่าเครือข่ายตามผังระบบเครือข่าย และ DevOps Infra (24 คะแนนเต็ม)
-  // ==========================================================================
   {
-    id: 'c6_1',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.1',
-    pdfPage: 10,
-    questionText: 'ติดตั้งระบบ Virtualization เช่น Proxmox, VirtualBox, VMware\n- ติดตั้งระบบ Virtualization ได้ มี GUI ใช้งานได้',
-    pts: 1,
-    note: '',
-    explanation: 'ติดตั้ง Proxmox VE (หรือ VMware ESXi / VirtualBox) และเปิดใช้งาน Web GUI ได้ที่ https://192.168.10.2:8006',
-    solutionType: 'text',
-    steps: [
-      'เข้าเบราว์เซอร์เปิด Web GUI ของ Hypervisor: https://192.168.10.2:8006 (Proxmox)',
-      'ล็อกอินด้วยผู้ใช้ root และรหัสผ่านที่ตั้งไว้',
-      'ตรวจสอบสถานะ Node Summary และ CPU / RAM พร้อมใช้งาน'
+    "id": "c6_1",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.1",
+    "pdfPage": 10,
+    "questionText": "ติดตั้งระบบ Virtualization เช่น Proxmox, VirtualBox, VMware\n- ติดตั้งระบบ Virtualization ได้ มี GUI ใช้งานได้",
+    "pts": 1,
+    "note": "",
+    "explanation": "ติดตั้งและเปิดใช้งานระบบ Hypervisor สำหรับจัดการ Virtual Machine โดยคณะกรรมการรองรับทั้ง Bare-metal (Proxmox VE 8.x) และ Type-2 Hypervisor บน Windows (VMware Workstation Pro 17+ ตามแนวทางศูนย์ฝึก VECSkill BNCC หรือ Oracle VirtualBox) พร้อมเข้าถึงหน้าจอบริหารจัดการ GUI ได้สมบูรณ์",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# ทางเลือกที่ 1: Proxmox VE (มาตรฐาน Bare-metal Type-1 Hypervisor)\n# ==============================================================================\n# เข้าสู่หน้า Web Management Interface ผ่านเว็บเบราว์เซอร์:\n# URL: https://192.168.10.2:8006 (หรือ IP โฮสต์ที่กรรมการกำหนด)\n# User: root | Realm: Linux PAM standard authentication | Password: <รหัสผ่านตอนติดตั้ง>\n\n# ตรวจสอบสถานะการทำงานของ Hypervisor Service บน Shell:\npveversion -v\nsystemctl status pveproxy pvedaemon --no-pager\n\n# ==============================================================================\n# ทางเลือกที่ 2: VMware Workstation Pro 17+ (มาตรฐานศูนย์ฝึก VECSkill BNCC)\n# ==============================================================================\n# 1. เปิดโปรแกรม VMware Workstation Pro จาก Desktop\n# 2. ไปที่เมนู Edit > Virtual Network Editor เพื่อตรวจสอบ Virtual Switches:\n#    - VMnet0: Bridged (เชื่อมกับการ์ด LAN ภายนอก/อินเทอร์เน็ต)\n#    - VMnet1: Host-Only Subnet 10.20.30.0/24 (สำหรับวง Intranet ภายใน)\n#    - VMnet8: NAT Subnet 172.16.3.0/24 (สำหรับวง Service หลังบ้าน)\n\n# ==============================================================================\n# ทางเลือกที่ 3: Oracle VirtualBox (กรณีทดสอบบน Windows)\n# ==============================================================================\nVBoxManage --version\nVBoxManage list vms",
+    "steps": [
+      "กรณี Proxmox: เปิดเบราว์เซอร์ไปยัง https://192.168.10.2:8006 ข้ามหน้าต่างเตือน SSL Self-signed เข้าสู่ระบบด้วยผู้ใช้ root (Realm: Linux PAM)",
+      "กรณี VMware Workstation: เปิดโปรแกรม VMware Workstation Pro จากหน้า Desktop ตรวจสอบหน้าต่างหลักพร้อมใช้งาน",
+      "ตรวจสอบแท็บสรุปทรัพยากร (Summary Dashboard) ให้แสดงสถานะ CPU Cores, RAM, และ Local Storage พร้อมสำหรับสร้าง VM"
+    ],
+    "verify": "เข้าหน้าเว็บ Proxmox https://192.168.10.2:8006 แสดงแดชบอร์ดสีเขียว หรือเปิดหน้าต่าง VMware Workstation Pro / VirtualBox GUI พร้อมสร้าง VM",
+    "executionPhase": 2,
+    "phaseName": "Phase 2: เซิร์ฟเวอร์เสมือนและระบบปฏิบัติการหลัก",
+    "executionStep": 13,
+    "execOrderDesc": "เปิดใช้งาน Hypervisor (Proxmox VE / VMware) เข้าสู่หน้าต่าง Web/GUI",
+    "tabs": [
+      {
+        "id": "virtualbox",
+        "label": "Oracle VirtualBox (ง่ายสุดบน Windows)",
+        "icon": "Box",
+        "explanation": "Oracle VirtualBox 7.x เป็น Type-2 Hypervisor ยอดนิยมสำหรับเครื่องคอมพิวเตอร์ทั่วไป ติดตั้งลงบนระบบปฏิบัติการ Windows ได้โดยตรง มีหน้าจอ GUI จัดการ VM, Storage และ Virtual Networks ครบถ้วน",
+        "steps": [
+          "ดาวน์โหลดและติดตั้ง VirtualBox 7.x และ VirtualBox Extension Pack จาก virtualbox.org",
+          "เปิดโปรแกรม Oracle VM VirtualBox Manager จากหน้า Desktop จะพบหน้าต่าง GUI ควบคุมระบบ",
+          "ตรวจสอบเมนู Tools > Network ตรวจสอบว่ามี Host-Only Networks หรือ NAT Networks พร้อมใช้งาน",
+          "หน้าต่างหลักพร้อมแสดงปุ่ม 'New' (สร้างเครื่องใหม่) และ 'Settings' (ตั้งค่า) แสดงสถานะ GUI สมบูรณ์ตามเกณฑ์"
+        ],
+        "lang": "powershell",
+        "code": "# ตรวจสอบการติดตั้ง VirtualBox ผ่าน PowerShell บน Windows:\n& \"C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe\" --version\n\n# ตรวจสอบรายการ Virtual Networks ในระบบ:\n& \"C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe\" list hostonlyifs",
+        "verify": "เปิดโปรแกรม VirtualBox Manager หน้าต่าง GUI แสดงผลพร้อมปุ่ม New และเมนู Tools"
+      },
+      {
+        "id": "vmware",
+        "label": "VMware Workstation Pro (มาตรฐาน VECSkill BNCC)",
+        "icon": "Cpu",
+        "explanation": "VMware Workstation Pro 17+ เป็น Type-2 Hypervisor ระดับมืออาชีพที่ศูนย์ฝึกอบรม VECSkill BNCC ใช้งานจริง มีหน้าจอ GUI และ Virtual Network Editor สำหรับจำลอง Switch เสมือนแยกวงได้อิสระ",
+        "steps": [
+          "ติดตั้ง VMware Workstation Pro 17.x บน Windows (ปัจจุบันเปิดให้ใช้งานฟรีสำหรับ Personal Use)",
+          "เปิดโปรแกรม VMware Workstation Pro จากหน้า Desktop",
+          "ไปที่เมนู Edit > Virtual Network Editor (คลิก Change Settings เพื่อขอสิทธิ์ Admin):",
+          "  - VMnet0: Bridged เชื่อมต่อกับการ์ด LAN จริงที่ต่อสายเข้า Cisco Switch",
+          "  - VMnet1: Host-Only Subnet 10.20.30.0/24 สำหรับวงภายใน Intranet",
+          "  - VMnet8: NAT Subnet 172.16.3.0/24 สำหรับบริการหลังบ้าน",
+          "หน้าต่าง Home Dashboard แสดงปุ่ม 'Create a New Virtual Machine' พร้อมใช้งาน"
+        ],
+        "lang": "powershell",
+        "code": "# ตรวจสอบการทำงานของ VMware ผ่าน CLI:\n& \"C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\" list",
+        "verify": "เปิดหน้าต่าง VMware Workstation Pro และตรวจสอบ Virtual Network Editor พบ Switch เสมือนครบถ้วน"
+      },
+      {
+        "id": "proxmox",
+        "label": "Proxmox VE (มาตรฐาน Bare-metal Server)",
+        "icon": "Server",
+        "explanation": "Proxmox VE 8.x เป็น Type-1 Bare-metal Hypervisor สำหรับติดตั้งบนเครื่อง Server โดยตรง ควบคุมและสั่งการผ่าน Web GUI ได้จากทุกเครื่องในเครือข่าย",
+        "steps": [
+          "ต่อสาย LAN จากคอมพิวเตอร์เข้ากับพอร์ตสวิตช์ในวงเดียวกับ Server (เช่น 192.168.10.x)",
+          "เปิดเว็บเบราว์เซอร์ไปที่ https://192.168.10.2:8006 (ต้องใส่ https:// และพอร์ต :8006 เสมอ)",
+          "คลิก Advanced > Proceed to 192.168.10.2 (unsafe) เพื่อข้ามหน้าต่างแจ้งเตือน SSL Self-signed",
+          "กรอก Username: root, Password: <รหัสผ่านที่ตั้งไว้>, Realm: Linux PAM standard authentication",
+          "กด Login จะเข้าสู่หน้า Summary Dashboard แสดงผลกราฟ CPU, RAM และ Storage"
+        ],
+        "lang": "bash",
+        "code": "# ตรวจสอบสถานะ Hypervisor Services บน Proxmox Shell:\npveversion -v\nsystemctl status pveproxy pvedaemon --no-pager",
+        "verify": "เข้าหน้าเว็บ Proxmox https://192.168.10.2:8006 แสดงแดชบอร์ดสีเขียว Online"
+      }
     ]
   },
   {
-    id: 'c6_2',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.1',
-    pdfPage: 10,
-    questionText: 'ติดตั้งระบบ Virtualization\n- สร้าง VM ได้ตามแผนผัง มีโครงสร้างตามโจทย์',
-    pts: 1,
-    note: '',
-    explanation: 'สร้าง VM Ubuntu Server 22.04 LTS (VMID 100) กำหนด CPU 2 Cores, RAM 4096MB, Disk 32GB และผูกกับ Bridge vmbr0',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `# คำสั่งสร้าง VM บน Proxmox CLI (หรือคลิกผ่าน GUI):
-qm create 100 --name ubuntu-server --memory 4096 --cores 2 --net0 virtio,bridge=vmbr0`,
-    verify: 'qm list (หรือดูในหน้า Proxmox Web GUI)'
-  },
-  {
-    id: 'c6_3',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.1',
-    pdfPage: 10,
-    questionText: 'ติดตั้งระบบ Virtualization\n- การตั้งค่า IP Address Virtualization ตามที่คณะกรรมการกำหนด',
-    pts: 1,
-    note: '',
-    explanation: 'ตั้งค่า IP ให้กับตัว Hypervisor Host ตรงตามผัง เช่น 192.168.10.2/24 Gateway 192.168.10.1',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `# ตรวจสอบ /etc/network/interfaces บนโฮสต์ Proxmox:
-auto vmbr0
-iface vmbr0 inet static
-    address 192.168.10.2/24
-    gateway 192.168.10.1
-    bridge-ports eth0
-    bridge-stp off
-    bridge-fd 0`,
-    verify: 'ip addr show vmbr0'
-  },
-  {
-    id: 'c7_1',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.2',
-    pdfPage: 10,
-    questionText: 'ติดตั้ง Linux Server บน VM โดย ISO ได้แก่ Ubuntu, Debian\n- ติดตั้งได้และบูตใช้งานได้ และเปิดอัตโนมัติเมื่อ Virtualization ดับแล้วเปิดขึ้นมาใหม่',
-    pts: 1,
-    note: '',
-    explanation: 'เปิดตัวเลือก On-Boot Auto Start ให้กับ VM ใน Proxmox เพื่อให้ VM บูตขึ้นมาเองอัตโนมัติเมื่อเครื่องแม่ข่ายรีสตาร์ต',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `# บน Proxmox Host ตั้งค่า VM ให้เปิดอัตโนมัติ:
-qm set 100 --onboot 1
-
-# ตรวจสอบการตั้งค่า:
-qm config 100 | grep onboot
-# ผลลัพธ์: onboot: 1`,
-    verify: 'qm config 100 | grep onboot'
-  },
-  {
-    id: 'c7_2',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.2',
-    pdfPage: 10,
-    questionText: 'ติดตั้ง Linux Server บน VM\n- ตั้งค่า IP แบบ Static / DHCP ได้ถูกต้องตามผังที่กรรมการกำหนดให้',
-    pts: 1,
-    note: '',
-    explanation: 'ตั้งค่า Static IP 192.168.10.10/24 Gateway 192.168.10.1 DNS 192.168.10.10 ผ่าน Netplan',
-    solutionType: 'code',
-    lang: 'yaml',
-    code: `# แก้ไขไฟล์ /etc/netplan/00-installer-config.yaml
-network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    eth0:
-      addresses:
-        - 192.168.10.10/24
-      routes:
-        - to: default
-          via: 192.168.10.1
-      nameservers:
-        addresses: [192.168.10.10, 8.8.8.8]
-
-# นำการตั้งค่าไปใช้งาน:
-sudo netplan apply`,
-    verify: 'ip addr show && ip route show'
-  },
-  {
-    id: 'c7_3',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.2',
-    pdfPage: 10,
-    questionText: 'ติดตั้ง Linux Server บน VM\n- ตั้งค่า hostname และ Domain name ตามที่คณะกรรมการกำหนด',
-    pts: 1,
-    note: '',
-    explanation: 'ใช้คำสั่ง hostnamectl เพื่อตั้งชื่อ Hostname และ FQDN ให้ตรงตามโจทย์ เช่น server.competition.lab',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `sudo hostnamectl set-hostname server.competition.lab
-
-# เพิ่มใน /etc/hosts:
-echo "192.168.10.10 server.competition.lab server" | sudo tee -a /etc/hosts`,
-    verify: 'hostnamectl status'
-  },
-  {
-    id: 'c8_1',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.2',
-    pdfPage: 11,
-    questionText: 'การติดตั้งและใช้งาน DNS Server ใน Network ของตนเอง\n- มีการติดตั้งและใช้งาน DNS Server ใน Network ของตนเอง บน Docker หรือ Linux Server ตามชื่อที่กรรมการกำหนด โดยเครื่องลูกข่ายสามารถเรียกใช้งาน DNS Server ได้ (หมายเหตุ: ตั้งค่าบน Router หรือ Switch หรือ Hosts จะไม่ได้คะแนน)',
-    pts: 1,
-    note: 'ตั้งค่าบน Router/Switch/Hosts จะไม่ได้คะแนน',
-    explanation: 'รัน Technitium DNS Server บน Docker พร้อมตั้ง Primary Zone และ Record ชี้ชื่อโดเมนไปยังเครื่อง Server',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `docker run -d \\
-  --name technitium-dns \\
-  --restart always \\
-  -p 53:53/udp \\
-  -p 53:53/tcp \\
-  -p 5380:5380/tcp \\
-  -e DNS_SERVER_ADMIN_PASSWORD=AdminPassword123! \\
-  -v technitium_data:/etc/dns \\
-  technitium/dns-server:latest`,
-    verify: 'dig @192.168.10.10 gitlab.competition.lab หรือ nslookup gitlab.competition.lab 192.168.10.10'
-  },
-  {
-    id: 'c8_2',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.2',
-    pdfPage: 11,
-    questionText: 'การควบคุมการเข้าถึง DNS Server (ACL)\n- กำหนดการเข้าถึง DNS Server ใน Network โดยใช้ IP Address ที่กำหนดเท่านั้น (ACL)',
-    pts: 1,
-    note: '',
-    explanation: 'ตั้งค่า Access Control ในหน้าเว็บ Technitium DNS (Settings > Allowed Networks) ให้ยอมรับเฉพาะ IP ในวง 192.168.10.0/24 และ 192.168.20.0/24',
-    solutionType: 'text',
-    steps: [
-      'เปิดเว็บ http://192.168.10.10:5380 แล้วล็อกอิน',
-      'ไปที่เมนู Settings -> ส่วน DNS Server Settings',
-      'ในหัวข้อ Allowed Networks / Access Control เลือก Restricted',
-      'ระบุ Subnet ที่อนุญาต: 192.168.10.0/24, 192.168.20.0/24 แล้วกด Save'
+    "id": "c6_2",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.1",
+    "pdfPage": 10,
+    "questionText": "ติดตั้งระบบ Virtualization\n- สร้าง VM ได้ตามแผนผัง มีโครงสร้างตามโจทย์",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้าง Virtual Machine สำหรับรัน Ubuntu Server 24.04/22.04 LTS กำหนดสเปกฮาร์ดแวร์ตามเกณฑ์การแข่งขันระดับ ปวส.: 2-4 vCPUs, RAM 4096MB (4GB) ขึ้นไป, Disk 32GB-50GB และเชื่อมต่อการ์ดเครือข่าย Virtual Network ให้ถูกต้องตามผัง",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# วิธีที่ 1: สร้าง VM ด้วย Proxmox CLI (VMID: 100)\n# ==============================================================================\nqm create 100 \\\n  --name devops-server \\\n  --ostype l26 \\\n  --memory 4096 \\\n  --cores 2 \\\n  --cpu host \\\n  --scsihw virtio-scsi-single \\\n  --scsi0 local-lvm:32 \\\n  --net0 virtio,bridge=vmbr0,firewall=1 \\\n  --boot order=scsi0 \\\n  --agent enabled=1\n\n# ตรวจสอบการตั้งค่าสเปกของ VM:\nqm config 100\n\n# ==============================================================================\n# วิธีที่ 2: สร้าง VM บน VMware Workstation (ตามคู่มือ VECSkill BNCC)\n# ==============================================================================\n# 1. คลิก File > New Virtual Machine > Custom (advanced)\n# 2. Hardware Compatibility: Workstation 17.x\n# 3. Guest OS: Linux > Version: Ubuntu 64-bit\n# 4. VM Name: devops-server\n# 5. Processors: Number of processors: 1, Number of cores per processor: 2 (รวม 2 Cores)\n# 6. Memory: 4096 MB (4 GB)\n# 7. Network: Custom (VMnet0 Bridged หรือ VMnet8 NAT ตามผัง)\n# 8. Disk: Create a new virtual disk ขนาด 32 GB - 50 GB",
+    "steps": [
+      "บน Proxmox GUI: คลิก 'Create VM' ที่มุมขวาบน ระบุ VM ID: 100, Name: devops-server",
+      "ในแท็บ OS: เลือก ISO Image ของ Ubuntu Server 24.04 หรือ 22.04 LTS",
+      "ในแท็บ System/Disks: กำหนดขนาด Disk 32GB (VirtIO Block หรือ SCSI VirtIO)",
+      "ในแท็บ CPU/Memory: กำหนด Cores = 2, Memory = 4096 MB",
+      "ในแท็บ Network: เลือก Bridge vmbr0 และ Model: VirtIO (paravirtualized)",
+      "กด Finish แล้วตรวจสอบรายชื่อ VM ในแถบเมนูด้านซ้ายว่ามีสถานะ '100 (devops-server)'"
+    ],
+    "verify": "qm list หรือ VMware แสดง VM ชื่อ devops-server สเปก 2 vCPU, RAM 4GB, Disk 32GB",
+    "executionPhase": 2,
+    "phaseName": "Phase 2: เซิร์ฟเวอร์เสมือนและระบบปฏิบัติการหลัก",
+    "executionStep": 14,
+    "execOrderDesc": "สร้างเครื่องเสมือน VM (devops-server) สเปก 2 vCPU, RAM 4GB, Disk 32GB",
+    "tabs": [
+      {
+        "id": "virtualbox",
+        "label": "Oracle VirtualBox",
+        "icon": "Box",
+        "explanation": "สร้าง Virtual Machine บน VirtualBox กำหนดสเปก 2 vCPUs, RAM 4096 MB, Disk 40 GB และการ์ดแลนแบบ Bridged Adapter เพื่อเชื่อมตรงเข้ากับพอร์ตสวิตช์จริง",
+        "steps": [
+          "คลิกปุ่ม 'New' (หรือกด Ctrl+N) บนหน้าต่าง VirtualBox",
+          "Name: devops-server | Type: Linux | Version: Ubuntu (64-bit)",
+          "เลือก ISO Image: ubuntu-24.04-live-server-amd64.iso (ติ๊กถูก 'Skip Unattended Installation' เพื่อคอนฟิกเอง)",
+          "Hardware: กำหนด Base Memory = 4096 MB (4 GB), Processors = 2 CPUs",
+          "Harddisk: Create a Virtual Hard Disk Now, ขนาด 40.00 GB (VDI, Dynamically allocated)",
+          "ตั้งค่า Graphics ป้องกันค้าง (สำคัญมาก): คลิกขวาที่ VM > Settings > Display > Graphics Controller ให้เปลี่ยนจาก VMSVGA เป็น 'VBoxSVGA' และเพิ่ม Video Memory เป็น 64 MB หรือ 128 MB (แก้ปัญหาตัวติดตั้งค้างที่หน้า Setting up console keyboard)",
+          "ตั้งค่า Network: คลิกขวาที่ VM > Settings > Network > Adapter 1 เลือก 'Bridged Adapter' ชี้ไปยังการ์ด LAN จริงที่ต่อสายเข้า Cisco Switch (หรือเลือก Host-Only Adapter ตอนซ้อมเดี่ยว)",
+          "กด OK และคลิก Start เพื่อเริ่มติดตั้ง Ubuntu Server ได้อย่างราบรื่นไม่ค้าง"
+        ],
+        "lang": "powershell",
+        "code": "# คำสั่งสร้าง VM ผ่าน VBoxManage CLI บน Windows PowerShell:\n$VBOX = \"C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe\"\n\n# 1. สร้าง VM และลงทะเบียน\n& $VBOX createvm --name \"devops-server\" --ostype \"Ubuntu_64\" --register\n\n# 2. ปรับแต่งสเปก CPU 2 Cores, RAM 4096 MB, Video Memory 64MB\n# ปรับ Graphics Controller เป็น VBoxSVGA เพื่อป้องกัน Ubuntu ค้างที่หน้า Setting up console keyboard\n& $VBOX modifyvm \"devops-server\" --cpus 2 --memory 4096 --graphicscontroller vboxsvga --vram 64\n\n# 3. ตั้งการ์ดเครือข่ายเป็น Bridged Adapter\n& $VBOX modifyvm \"devops-server\" --nic1 bridged --bridgeadapter1 \"Ethernet\"\n\n# 4. สร้างและแนบดิสก์เสมือน 40 GB\n& $VBOX createhd --filename \"devops-server.vdi\" --size 40960 --format VDI\n& $VBOX storagectl \"devops-server\" --name \"SATA Controller\" --add sata --controller IntelAhci\n& $VBOX storageattach \"devops-server\" --storagectl \"SATA Controller\" --port 0 --device 0 --type hdd --medium \"devops-server.vdi\"",
+        "verify": "& 'C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe' showvminfo 'devops-server' | Select-String 'Memory size|Number of CPUs'"
+      },
+      {
+        "id": "vmware",
+        "label": "VMware Workstation Pro",
+        "icon": "Cpu",
+        "explanation": "สร้าง VM บน VMware Workstation Pro ตามคู่มือมาตรฐาน VECSkill กำหนด 2 vCPUs, RAM 4096 MB, Disk 40 GB และการ์ดเครือข่าย VMnet0 (Bridged)",
+        "steps": [
+          "คลิก File > New Virtual Machine... > เลือก Custom (advanced) > Next",
+          "Hardware Compatibility: Workstation 17.x",
+          "Guest OS Installation: เลือก 'I will install the operating system later'",
+          "Guest OS: Linux > Version: Ubuntu 64-bit",
+          "VM Name: devops-server",
+          "Processors: Number of processors: 1, Number of cores per processor: 2 (รวม 2 Cores)",
+          "Memory: 4096 MB (4 GB)",
+          "Network: Use bridged networking (หรือ Custom VMnet0)",
+          "Disk: Create a new virtual disk ขนาด 40.0 GB (Store as single file)",
+          "คลิก Customize Hardware... > CD/DVD > เลือก Use ISO image ชี้ไปที่ไฟล์ Ubuntu Server ISO > Close > Finish"
+        ],
+        "lang": "powershell",
+        "code": "# ตรวจสอบสเปกไฟล์คอนฟิก .vmx บน VMware:\nGet-Content \"C:\\VMs\\devops-server\\devops-server.vmx\" | Select-String \"memsize|numvcpus|ethernet0.connectionType\"",
+        "verify": "เปิด VMware Workstation ตรวจดูแท็บ Summary ของ devops-server แสดง Memory 4GB, 2 CPUs"
+      },
+      {
+        "id": "proxmox",
+        "label": "Proxmox VE",
+        "icon": "Server",
+        "explanation": "สร้าง KVM Virtual Machine บน Proxmox ผ่าน Web GUI หรือ Shell CLI ระบุ VM ID 100, 2 vCPUs, RAM 4GB, Disk 40GB, Bridge vmbr0",
+        "steps": [
+          "คลิกปุ่ม 'Create VM' สีฟ้ามุมขวาบนของหน้าเว็บ Proxmox",
+          "General: VM ID: 100, Name: devops-server",
+          "OS: เลือก Storage local:iso/ubuntu-24.04-live-server-amd64.iso",
+          "System: SCSI Controller: VirtIO SCSI single, Qemu Agent: [x] Enabled",
+          "Disks: Storage: local-lvm, Disk size: 40 GiB, Bus: SCSI (scsi0)",
+          "CPU: Sockets: 1, Cores: 2, Type: host",
+          "Memory: 4096 MiB",
+          "Network: Bridge: vmbr0, Model: VirtIO (paravirtualized)",
+          "กด Finish แล้วตรวจสอบรายชื่อ VM ในแถบเมนูด้านซ้าย"
+        ],
+        "lang": "bash",
+        "code": "# คำสั่งสร้าง VM ด้วย Proxmox CLI:\nqm create 100 \\\n  --name devops-server \\\n  --ostype l26 \\\n  --memory 4096 \\\n  --cores 2 \\\n  --cpu host \\\n  --scsihw virtio-scsi-single \\\n  --scsi0 local-lvm:40 \\\n  --net0 virtio,bridge=vmbr0,firewall=1 \\\n  --boot order=scsi0 \\\n  --agent enabled=1\n\n# ตรวจสอบคอนฟิก:\nqm config 100",
+        "verify": "qm list หรือหน้าเว็บ Proxmox แสดง 100 (devops-server) สเปก 2 Cores, RAM 4GB, Disk 40GB"
+      }
     ]
   },
   {
-    id: 'c9_1',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.3',
-    pdfPage: 11,
-    questionText: 'บริหารจัดการจากระยะไกล SSH / Remote Tools\n- เปิดบริการ SSH',
-    pts: 1,
-    note: '',
-    explanation: 'ติดตั้งและสั่งเปิด OpenSSH Server ให้ทำงานอัตโนมัติ',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `sudo apt update && sudo apt install -y openssh-server
-sudo systemctl enable --now ssh`,
-    verify: 'sudo systemctl status ssh'
-  },
-  {
-    id: 'c9_2',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.3',
-    pdfPage: 11,
-    questionText: 'บริหารจัดการจากระยะไกล SSH / Remote Tools\n- เพิ่ม User ตามที่กรรมการกำหนดได้ อย่างน้อย 2 User',
-    pts: 1,
-    note: 'อย่างน้อย 2 User',
-    explanation: 'สร้างผู้ใช้งานอย่างน้อย 2 บัญชี พร้อมกำหนดรหัสผ่าน เช่น devops_admin และ app_deployer',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `sudo useradd -m -s /bin/bash devops_admin
-sudo useradd -m -s /bin/bash app_deployer
-
-echo "devops_admin:Password123!" | sudo chpasswd
-echo "app_deployer:Password123!" | sudo chpasswd`,
-    verify: 'cut -d: -f1 /etc/passwd | tail -n 2'
-  },
-  {
-    id: 'c9_3',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.3',
-    pdfPage: 11,
-    questionText: 'บริหารจัดการจากระยะไกล SSH / Remote Tools\n- Remote จากเครื่องอื่นใน Network เข้ามาได้ด้วย user และ Port ที่กรรมการกำหนด',
-    pts: 1,
-    note: '',
-    explanation: 'ทดสอบการเชื่อมต่อ SSH จากเครื่องอื่นในวงเครือข่ายเข้ามายัง Server',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `# ทดสอบรันจากเครื่อง Client หรือเครื่องกรรมการ:
-ssh devops_admin@192.168.10.10 -p 22`,
-    verify: 'ssh devops_admin@192.168.10.10'
-  },
-  {
-    id: 'c9_4',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.3',
-    pdfPage: 11,
-    questionText: 'บริหารจัดการจากระยะไกล SSH / Remote Tools\n- ตั้งค่า firewall (UFW / firewalld) เพื่อเปิดพอร์ตบริการได้ ตามที่กรรมการกำหนด',
-    pts: 1,
-    note: '',
-    explanation: 'เปิดบริการ UFW โดยกำหนด Default Deny Incoming และเปิดเฉพาะพอร์ตที่ใช้งานจริง: 22 (SSH), 80/443 (HTTP/S), 53 (DNS), 5000 (Registry), 8080 (GitLab)',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw allow 22/tcp
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw allow 53
-sudo ufw allow 5000/tcp
-sudo ufw allow 8080/tcp
-sudo ufw --force enable`,
-    verify: 'sudo ufw status verbose'
-  },
-  {
-    id: 'c9_5',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.3',
-    pdfPage: 11,
-    questionText: 'บริหารจัดการจากระยะไกล SSH / Remote Tools\n- กำหนดให้ user ที่ Login เข้ามาสามารถใช้คำสั่ง sudo -i โดยไม่ต้องยืนยันรหัสผ่าน',
-    pts: 1,
-    note: '',
-    explanation: 'เพิ่มสิทธิ์ NOPASSWD ให้กับ User ในไฟล์ /etc/sudoers.d/99-devops เพื่อให้สามารถสั่ง sudo -i ได้ทันทีโดยไม่ถูกถามรหัสผ่าน',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `sudo usermod -aG sudo devops_admin
-sudo usermod -aG sudo app_deployer
-
-echo "devops_admin ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/99-devops
-echo "app_deployer ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers.d/99-devops
-sudo chmod 0440 /etc/sudoers.d/99-devops`,
-    verify: 'su - devops_admin -c "sudo -i whoami" (ต้องได้ผลลัพธ์เป็น root ทันที)'
-  },
-  {
-    id: 'c10_1',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.4',
-    pdfPage: 11,
-    questionText: 'ติดตั้งเครื่องมือ DevOps ได้แก่ Docker + GitLab\n- ติดตั้ง Docker ได้และใช้งานได้ เช่น docker ps, run, exec',
-    pts: 1,
-    note: '',
-    explanation: 'ติดตั้ง Docker Engine และ Docker Compose Plugin พร้อมเพิ่ม user เข้ากลุ่ม docker',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `curl -fsSL https://get.docker.com | sudo sh
-sudo usermod -aG docker devops_admin
-sudo systemctl enable --now docker`,
-    verify: 'docker --version && docker ps'
-  },
-  {
-    id: 'c10_2',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.4',
-    pdfPage: 11,
-    questionText: 'ติดตั้งเครื่องมือ DevOps\n- ติดตั้ง GitLab ได้ใน container หรือ VM โดยเข้าเว็บได้',
-    pts: 1,
-    note: '',
-    explanation: 'ติดตั้ง GitLab Community Edition ผ่าน Docker Compose หรือ Omnibus Package ให้สามารถเปิดเข้าหน้า UI ได้',
-    solutionType: 'code',
-    lang: 'yaml',
-    code: `# docker-compose.gitlab.yml
-version: '3.8'
-services:
-  gitlab:
-    image: gitlab/gitlab-ce:latest
-    restart: always
-    hostname: 'gitlab.competition.lab'
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.competition.lab:8080'
-        gitlab_rails['gitlab_shell_ssh_port'] = 2222
-    ports:
-      - '8080:8080'
-      - '2222:22'
-    volumes:
-      - ./gitlab/config:/etc/gitlab
-      - ./gitlab/logs:/var/log/gitlab
-      - ./gitlab/data:/var/opt/gitlab`,
-    verify: 'curl -I http://192.168.10.10:8080'
-  },
-  {
-    id: 'c10_3',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.4',
-    pdfPage: 11,
-    questionText: 'ติดตั้งเครื่องมือ DevOps\n- สร้าง User ใน Gitlab และเข้าหน้า UI ได้',
-    pts: 1,
-    note: '',
-    explanation: 'เข้าหน้า GitLab Web UI ด้วย root เพื่อตั้งรหัสผ่านใหม่ และสร้าง User สมาชิกทีม (เช่น dev1, dev2, devops) ล็อกอินเข้าใช้งานได้สมบูรณ์',
-    solutionType: 'text',
-    steps: [
-      'ดึงรหัสผ่านเริ่มต้นของ root: sudo docker exec -it gitlab-gitlab-1 grep "Password:" /etc/gitlab/initial_root_password',
-      'เข้าเว็บ http://192.168.10.10:8080 ล็อกอินเป็น root',
-      'ไปที่ Admin Area -> Users -> New user เพื่อสร้างบัญชีนักพัฒนา',
-      'ทดสอบออกจากระบบแล้วล็อกอินด้วย User ใหม่ที่สร้าง'
+    "id": "c6_3",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.1",
+    "pdfPage": 10,
+    "questionText": "ติดตั้งระบบ Virtualization\n- การตั้งค่า IP Address Virtualization ตามที่คณะกรรมการกำหนด",
+    "pts": 1,
+    "note": "",
+    "explanation": "กำหนด IP Address บนระบบ Virtualization โฮสต์ให้ถูกต้องตามที่คณะกรรมการกำหนด เช่น วงบริหารจัดการ 192.168.10.2/24 Gateway 192.168.10.1 หรือตามโครงสร้างเครือข่ายของศูนย์แข่งขัน",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# การตั้งค่า IP บน Proxmox โฮสต์ (/etc/network/interfaces):\n# ==============================================================================\n# sudo nano /etc/network/interfaces\n\nauto lo\niface lo inet loopback\n\niface eno1 inet manual\n# eno1 คือการ์ดแลนจริงบนเครื่องแม่ข่าย\n\nauto vmbr0\niface vmbr0 inet static\n    address 192.168.10.2/24\n    gateway 192.168.10.1\n    bridge-ports eno1\n    bridge-stp off\n    bridge-fd 0\n\n# สั่ง Apply การตั้งค่าเครือข่ายใหม่ทันที:\nifreload -a\n\n# ตรวจสอบสถานะการเชื่อมต่อ:\nip a show vmbr0\nping -c 3 192.168.10.1",
+    "steps": [
+      "เข้าสู่ Proxmox Shell (หรือต่อจอตรงเข้าเครื่องแม่ข่าย)",
+      "แก้ไขไฟล์ /etc/network/interfaces กำหนด IP Address และ Subnet ของ vmbr0 ตามที่โจทย์ระบุ",
+      "สั่ง ifreload -a หรือ systemctl restart networking เพื่อให้การตั้งค่ามีผล",
+      "ทดสอบ ping ไปยัง Default Gateway ของวงเครือข่ายเพื่อยืนยันการเชื่อมต่อ"
+    ],
+    "verify": "ip a show vmbr0 แสดง inet 192.168.10.2/24 และ ping เกตเวย์สำเร็จ 0% packet loss",
+    "executionPhase": 2,
+    "phaseName": "Phase 2: เซิร์ฟเวอร์เสมือนและระบบปฏิบัติการหลัก",
+    "executionStep": 15,
+    "execOrderDesc": "กำหนด IP Address ของ Hypervisor โฮสต์ให้ถูกต้องตามผัง",
+    "tabs": [
+      {
+        "id": "virtualbox",
+        "label": "Oracle VirtualBox",
+        "icon": "Box",
+        "explanation": "การตั้งค่า IP Address บนโฮสต์และ VirtualBox Virtual Network Manager เพื่อให้โฮสต์และ VM สื่อสารกันได้ตามวง Subnet ที่กรรมการกำหนด",
+        "steps": [
+          "เปิด VirtualBox > ไปที่เมนู Tools > Network > แท็บ Host-only Networks",
+          "คลิก Create เพื่อสร้าง Adapter เสมือน (เช่น VirtualBox Host-Only Ethernet Adapter)",
+          "กำหนด Adapter IPv4 Address: 192.168.10.2 / IPv4 Network Mask: 255.255.255.0",
+          "ในแท็บ DHCP Server: สามารถเลือกปิดใช้งาน (Disable) เพื่อใช้ DHCP จาก Cisco Switch หรือตั้งแจก IP ตามที่โจทย์ระบุ",
+          "กด Apply แล้วตรวจสอบการเชื่อมต่อบน Windows"
+        ],
+        "lang": "powershell",
+        "code": "# กำหนด IP ให้ Host-Only Adapter ของ VirtualBox ผ่าน CLI:\n$VBOX = \"C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe\"\n& $VBOX hostonlyif ipconfig \"VirtualBox Host-Only Ethernet Adapter\" --ip 192.168.10.2 --netmask 255.255.255.0\n\n# ตรวจสอบ IP บน Windows:\nGet-NetIPAddress -InterfaceAlias \"*VirtualBox*\" | Select-Object IPAddress, InterfaceAlias",
+        "verify": "Get-NetIPAddress แสดง IP 192.168.10.2 บน VirtualBox Interface"
+      },
+      {
+        "id": "vmware",
+        "label": "VMware Workstation Pro",
+        "icon": "Cpu",
+        "explanation": "การกำหนด IP Address บน Virtual Network Editor ของ VMware ให้สอดคล้องกับผังเครือข่าย",
+        "steps": [
+          "เปิด VMware Workstation > เมนู Edit > Virtual Network Editor",
+          "คลิก Change Settings (มุมขวาล่าง) เพื่อเข้าสู่สิทธิ์ Administrator",
+          "เลือก VMnet0: ติ๊ก 'Bridged to' แล้วเลือกชื่อการ์ดแลนจริงที่ต่อสายไปหาสวิตช์",
+          "หากใช้ VMnet1 (Host-Only): กำหนด Subnet IP: 10.20.30.0 / Subnet mask: 255.255.255.0",
+          "หากใช้ VMnet8 (NAT): กำหนด Subnet IP: 172.16.3.0 / Subnet mask: 255.255.255.0",
+          "คลิกปุ่ม Apply แล้วกด OK"
+        ],
+        "lang": "powershell",
+        "code": "# ตรวจสอบการตั้งค่า IP ของ VMware Adapters บน Windows:\nGet-NetIPAddress -InterfaceAlias \"*VMware*\" | Select-Object IPAddress, InterfaceAlias",
+        "verify": "หน้าต่าง Virtual Network Editor แสดง Subnet IP ตรงตามผังเครือข่าย"
+      },
+      {
+        "id": "proxmox",
+        "label": "Proxmox VE",
+        "icon": "Server",
+        "explanation": "กำหนด Static IP บน Linux Bridge (vmbr0) ของ Proxmox Host ให้เป็น IP ประจำเครื่องแม่ข่ายตามที่กรรมการกำหนด เช่น 192.168.10.2/24",
+        "steps": [
+          "เข้าสู่ Proxmox Shell หรือเปิดหน้า Web GUI เมนู System > Network",
+          "ดับเบิลคลิกที่ Linux Bridge 'vmbr0' ระบุ IPv4/CIDR: 192.168.10.2/24 และ Gateway: 192.168.10.1",
+          "หรือแก้ไขไฟล์ /etc/network/interfaces โดยตรง",
+          "สั่ง ifreload -a เพื่ออัปเดตการตั้งค่าเครือข่ายทันที",
+          "ทดสอบ ping ไปยัง Default Gateway ของวงเครือข่าย"
+        ],
+        "lang": "bash",
+        "code": "# คอนฟิกใน /etc/network/interfaces:\nauto vmbr0\niface vmbr0 inet static\n    address 192.168.10.2/24\n    gateway 192.168.10.1\n    bridge-ports eno1\n    bridge-stp off\n    bridge-fd 0\n\n# สั่ง Apply คอนฟิกเครือข่าย:\nifreload -a\n\n# ตรวจสอบการเชื่อมต่อ:\nip a show vmbr0\nping -c 3 192.168.10.1",
+        "verify": "ip a show vmbr0 แสดง inet 192.168.10.2/24 และ ping 192.168.10.1 สำเร็จ"
+      }
     ]
   },
   {
-    id: 'c11_1',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.5',
-    pdfPage: 12,
-    questionText: 'เขียน Dockerfile / docker-compose.yaml ใช้งานจริง\n- สร้างและใช้งาน Dockerfile สำหรับแอป Node/เว็บที่พัฒนา ได้',
-    pts: 1,
-    note: '',
-    explanation: 'เขียน Dockerfile สำหรับ Containerise แอปพลิเคชัน Node.js แบบ Multi-stage หรือ Production image ขนาดกะทัดรัด',
-    solutionType: 'code',
-    lang: 'dockerfile',
-    code: `FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-EXPOSE 3000
-CMD ["npm", "start"]`,
-    verify: 'docker build -t app:v1 .'
-  },
-  {
-    id: 'c11_2',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.5',
-    pdfPage: 12,
-    questionText: 'เขียน Dockerfile / docker-compose.yaml ใช้งานจริง\n- ใช้ docker-compose.yaml สำหรับบริการ reverse proxy เพื่อใช้บริการ https (caddy, NPM)',
-    pts: 1,
-    note: '',
-    explanation: 'ใช้งาน Nginx Proxy Manager (หรือ Caddy) ผ่าน docker-compose ให้บริการ Reverse Proxy รองรับ SSL HTTPS',
-    solutionType: 'code',
-    lang: 'yaml',
-    code: `version: '3.8'
-services:
-  reverse-proxy:
-    image: jc21/nginx-proxy-manager:latest
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-      - "81:81"
-    volumes:
-      - ./npm_data:/data
-      - ./letsencrypt:/etc/letsencrypt`,
-    verify: 'docker compose up -d reverse-proxy'
-  },
-  {
-    id: 'c11_3',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.5',
-    pdfPage: 12,
-    questionText: 'เขียน Dockerfile / docker-compose.yaml ใช้งานจริง\n- ใช้ reverse proxy กับ host และ domain ของระบบที่พัฒนาได้ registry, gitlab, frontend, backend เช่น https://gitlab.mydomain.lab',
-    pts: 1,
-    note: '',
-    explanation: 'ตั้งค่า Proxy Host ใน Nginx Proxy Manager ชี้โดเมนไปยัง Container ภายใน พร้อมเปิด Self-Signed หรือ Custom SSL',
-    solutionType: 'text',
-    steps: [
-      'เข้าหน้าบริหาร Nginx Proxy Manager: http://192.168.10.10:81',
-      'เพิ่ม Proxy Host: Domain `gitlab.competition.lab` -> Forward Host `192.168.10.10`, Port `8080`',
-      'เพิ่ม Proxy Host: Domain `app.competition.lab` -> Forward Host `192.168.10.10`, Port `3000`',
-      'เปิดใช้งาน SSL Certificate และเปิด Block Common Exploits'
+    "id": "c7_1",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.2",
+    "pdfPage": 10,
+    "questionText": "ติดตั้ง Linux Server บน VM โดย ISO ได้แก่ Ubuntu, Debian\n- ติดตั้งได้และบูตใช้งานได้ และเปิดอัตโนมัติเมื่อ Virtualization ดับแล้วเปิดขึ้นมาใหม่",
+    "pts": 1,
+    "note": "",
+    "explanation": "ติดตั้งระบบปฏิบัติการ Ubuntu Server 24.04/22.04 LTS บน VM ให้พร้อมบูตใช้งาน และเปิดคุณสมบัติ On-Boot Auto Start ให้เครื่อง VM สตาร์ตทำงานอัตโนมัติทันทีที่เครื่องแม่ข่าย Hypervisor บูตหรือไฟฟ้าดับแล้วเปิดขึ้นมาใหม่",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# วิธีที่ 1: กำหนด Auto-Start ผ่าน Proxmox CLI:\n# ==============================================================================\n# ตั้งค่า onboot=1 และกำหนดลำดับบูต Startup Order=1 หน่วงเวลา 30 วินาที:\nqm set 100 --onboot 1 --startup order=1,up=30\n\n# ตรวจสอบคอนฟิก:\nqm config 100 | grep -E \"onboot|startup\"\n# ผลลัพธ์ที่ถูกต้อง:\n# onboot: 1\n# startup: order=1,up=30\n\n# ==============================================================================\n# วิธีที่ 2: ตั้งค่าผ่าน Proxmox Web GUI:\n# ==============================================================================\n# 1. คลิกเลือก VM 100 (devops-server) จากเมนูด้านซ้าย\n# 2. ไปที่เมนู \"Options\" ตรงกลางจอ\n# 3. ดับเบิลคลิกที่หัวข้อ \"Start at boot\"\n# 4. ติ๊กถูกที่ช่อง [x] Start at boot แล้วกด OK",
+    "steps": [
+      "บูต VM ติดตั้ง Ubuntu Server ผ่านหน้าจอ Proxmox Console จนเสร็จสมบูรณ์ และสั่งรีบูต 1 ครั้ง",
+      "บน Proxmox Web GUI: คลิก VM 100 > เลือกเมนู Options > ดับเบิลคลิก 'Start at boot' > ติ๊กถูก [x] Enabled > กด OK",
+      "หรือรันคำสั่ง qm set 100 --onboot 1 บน Proxmox Shell",
+      "ตรวจสอบโดยการสั่ง qm config 100 จะต้องพบบรรทัด onboot: 1"
+    ],
+    "verify": "qm config 100 | grep \"onboot: 1\" แสดง onboot: 1 อย่างชัดเจน",
+    "executionPhase": 2,
+    "phaseName": "Phase 2: เซิร์ฟเวอร์เสมือนและระบบปฏิบัติการหลัก",
+    "executionStep": 16,
+    "execOrderDesc": "ติดตั้ง Ubuntu Server และตั้งค่า On-Boot Autostart ให้ VM บูตอัตโนมัติ",
+    "tabs": [
+      {
+        "id": "virtualbox",
+        "label": "Oracle VirtualBox",
+        "icon": "Box",
+        "explanation": "ขั้นตอนการติดตั้ง Ubuntu Server 24.04 LTS บน VirtualBox ทีละหน้าจอจริง (Step-by-Step UI Setup) พร้อมเปิดใช้งาน OpenSSH Server และ On-Boot Autostart",
+        "steps": [
+          "หน้า 1 (GRUB Menu): เลือก 'Try or Install Ubuntu Server' แล้วกด Enter",
+          "หน้า 2 (Language): เลือก 'English' แล้วกด Enter",
+          "หน้า 3 (Installer update): เลือก 'Continue without updating' เพื่อติดตั้งได้รวดเร็วทันเวลาแข่ง",
+          "หน้า 4 (Keyboard): Layout: English (US) เลื่อนลงไปกด 'Done'",
+          "หน้า 5 (Type of install): เลือก 'Ubuntu Server' (ตัวบนสุด แนะนำ! ห้ามเลือก minimized) แล้วกด 'Done'",
+          "หน้า 6 (Network): เลื่อนลงไปกด 'Done' ข้ามไปก่อน (ปล่อยรับ DHCP ชั่วคราว แล้วค่อยไปฟิก IP Static ผ่าน Netplan หลังลงเสร็จ)",
+          "หน้า 7 (Proxy & Mirror): ปล่อยว่างไว้ เลื่อนลงไปกด 'Done' ทั้ง 2 หน้าจอ",
+          "หน้า 8 (Storage): เลือก Use an entire disk (ค่าเริ่มต้น) เลื่อนลงกด 'Done' และเลือกปุ่มสีแดง 'Continue' เพื่อยืนยันฟอร์แมตดิสก์",
+          "หน้า 9 (Profile setup): Your name: devops | Your server's name: devops-server | Pick a username: ubuntu | Choose a password: Password123! | Confirm password: Password123! แล้วกด 'Done'",
+          "หน้า 10 (Ubuntu Pro): เลือก 'Skip for now' แล้วกด 'Done'",
+          "หน้า 11 (SSH Setup - สำคัญที่สุด!): กดปุ่ม Spacebar เพื่อติ๊กถูก [X] Install OpenSSH server แล้วเลื่อนลงไปกด 'Done' (ถ้าไม่ติ๊กจะไม่สามารถรีโมตข้ามเครื่องได้)",
+          "หน้า 12 (Featured Server Snaps): ไม่ต้องติ๊กโปรแกรมใดๆ เลื่อนลงไปกด 'Done' เพื่อเริ่มคัดลอกไฟล์ลงดิสก์",
+          "ขั้นตอนเสร็จสิ้น: รอแถบวิ่งเสร็จแล้วกด 'Reboot Now' (ถ้าขึ้น Please remove installation medium ให้กด Enter ผ่านไปได้เลย)",
+          "การตั้งค่า On-Boot Autostart: เปิด PowerShell บน Windows รันคำสั่ง & 'C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe' modifyvm 'devops-server' --autostart-enabled on เพื่อให้เครื่องเสมือนบูตติดเองอัตโนมัติ"
+        ],
+        "lang": "powershell",
+        "code": "# คำสั่งสตาร์ต VM แบบ Headless เบื้องหลังบน Windows:\n$VBOX = \"C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe\"\n& $VBOX startvm \"devops-server\" --type headless\n\n# เปิดฟังก์ชัน Autostart ของ VirtualBox:\n& $VBOX modifyvm \"devops-server\" --autostart-enabled on\n\n# ตรวจสอบสถานะการรัน:\n& $VBOX list runningvms",
+        "verify": "& 'C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe' list runningvms แสดง devops-server รันอยู่"
+      },
+      {
+        "id": "vmware",
+        "label": "VMware Workstation Pro",
+        "icon": "Cpu",
+        "explanation": "ตั้งค่า Autostart ให้ VM ทำงานอัตโนมัติเมื่อเปิดเครื่องผ่านเมนู Shared VMs หรือคำสั่ง vmrun",
+        "steps": [
+          "ใน VMware Workstation 17 Pro: คลิกขวาที่ VM > Manage > Share...",
+          "ย้าย VM ไปยังโฟลเดอร์ Shared VMs",
+          "คลิกที่หัวข้อ 'Shared VMs' ในแถบเมนูด้านซ้าย > คลิกแท็บ 'Manage Auto Start VMs'",
+          "ติ๊กถูกเลือก devops-server กำหนดให้บูตทำงานอัตโนมัติทันทีที่เปิดเครื่องคอมพิวเตอร์",
+          "หรือใช้คำสั่ง vmrun -T ws start ... nogui ในสคริปต์ Startup ของระบบ"
+        ],
+        "lang": "powershell",
+        "code": "# คำสั่งสตาร์ต VM เบื้องหลังผ่าน vmrun CLI:\n& \"C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\" -T ws start \"C:\\VMs\\devops-server\\devops-server.vmx\" nogui\n\n# ตรวจสอบสถานะ VM ที่เปิดอยู่:\n& \"C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\" list",
+        "verify": "vmrun list แสดง devops-server.vmx ในรายการ Running VMs"
+      },
+      {
+        "id": "proxmox",
+        "label": "Proxmox VE",
+        "icon": "Server",
+        "explanation": "ตั้งค่า On-Boot Autostart บน Proxmox เพื่อให้ VM บูตขึ้นมาอัตโนมัติทันทีที่ Server เปิดหรือไฟดับแล้วติดใหม่",
+        "steps": [
+          "บนหน้า Proxmox Web GUI: คลิก VM 100 (devops-server) จากเมนูด้านซ้าย",
+          "เลือกเมนู 'Options' ตรงกลางจอ > ดับเบิลคลิกที่ 'Start at boot'",
+          "ติ๊กถูก [x] Enabled แล้วกด OK",
+          "หรือรันคำสั่ง qm set 100 --onboot 1 บน Proxmox Shell",
+          "ตรวจสอบค่า onboot: 1 ในไฟล์คอนฟิกของ VM"
+        ],
+        "lang": "bash",
+        "code": "# คำสั่งตั้ง On-Boot ผ่าน Proxmox CLI:\nqm set 100 --onboot 1 --startup order=1,up=30\n\n# ตรวจสอบการตั้งค่า:\nqm config 100 | grep -E \"onboot|startup\"",
+        "verify": "qm config 100 แสดงบรรทัด onboot: 1 ชัดเจน"
+      }
     ]
   },
   {
-    id: 'c11_4',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.5',
-    pdfPage: 12,
-    questionText: 'เขียน Dockerfile / docker-compose.yaml ใช้งานจริง\n- ใช้ docker-compose.yaml สำหรับบริการมากกว่า 1 (เช่น app + db) ใน 1 compose',
-    pts: 1,
-    note: '',
-    explanation: 'รวมบริการ App และ Database (MariaDB/MySQL) หรือหลายเซอร์วิสไว้ในไฟล์ docker-compose.yml เดียวกัน',
-    solutionType: 'code',
-    lang: 'yaml',
-    code: `version: '3.8'
-services:
-  app:
-    build: .
-    restart: always
-    ports:
-      - "3000:3000"
-    environment:
-      DB_HOST: mariadb
-      DB_NAME: competition_db
-      DB_USER: root
-      DB_PASS: RootPassword123!
-    depends_on:
-      - mariadb
-
-  mariadb:
-    image: mariadb:10.11
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: RootPassword123!
-      MYSQL_DATABASE: competition_db
-    volumes:
-      - db_data:/var/lib/mysql
-
-volumes:
-  db_data:`,
-    verify: 'docker compose up -d && docker compose ps'
+    "id": "c7_2",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.2",
+    "pdfPage": 10,
+    "questionText": "ติดตั้ง Linux Server บน VM\n- ตั้งค่า IP แบบ Static / DHCP ได้ถูกต้องตามผังที่กรรมการกำหนดให้",
+    "pts": 1,
+    "note": "",
+    "explanation": "กำหนด Static IP Address ให้กับ Ubuntu Server ผ่าน Netplan ตามมาตรฐานทางการของศูนย์ฝึก VECSkill BNCC โดยระบุ IP Address, Gateway และ DNS Nameservers ให้ถูกต้องตามแผนผังเครือข่าย",
+    "solutionType": "code",
+    "lang": "yaml",
+    "code": "# 1. สำรองไฟล์คอนฟิก Netplan เดิมก่อนแก้ไข:\n# sudo cp /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.bak (หรือ 00-installer-config.yaml)\n\n# 2. แก้ไขไฟล์คอนฟิก (สำคัญ: ห้ามใช้ TAB ให้ใช้ Space 2 ช่องในการย่อหน้า):\n# sudo nano /etc/netplan/50-cloud-init.yaml\n\nnetwork:\n  version: 2\n  renderer: networkd\n  ethernets:\n    ens33: # หรือ eth0 / ens18 (ตรวจสอบชื่อการ์ดด้วยคำสั่ง ip link)\n      dhcp4: false\n      addresses:\n        - 192.168.10.10/24\n      routes:\n        - to: default\n          via: 192.168.10.1\n      nameservers:\n        addresses:\n          - 192.168.10.10   # ชี้เข้า Technitium DNS ของตนเอง\n          - 8.8.8.8          # สำรองออกภายนอก\n        search:\n          - competition.lab # หรือ vecskill.ovec\n\n# 3. สั่ง Apply การตั้งค่า Netplan:\n# sudo chmod 600 /etc/netplan/50-cloud-init.yaml\n# sudo netplan apply\n\n# 4. ตรวจสอบผลลัพธ์:\n# ip a show ens33\n# ip route show",
+    "steps": [
+      "รันคำสั่ง ip link เพื่อดูชื่อ Interface การ์ดแลนจริงของเครื่อง (เช่น ens18 หรือ ens33)",
+      "แก้ไขไฟล์คอนฟิก Netplan ใน /etc/netplan/ ด้วย sudo nano ระบุ static IP 192.168.10.10/24 และ gateway 192.168.10.1",
+      "รักษาระยะย่อหน้า (Indentation) ในไฟล์ YAML ให้เป็น Space คู่ ห้ามใช้ Tab เด็ดขาด",
+      "สั่ง sudo netplan apply แล้วตรวจสอบด้วยคำสั่ง ip a และ ip route show"
+    ],
+    "verify": "ip a คืนค่า inet 192.168.10.10/24 และ ip route คืนค่า default via 192.168.10.1",
+    "executionPhase": 2,
+    "phaseName": "Phase 2: เซิร์ฟเวอร์เสมือนและระบบปฏิบัติการหลัก",
+    "executionStep": 17,
+    "execOrderDesc": "กำหนด Static IP ให้ Ubuntu Server ด้วย Netplan (192.168.10.10/24)"
   },
   {
-    id: 'c12_1',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.6',
-    pdfPage: 12,
-    questionText: 'กำหนด CI/CD Pipeline\n- สร้าง .gitlab-ci.yml เชื่อมโยงกับการกำหนด State ครบทั้ง 4 ขั้นตอน Build, Test, Push ขึ้น Registry ของตนเอง, Deploy ไปยัง Server ของตนเอง (พิจารณาการเขียนคำสั่งได้ถูกต้อง)',
-    pts: 1,
-    note: 'พิจารณาการเขียนคำสั่งได้ถูกต้อง',
-    explanation: 'เขียนไฟล์ .gitlab-ci.yml ที่มี stages ครบ 4 ขั้นตอน: build, test, push, deploy โดยคำสั่งในแต่ละ Job ถูกต้องตามหลักการ',
-    solutionType: 'code',
-    lang: 'yaml',
-    code: `stages:
-  - build
-  - test
-  - push
-  - deploy
-
-build_job:
-  stage: build
-  image: node:18-alpine
-  script:
-    - npm ci
-
-test_job:
-  stage: test
-  image: node:18-alpine
-  script:
-    - npm test
-
-push_job:
-  stage: push
-  image: docker:24-cli
-  services:
-    - docker:24-dind
-  script:
-    - docker build -t 192.168.10.10:5000/app:latest .
-    - docker push 192.168.10.10:5000/app:latest
-
-deploy_job:
-  stage: deploy
-  image: alpine:latest
-  script:
-    - echo "Deploying image to Production..."
-    - echo "Deployed successfully"
-  only:
-    - main`,
-    verify: 'cat .gitlab-ci.yml'
+    "id": "c7_3",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.2",
+    "pdfPage": 10,
+    "questionText": "ติดตั้ง Linux Server บน VM\n- ตั้งค่า hostname และ Domain name ตามที่คณะกรรมการกำหนด",
+    "pts": 1,
+    "note": "",
+    "explanation": "ตั้งชื่อ Hostname และ Full Domain Name ให้กับ Server ตามที่กรรมการกำหนด (เช่น devops-server.competition.lab หรือ devops-server.vecskill.ovec) และอัปเดตไฟล์ /etc/hosts เพื่อให้ระบบและ Docker อ้างอิงชื่อเครื่องได้ถูกต้องโดยไม่ติด Loopback error",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# 1. ตั้งค่า Hostname ของระบบผ่าน hostnamectl:\nsudo hostnamectl set-hostname devops-server\n\n# 2. แก้ไขไฟล์ /etc/hosts ให้ผูก IP เข้ากับ Hostname และ FQDN:\n# sudo nano /etc/hosts\n# เพิ่ม/แก้ไขบรรทัด 127.0.1.1:\n# 127.0.0.1   localhost\n# 127.0.1.1   devops-server.competition.lab devops-server\n\n# 3. ตรวจสอบการตั้งชื่อเครื่อง:\nhostname\nhostname -f\ncat /etc/hostname",
+    "steps": [
+      "รันคำสั่ง sudo hostnamectl set-hostname devops-server (หรือชื่อตามโจทย์)",
+      "เปิดไฟล์ /etc/hosts ด้วย sudo nano แล้วปรับแก้บรรทัด 127.0.1.1 ให้มีชื่อโฮสต์และโดเมนตามโจทย์",
+      "ทดสอบรันคำสั่ง hostname และ hostname -f ตรวจสอบว่าแสดงชื่อตรงตามที่กรรมการระบุ"
+    ],
+    "verify": "hostname แสดง devops-server และ hostname -f แสดง devops-server.competition.lab",
+    "executionPhase": 2,
+    "phaseName": "Phase 2: เซิร์ฟเวอร์เสมือนและระบบปฏิบัติการหลัก",
+    "executionStep": 18,
+    "execOrderDesc": "ตั้งค่า Hostname (devops-server) และแก้ไขแมปชื่อใน /etc/hosts"
   },
   {
-    id: 'c12_2',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.7',
-    pdfPage: 12,
-    questionText: 'ทดสอบใช้งาน Pipeline\n- Push code แล้วเกิด Trigger ได้จริง',
-    pts: 0.5,
-    note: '',
-    explanation: 'เมื่อ Push commit ขึ้นไปยัง GitLab Server หน้า CI/CD Pipelines จะเกิด Trigger และรัน Pipeline อัตโนมัติทันที',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `git add .
-git commit -m "feat: trigger ci cd pipeline"
-git push origin main`,
-    verify: 'ดูสถานะในหน้า GitLab: CI/CD -> Pipelines (สถานะขึ้น Running)'
+    "id": "c9_1",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.3",
+    "pdfPage": 11,
+    "questionText": "บริหารจัดการจากระยะไกล SSH / Remote Tools\n- เปิดบริการ SSH",
+    "pts": 1,
+    "note": "",
+    "explanation": "เปิดใช้งาน OpenSSH Server บน Linux Server ให้บริการเริ่มทำงานโดยอัตโนมัติเมื่อบูตระบบ พร้อมเปิดพอร์ตรับการเชื่อมต่อจากระยะไกล",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# 1. ติดตั้งและเปิดบริการ SSH:\nsudo apt update && sudo apt install -y openssh-server\n\n# 2. เปิดใช้งาน Service และสั่งให้รันอัตโนมัติตอนบูต:\nsudo systemctl enable --now ssh\n\n# 3. ตรวจสอบสถานะการทำงาน:\nsudo systemctl status ssh --no-pager",
+    "steps": [
+      "รันคำสั่ง sudo apt install -y openssh-server",
+      "สั่ง sudo systemctl enable --now ssh เพื่อเปิดบริการทันทีและผูก Autostart ตอนบูต",
+      "ตรวจสอบสถานะด้วย sudo systemctl status ssh ให้แสดง Active: active (running)"
+    ],
+    "verify": "systemctl is-active ssh คืนค่า 'active'",
+    "executionPhase": 3,
+    "phaseName": "Phase 3: ความปลอดภัยและการรีโมตเซิร์ฟเวอร์",
+    "executionStep": 19,
+    "execOrderDesc": "ติดตั้งและเปิดบริการ OpenSSH Server บนระบบ"
   },
   {
-    id: 'c12_3',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.7',
-    pdfPage: 12,
-    questionText: 'ทดสอบใช้งาน Pipeline\n- กำหนด Stage ครบ 4 ขั้นตอน (build, test, push ขึ้น registry, deploy) และทำงานได้จริงทุกขั้นตอน',
-    pts: 2,
-    note: 'ถ้าได้ย่างใดอย่างหนึ่งจะไม่ได้คะแนน ไม่มีการหารเฉลี่ย',
-    explanation: 'Pipeline ต้องรันผ่านเครื่องหมายถูกสีเขียว (Passed) ครบทั้ง 4 stages โดยไม่มีข้อใดตกหล่น',
-    solutionType: 'text',
-    steps: [
-      'ตรวจสอบในหน้า GitLab CI/CD -> Pipelines',
-      'Stage 1: build -> Passed (สีเขียว)',
-      'Stage 2: test -> Passed (สีเขียว)',
-      'Stage 3: push -> Passed (สีเขียว นำอิมเมจขึ้น Private Registry)',
-      'Stage 4: deploy -> Passed (สีเขียว Deploy ลง Production Server สำเร็จ)'
-    ]
+    "id": "c9_2",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.3",
+    "pdfPage": 11,
+    "questionText": "บริหารจัดการจากระยะไกล SSH / Remote Tools\n- เพิ่ม User ตามที่กรรมการกำหนดได้ อย่างน้อย 2 User",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้างผู้ใช้งาน (Users) ในระบบ Linux ตามชื่อที่กรรมการกำหนดอย่างน้อย 2 บัญชี พร้อมกำหนดรหัสผ่านและสร้าง Home Directory ให้เรียบร้อย",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# 1. สร้างผู้ใช้คนที่ 1 (เช่น devops หรือ examuser1):\nsudo useradd -m -s /bin/bash devops\necho \"devops:VECSki11@0vec2025\" | sudo chpasswd\nsudo usermod -aG sudo devops\n\n# 2. สร้างผู้ใช้คนที่ 2 (เช่น auditor หรือ examuser2):\nsudo useradd -m -s /bin/bash auditor\necho \"auditor:AuditorPass123!\" | sudo chpasswd\n\n# 3. ตรวจสอบรายชื่อผู้ใช้ที่สร้างในระบบ:\ngetent passwd devops auditor",
+    "steps": [
+      "รันคำสั่ง sudo useradd -m -s /bin/bash devops เพื่อสร้างผู้ใช้พร้อมไดเรกทอรี /home/devops",
+      "ตั้งรหัสผ่านด้วยคำสั่ง chpasswd",
+      "สร้างผู้ใช้คนที่สอง (เช่น auditor) ด้วยขั้นตอนเดียวกัน",
+      "ตรวจสอบใน /etc/passwd หรือด้วย getent passwd ว่าพบผู้ใช้ทั้งสองคน"
+    ],
+    "verify": "getent passwd devops auditor แสดงข้อมูลทั้ง 2 ผู้ใช้พร้อม home directory",
+    "executionPhase": 3,
+    "phaseName": "Phase 3: ความปลอดภัยและการรีโมตเซิร์ฟเวอร์",
+    "executionStep": 20,
+    "execOrderDesc": "เพิ่มผู้ใช้ 2 คนในระบบ (devops และ auditor) พร้อมสร้าง Home Directory"
   },
   {
-    id: 'c12_4',
-    secId: 'sec2',
-    qNum: 'ข้อ 2.7',
-    pdfPage: 12,
-    questionText: 'ทดสอบใช้งาน Pipeline\n- ระบบสามารถ build และสร้าง image ได้',
-    pts: 0.5,
-    note: '',
-    explanation: 'ในขั้นตอน build / push สามารถคอมไพล์โค้ดและสร้าง Docker Image สำเร็จ ตรวจสอบด้วยคำสั่ง docker images',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `# ตรวจสอบบนโฮสต์หรือใน Registry:
-curl -X GET http://192.168.10.10:5000/v2/_catalog
-# ผลลัพธ์: {"repositories":["app"]}`,
-    verify: 'curl http://192.168.10.10:5000/v2/app/tags/list'
-  },
-
-  // ==========================================================================
-  // ส่วนที่ 4: ซอฟต์แวร์และการประยุกต์ (53 คะแนนเต็ม) - หน้า 13-18
-  // ==========================================================================
-  {
-    id: 'c13_1',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.1',
-    pdfPage: 13,
-    questionText: 'การออกแบบผังงาน (Flowchart) ตามความต้องการของผู้ใช้ (Requirement)\n- จัดทำผังงานระบบการเข้าสู่ระบบ (Login Flow)',
-    pts: 1,
-    note: '',
-    explanation: 'จัดทำ Flowchart แสดงกระบวนการเข้าสู่ระบบ: รับค่า Username/Password ตรวจสอบความครบถ้วน เช็ก User และรหัสผ่าน bcrypt ออก JWT Token และนำทางตามสิทธิ์',
-    solutionType: 'mermaid',
-    code: `flowchart TD
-    Start([เริ่มต้น]) --> Input[/ผู้ใช้กรอก Username และ Password/]
-    Input --> Validate{ข้อมูลครบถ้วน?}
-    
-    Validate -- ไม่ครบ --> ShowErr1[/แจ้งเตือน: กรุณากรอกข้อมูลให้ครบถ้วน/]
-    ShowErr1 --> Input
-    
-    Validate -- ครบถ้วน --> SendReq[ประมวลผล POST /api/auth/login]
-    SendReq --> CheckUser{พบชื่อผู้ใช้ในระบบ?}
-    
-    CheckUser -- ไม่พบ (401) --> ShowErr2[/แจ้งเตือน: ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง/]
-    ShowErr2 --> Input
-    
-    CheckUser -- พบ --> CheckPass{ตรวจสอบรหัสผ่าน bcrypt}
-    CheckPass -- ไม่ถูกต้อง (401) --> ShowErr2
-    
-    CheckPass -- ถูกต้อง (200) --> GenJWT[สร้าง Signed JWT Token ระบุ Role]
-    GenJWT --> SaveStorage[บันทึก Token ลงใน LocalStorage]
-    SaveStorage --> CheckRole{ตรวจสอบสิทธิ์ Role}
-    
-    CheckRole -- admin --> GoAdmin[/นำทางไปหน้า Admin Management/]
-    CheckRole -- user1 --> GoOfficer[/นำทางไปหน้า Officer Dashboard/]
-    CheckRole -- user2 --> GoMember[/นำทางไปหน้า Member Catalog/]
-    
-    GoAdmin --> End([สิ้นสุด])
-    GoOfficer --> End
-    GoMember --> End`
+    "id": "c9_3",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.3",
+    "pdfPage": 11,
+    "questionText": "บริหารจัดการจากระยะไกล SSH / Remote Tools\n- Remote จากเครื่องอื่นใน Network เข้ามาได้ด้วย user และ Port ที่กรรมการกำหนด",
+    "pts": 1,
+    "note": "",
+    "explanation": "ปรับแต่งพอร์ต SSH ในไฟล์คอนฟิก /etc/ssh/sshd_config ตามที่กรรมการกำหนด (เช่น พอร์ต 22 หรือพอร์ตพิเศษ เช่น 2222) และทดสอบ Remote SSH เข้ามาจากเครื่องอื่นใน Network ได้สำเร็จ",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# บน Server: กำหนดพอร์ต SSH ใน /etc/ssh/sshd_config\n# ==============================================================================\n# sudo nano /etc/ssh/sshd_config\n# แก้ไข/เพิ่มบรรทัด:\n# Port 22\n# PermitRootLogin no\n# PasswordAuthentication yes\n\n# รีสตาร์ต SSH Daemon:\nsudo systemctl restart sshd\n\n# ==============================================================================\n# บนเครื่องลูกข่าย (Client Terminal / PowerShell / PuTTY):\n# ==============================================================================\nssh -p 22 devops@192.168.10.10\n# หรือ\nssh -p 22 auditor@192.168.10.10",
+    "steps": [
+      "ตรวจสอบไฟล์ /etc/ssh/sshd_config ให้แน่ใจว่า Port ตรงตามที่โจทย์ระบุ และ PermitRootLogin no",
+      "สั่ง sudo systemctl restart sshd เพื่อโหลดคอนฟิกใหม่",
+      "เปิด Terminal หรือ PowerShell จากเครื่องคอมพิวเตอร์ Client ใน Network",
+      "พิมพ์คำสั่ง ssh -p <port> <user>@192.168.10.10 แล้วใส่รหัสผ่านเพื่อเข้าสู่ระบบ"
+    ],
+    "verify": "สามารถ Login เข้าสู่ Bash Shell ของ Server จากเครื่อง Client ผ่าน SSH ได้สำเร็จ",
+    "executionPhase": 3,
+    "phaseName": "Phase 3: ความปลอดภัยและการรีโมตเซิร์ฟเวอร์",
+    "executionStep": 21,
+    "execOrderDesc": "กำหนดพอร์ต SSH และทดสอบ Remote เชื่อมต่อเข้ามาจากเครื่อง Client"
   },
   {
-    id: 'c13_2',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.1',
-    pdfPage: 13,
-    questionText: 'การออกแบบผังงาน (Flowchart)\n- จัดทำผังงานกระบวนการของผู้ดูแลระบบ',
-    pts: 1,
-    note: '',
-    explanation: 'Flowchart กระบวนการของผู้ดูแลระบบ (Admin Process): ดูสถิติรวม จัดการผู้ใช้ เปลี่ยน Role และมี Modal ยืนยันการลบข้อมูล (ใช้สัญลักษณ์มาตรฐานสากล ANSI)',
-    solutionType: 'mermaid',
-    code: `flowchart TD
-    StartAdmin([เริ่มต้น Admin Dashboard]) --> ViewSummary[/แสดงผลสถิติผู้ใช้ และรายการอุปกรณ์/]
-    ViewSummary --> SelectAction{เลือกการทำงาน}
-    
-    SelectAction -- จัดการผู้ใช้งาน --> OpenUser[/เปิดหน้า User Management/]
-    OpenUser --> UserAction{เลือกคำสั่ง}
-    UserAction -- เพิ่มผู้ใช้ --> InputUser[/กรอกข้อมูลผู้ใช้ + กำหนด Role/] --> SaveUser[บันทึกข้อมูลเข้าสู่ฐานข้อมูล]
-    UserAction -- แก้ไข Role --> EditRole[/เลือกเปลี่ยนสิทธิ์ผู้ใช้/] --> SaveUser
-    UserAction -- ลบผู้ใช้ --> ShowModal[/แสดง Modal ยืนยันการลบ/] --> ConfirmDel{ยืนยันการลบ?}
-    ConfirmDel -- ยืนยัน --> DelReq[ส่งคำสั่ง DELETE /api/users/:id] --> SaveUser
-    ConfirmDel -- ยกเลิก --> OpenUser
-    
-    SelectAction -- จัดการหมวดหมู่ --> ManageCat[เพิ่ม / แก้ไข / ลบ หมวดหมู่ข้อมูล]
-    
-    SaveUser --> EndAdmin([สิ้นสุดการทำงาน])
-    ManageCat --> EndAdmin`
+    "id": "c9_4",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.3",
+    "pdfPage": 11,
+    "questionText": "บริหารจัดการจากระยะไกล SSH / Remote Tools\n- ตั้งค่า firewall (UFW / firewalld) เพื่อเปิดพอร์ตบริการได้ ตามที่กรรมการกำหนด",
+    "pts": 1,
+    "note": "",
+    "explanation": "เปิดใช้งานระบบไฟร์วอลล์ UFW (Uncomplicated Firewall) บน Ubuntu Server กำหนดนโยบาย Default Deny และเปิดเฉพาะพอร์ตบริการที่กรรมการกำหนดและจำเป็นต่อระบบ DevOps ครบถ้วนตามมาตรฐาน VECSkill",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# การตั้งค่า UFW Firewall ตามมาตรฐานศูนย์สอบ DevOps VECSkill BNCC\n# ==============================================================================\n# 1. กำหนดนโยบายเริ่มต้น: ปิดกั้นขาเข้าทั้งหมด และอนุญาตขาออก\nsudo ufw default deny incoming\nsudo ufw default allow outgoing\n\n# 2. เปิดพอร์ตบริการตามมาตรฐานการแข่งขัน:\nsudo ufw allow 22/tcp comment 'SSH Remote Access'\nsudo ufw allow 80/tcp comment 'HTTP Web Traffic'\nsudo ufw allow 443/tcp comment 'HTTPS Caddy Traffic'\nsudo ufw allow 53/tcp comment 'DNS TCP'\nsudo ufw allow 53/udp comment 'DNS UDP'\nsudo ufw allow 5380/tcp comment 'Technitium DNS Web UI'\nsudo ufw allow 5000/tcp comment 'Docker Private Registry'\nsudo ufw allow 8080/tcp comment 'Registry UI / Web App'\nsudo ufw allow 2222/tcp comment 'GitLab SSH'\nsudo ufw allow 9443/tcp comment 'Portainer HTTPS'\n\n# 3. เปิดใช้งาน Firewall และตรวจสอบสถานะ:\nsudo ufw --force enable\nsudo ufw status verbose",
+    "steps": [
+      "กำหนด Default Policy: sudo ufw default deny incoming และ sudo ufw default allow outgoing",
+      "อนุญาตพอร์ตที่จำเป็น: 22 (SSH), 80/443 (Web/Proxy), 53 (DNS), 5380 (DNS GUI), 5000 (Registry), 2222 (GitLab SSH)",
+      "สั่งเปิดใช้งาน: sudo ufw enable แล้วกด 'y' ยืนยัน",
+      "ตรวจสอบสถานะด้วย sudo ufw status verbose ให้แสดง Status: active พร้อมรายการพอร์ตที่อนุญาต"
+    ],
+    "verify": "sudo ufw status verbose แสดง Status: active และเปิดพอร์ต 22, 80, 443, 53, 5000 ครบถ้วน",
+    "executionPhase": 3,
+    "phaseName": "Phase 3: ความปลอดภัยและการรีโมตเซิร์ฟเวอร์",
+    "executionStep": 22,
+    "execOrderDesc": "ตั้งค่า UFW Firewall เปิดเฉพาะพอร์ตที่จำเป็น (22, 80, 443, 53, 5000, 2222, 5380)"
   },
   {
-    id: 'c13_3',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.1',
-    pdfPage: 13,
-    questionText: 'การออกแบบผังงาน (Flowchart)\n- จัดทำผังงานกระบวนการของผู้ใช้งานระดับ 1',
-    pts: 1,
-    note: '',
-    explanation: 'Flowchart สำหรับผู้ใช้งานระดับ 1 (Officer): ค้นหาข้อมูล แบ่งหน้า เพิ่มข้อมูลพร้อมแนบไฟล์ แก้ไขข้อมูลและไฟล์ (ไม่มีปุ่มลบ) ตามมาตรฐาน ANSI',
-    solutionType: 'mermaid',
-    code: `flowchart TD
-    StartU1([เริ่มต้น Officer Dashboard]) --> FetchData[ประมวลผลดึงข้อมูล GET /api/items]
-    FetchData --> ShowList[/แสดงตารางข้อมูลพร้อมระบบแบ่งหน้า/]
-    ShowList --> UserAction{เลือกคำสั่ง}
-    
-    UserAction -- ค้นหา/กรองข้อมูล --> InputSearch[/กรอกคำค้นหา Keyword/] --> FilterList[ประมวลผลกรองข้อมูล] --> ShowList
-    
-    UserAction -- เพิ่มรายการใหม่ --> OpenAddModal[/เปิดฟอร์มเพิ่มข้อมูล/]
-    OpenAddModal --> InputForm[/กรอกข้อมูล + แนบไฟล์เอกสาร/]
-    InputForm --> ValidateClient{ตรวจสอบความถูกต้อง?}
-    ValidateClient -- ไม่ผ่าน --> ShowErr[/แสดงข้อความแจ้งเตือนข้อผิดพลาด/] --> OpenAddModal
-    ValidateClient -- ผ่าน --> SendPost[ส่งข้อมูล POST /api/items พร้อมไฟล์แนบ]
-    SendPost --> ShowSuccess[/แสดงข้อความ: บันทึกข้อมูลสำเร็จ/] --> FetchData
-    
-    UserAction -- แก้ไขข้อมูล --> OpenEdit[/เปิดฟอร์มแก้ไข + เปลี่ยนไฟล์แนบ/]
-    OpenEdit --> SendPut[ส่งข้อมูล PUT /api/items/:id] --> ShowUpdate[/แสดงข้อความ: อัปเดตข้อมูลสำเร็จ/] --> FetchData
-    
-    ShowSuccess --> EndU1([สิ้นสุด])
-    ShowUpdate --> EndU1`
+    "id": "c9_5",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.3",
+    "pdfPage": 11,
+    "questionText": "บริหารจัดการจากระยะไกล SSH / Remote Tools\n- กำหนดให้ user ที่ Login เข้ามาสามารถใช้คำสั่ง sudo -i โดยไม่ต้องยืนยันรหัสผ่าน",
+    "pts": 1,
+    "note": "",
+    "explanation": "กำหนดสิทธิ์ Sudoers ให้กับผู้ใช้ที่กำหนด (เช่น devops) ในไฟล์ /etc/sudoers.d/ ให้สามารถยกระดับสิทธิ์เป็น Root ด้วยคำสั่ง sudo -i หรือคำสั่ง sudo ใดๆ โดยไม่ต้องถามรหัสผ่าน (NOPASSWD)",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# 1. สร้างไฟล์สิทธิ์ Sudoers แบบ NOPASSWD ใน /etc/sudoers.d/ (วิธีที่ปลอดภัยตามมาตรฐาน):\necho \"devops ALL=(ALL) NOPASSWD: ALL\" | sudo tee /etc/sudoers.d/devops-nopasswd\n\n# 2. ปรับสิทธิ์ความปลอดภัยของไฟล์ให้เป็น 0440 (Read-only by root):\nsudo chmod 0440 /etc/sudoers.d/devops-nopasswd\n\n# 3. ตรวจสอบไวยากรณ์ของไฟล์คอนฟิก sudoers ด้วย visudo:\nsudo visudo -c -f /etc/sudoers.d/devops-nopasswd\n\n# 4. ทดสอบใช้งานจากผู้ใช้ devops:\nsudo -u devops sudo -i -n whoami\n# ผลลัพธ์: root (เข้าได้ทันทีโดยไม่ถามรหัสผ่าน)",
+    "steps": [
+      "สร้างไฟล์คอนฟิกยกระดับสิทธิ์: echo \"devops ALL=(ALL) NOPASSWD: ALL\" | sudo tee /etc/sudoers.d/devops-nopasswd",
+      "กำหนด Permission ไฟล์เป็น 0440 ด้วยคำสั่ง sudo chmod 0440 /etc/sudoers.d/devops-nopasswd",
+      "ตรวจสอบความถูกต้องของไฟล์ด้วยคำสั่ง sudo visudo -c",
+      "ทดสอบสลับเป็น root ด้วย sudo -i จาก user devops จะต้องเข้าสู่ prompt root@devops-server ทันทีโดยไม่ต้องพิมพ์ Password"
+    ],
+    "verify": "รัน sudo -i จาก user devops เข้าสู่ prompt root# ได้ทันทีโดยไม่ถามรหัสผ่าน",
+    "executionPhase": 3,
+    "phaseName": "Phase 3: ความปลอดภัยและการรีโมตเซิร์ฟเวอร์",
+    "executionStep": 23,
+    "execOrderDesc": "กำหนดสิทธิ์ Sudoers ให้ผู้ใช้ devops สามารถ sudo -i โดยไม่ต้องถามรหัสผ่าน"
   },
   {
-    id: 'c13_4',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.1',
-    pdfPage: 13,
-    questionText: 'การออกแบบผังงาน (Flowchart)\n- จัดทำผังงานกระบวนการของผู้ใช้งานระดับ 2',
-    pts: 1,
-    note: '',
-    explanation: 'Flowchart ผู้ใช้งานระดับ 2 (Member): สิทธิ์อ่านอย่างเดียว (Read-Only) ค้นหา ดูรายละเอียด และดาวน์โหลดไฟล์แนบ',
-    solutionType: 'mermaid',
-    code: `flowchart TD
-    StartU2([เริ่มต้น Member Catalog]) --> ReadItems[ดึงรายการข้อมูลสถานะ Active]
-    ReadItems --> ShowCatalog[/แสดงผลแคตตาล็อกรายการข้อมูล/]
-    ShowCatalog --> ActionU2{เลือกการกระทำ}
-    
-    ActionU2 -- ค้นหาข้อมูล --> TypeSearch[/กรอกคำค้นหา หรือเลือกหมวดหมู่/] --> FilterProc[ประมวลผลตัวกรอง] --> ShowCatalog
-    
-    ActionU2 -- ดูรายละเอียด --> ClickDetail[/คลิกเลือกรายการที่สนใจ/]
-    ClickDetail --> ShowDetailModal[/แสดงหน้าต่างรายละเอียดข้อมูล/]
-    ShowDetailModal --> HasFile{มีไฟล์แนบหรือไม่?}
-    HasFile -- มี --> DownloadFile[/ดาวน์โหลดหรือเปิดดูไฟล์แนบ/]
-    HasFile -- ไม่มี --> CloseModal[ปิดหน้าต่างรายละเอียด]
-    
-    DownloadFile --> EndU2([สิ้นสุด])
-    CloseModal --> EndU2`
+    "id": "c8_1",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.2",
+    "pdfPage": 11,
+    "questionText": "การติดตั้งและใช้งาน DNS Server ใน Network ของตนเอง\n- มีการติดตั้งและใช้งาน DNS Server ใน Network ของตนเอง บน Docker หรือ Linux Server ตามชื่อที่กรรมการกำหนด โดยเครื่องลูกข่ายสามารถเรียกใช้งาน DNS Server ได้ (หมายเหตุ: ตั้งค่าบน Router หรือ Switch หรือ Hosts จะไม่ได้คะแนน)",
+    "pts": 1,
+    "note": "ตั้งค่าบน Router หรือ Switch หรือ Hosts จะไม่ได้คะแนน",
+    "explanation": "ติดตั้ง Technitium DNS Server ผ่าน Docker บนพอร์ต 53 (DNS) และ 5380 (Web UI) พร้อมปิด systemd-resolved DNSStubListener เพื่อแก้ปัญหาพอร์ต 53 ชน และสร้าง Primary Zone พร้อม A Records ชี้ชื่อบริการทั้งหมดไปยัง IP Server เพื่อให้เครื่องลูกข่าย Resolve ได้จริง",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# ขั้นตอนที่ 1: ปลดล็อกพอร์ต 53 จาก systemd-resolved (เทคนิคทางการจาก VECSkill BNCC)\n# บน Ubuntu Server ค่าเริ่มต้น systemd-resolved จะจองพอร์ต 53 ไว้ ทำให้รัน DNS Container ไม่ได้\n# ==============================================================================\nsudo sed -i 's/^#\\?DNSStubListener=.*/DNSStubListener=no/' /etc/systemd/resolved.conf\nsudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf\nsudo systemctl restart systemd-resolved\n\n# ==============================================================================\n# ขั้นตอนที่ 2: รัน Technitium DNS Server Container\n# ==============================================================================\ndocker volume create dns_config\n\ndocker run -d \\\n  --name technitium-dns \\\n  --hostname dns-server \\\n  --restart unless-stopped \\\n  -p 53:53/udp \\\n  -p 53:53/tcp \\\n  -p 5380:5380/tcp \\\n  -e DNS_SERVER_ADMIN_PASSWORD=AdminPassword123! \\\n  --cap-add=NET_ADMIN \\\n  -v dns_config:/etc/dns \\\n  technitium/dns-server:latest\n\n# ==============================================================================\n# ขั้นตอนที่ 3: เพิ่ม Primary Zone และ A Records ใน Technitium Web GUI (http://192.168.10.10:5380)\n# ==============================================================================\n# 1. เข้าสู่หน้าเว็บ: http://192.168.10.10:5380 (User: admin / Pass: AdminPassword123!)\n# 2. ไปที่เมนู \"Zones\" > คลิกปุ่ม \"Add Zone\":\n#    - Zone Type: Primary\n#    - Zone Name: competition.lab (หรือ vecskill.ovec ตามโจทย์) > คลิก \"Add\"\n# 3. คลิกเข้าไปที่ Zone ที่เพิ่งสร้าง > คลิกปุ่ม \"Add Record\":\n#    - Type: A | Name: @        | IP Address: 192.168.10.10\n#    - Type: A | Name: gitlab   | IP Address: 192.168.10.10\n#    - Type: A | Name: registry | IP Address: 192.168.10.10\n#    - Type: A | Name: app      | IP Address: 192.168.10.10\n#    - Type: A | Name: dns      | IP Address: 192.168.10.10\n\n# ==============================================================================\n# ขั้นตอนที่ 4: ตรวจสอบการทำงานจากเครื่อง Client ด้วยคำสั่ง dig หรือ nslookup\n# ==============================================================================\ndig @192.168.10.10 gitlab.competition.lab +short\n# หรือบน Windows:\nnslookup gitlab.competition.lab 192.168.10.10",
+    "steps": [
+      "แก้ปัญหา Ubuntu จองพอร์ต 53 ด้วยการแก้ไข /etc/systemd/resolved.conf ให้ DNSStubListener=no แล้ว restart systemd-resolved",
+      "รัน Docker Container ของ Technitium DNS ด้วย image technitium/dns-server:latest พร้อมเปิดพอร์ต 53 และ 5380",
+      "เปิดเว็บเบราว์เซอร์เข้าสู่ http://192.168.10.10:5380 ล็อกอินด้วย admin / AdminPassword123!",
+      "ไปที่เมนู Zones > Add Zone > เลือก Primary Zone ชื่อ competition.lab (หรือชื่อตามโจทย์)",
+      "เพิ่ม A Record ชี้ gitlab, registry, app ไปที่ IP ของเซิร์ฟเวอร์ (192.168.10.10)",
+      "ทดสอบ Query จากเครื่อง Client ด้วยคำสั่ง nslookup gitlab.competition.lab 192.168.10.10 ต้องได้คำตอบ 192.168.10.10"
+    ],
+    "verify": "nslookup gitlab.competition.lab 192.168.10.10 คืนค่า Address: 192.168.10.10",
+    "executionPhase": 4,
+    "phaseName": "Phase 4: ระบบชื่อโดเมนภายใน (Technitium DNS & ACL)",
+    "executionStep": 24,
+    "execOrderDesc": "ปลดล็อกพอร์ต 53 บน Ubuntu และรัน Technitium DNS Container พร้อมสร้าง Zone และ A Records"
   },
   {
-    id: 'c13_5',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.1',
-    pdfPage: 13,
-    questionText: 'การออกแบบผังงาน (Flowchart)\n- จัดทำผังงานภาพรวมของระบบทั้งหมด (Usecase Diagram)',
-    pts: 1,
-    note: '',
-    explanation: 'Use Case Diagram จำแนกบทบาท 3 ตัวละคร: Admin (จัดการผู้ใช้/ระบบเต็มรูปแบบ), User Level 1 (สร้าง/แก้ไข/แนบไฟล์), User Level 2 (ค้นหา/ดู/ดาวน์โหลดไฟล์)',
-    solutionType: 'mermaid',
-    code: `flowchart LR
-    Admin(["ผู้ดูแลระบบ (Admin)"])
-    Officer(["เจ้าหน้าที่ (User 1)"])
-    Member(["สมาชิก (User 2)"])
-
-    subgraph SystemScope ["ระบบ DevOps Application"]
-        UC_Auth[1. ล็อกอินด้วย JWT]
-        UC_ManageUsers[2. จัดการผู้ใช้งาน CRUD]
-        UC_Items[3. เพิ่ม/แก้ไขข้อมูลและแนบไฟล์]
-        UC_Delete[4. ลบข้อมูลและยืนยัน]
-        UC_Search[5. ค้นหาและดูข้อมูล]
-    end
-
-    Admin --> UC_Auth
-    Admin --> UC_ManageUsers
-    Admin --> UC_Items
-    Admin --> UC_Delete
-    Admin --> UC_Search
-
-    Officer --> UC_Auth
-    Officer --> UC_Items
-    Officer --> UC_Search
-
-    Member --> UC_Auth
-    Member --> UC_Search`
+    "id": "c8_2",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.2",
+    "pdfPage": 11,
+    "questionText": "การควบคุมการเข้าถึง DNS Server (ACL)\n- กำหนดการเข้าถึง DNS Server ใน Network โดยใช้ IP Address ที่กำหนดเท่านั้น (ACL)",
+    "pts": 1,
+    "note": "",
+    "explanation": "กำหนด Access Control List (ACL) บน Technitium DNS เพื่อจำกัดสิทธิ์การ Query ให้เฉพาะ Subnet ใน Network ที่ได้รับอนุญาตเท่านั้น (เช่น 192.168.10.0/24, 192.168.20.0/24) ส่วน Subnet อื่นจะถูกปฏิเสธ (Refused/Denied) ตามเกณฑ์ข้อสอบ",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# ขั้นตอนการตั้งค่า DNS ACL บนหน้าเว็บ Technitium DNS GUI:\n# ==============================================================================\n# 1. เข้าสู่หน้าเว็บ: http://192.168.10.10:5380 แล้วล็อกอิน\n# 2. ไปที่เมนู \"Settings\" ด้านบน > เลือกหัวข้อ \"DNS Server Settings\"\n# 3. ในส่วน \"DNS Client Access\" (หรือ Allowed Networks):\n#    - เปลี่ยนจาก \"Allow Any\" เป็น \"Restricted\" (หรือ \"Allow List\")\n#    - ใส่ Subnet ที่กรรมการอนุญาต (คั่นด้วยเครื่องหมายจุลภาค):\n#      192.168.10.0/24, 192.168.20.0/24, 192.168.30.0/24, 127.0.0.1/32\n# 4. เลื่อนลงล่างสุดแล้วกดปุ่ม \"Save Settings\"\n\n# ==============================================================================\n# การทดสอบตรวจผล (Verification):\n# ==============================================================================\n# 1. ทดสอบส่ง Query จาก IP ที่อยู่ในวงที่อนุญาต (เช่น 192.168.20.x):\ndig @192.168.10.10 gitlab.competition.lab\n# ผลลัพธ์: status: NOERROR พร้อมแสดงคำตอบ A Record 192.168.10.10\n\n# 2. ทดสอบส่ง Query จาก IP นอกวงที่อนุญาต (เช่น IP ทดสอบ 10.0.0.99):\ndig @192.168.10.10 gitlab.competition.lab\n# ผลลัพธ์: status: REFUSED หรือ Connection Refused",
+    "steps": [
+      "เปิดหน้าต่างเบราว์เซอร์เข้า Technitium DNS http://192.168.10.10:5380",
+      "ไปที่เมนู Settings > DNS Server Settings",
+      "ในหัวข้อ DNS Client Access / Allowed Networks เลือกตัวเลือก 'Restricted'",
+      "พิมพ์ระบุ Subnets ที่กรรมการอนุญาต เช่น 192.168.10.0/24, 192.168.20.0/24 แล้วกด Save Settings",
+      "ทดสอบ Query จากเครื่องใน Subnet ที่อนุญาต จะได้ผลลัพธ์ปกติ (NOERROR)",
+      "ทดสอบ Query จาก IP อื่นนอกกลุ่มที่ระบุ ผลลัพธ์จะถูกปฏิเสธ (REFUSED)"
+    ],
+    "verify": "dig @192.168.10.10 จาก IP ในวงอนุญาตคืนค่า NOERROR และจาก IP นอกวงคืนค่า REFUSED",
+    "executionPhase": 4,
+    "phaseName": "Phase 4: ระบบชื่อโดเมนภายใน (Technitium DNS & ACL)",
+    "executionStep": 25,
+    "execOrderDesc": "ตั้งค่า DNS ACL (Restricted) ให้ยอมรับ Query เฉพาะ Subnet ที่ได้รับอนุญาตเท่านั้น"
   },
   {
-    id: 'c14_1',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.2',
-    pdfPage: 13,
-    questionText: 'การออกแบบฐานข้อมูล (Database Design) พร้อม Class Diagram\n- มีการสร้างฐานข้อมูลอย่างน้อย 3 ตาราง',
-    pts: 1,
-    note: 'อย่างน้อย 3 ตาราง',
-    explanation: 'สร้างตารางฐานข้อมูล 3 ตาราง: users (ผู้ใช้และสิทธิ์), categories (หมวดหมู่ข้อมูล), items (รายการข้อมูลและไฟล์แนบ)',
-    solutionType: 'code',
-    lang: 'sql',
-    code: `CREATE DATABASE IF NOT EXISTS competition_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE competition_db;
-
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'user1', 'user2') NOT NULL DEFAULT 'user2',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(150) NOT NULL,
-    description TEXT,
-    category_id INT NOT NULL,
-    file_path VARCHAR(255),
-    created_by INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);`,
-    verify: 'SHOW TABLES;'
+    "id": "c10_1",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.4",
+    "pdfPage": 11,
+    "questionText": "ติดตั้งเครื่องมือ DevOps ได้แก่ Docker + GitLab\n- ติดตั้ง Docker ได้และใช้งานได้ เช่น docker ps, run, exec",
+    "pts": 1,
+    "note": "",
+    "explanation": "ติดตั้ง Docker Engine (Community Edition) และ Docker Compose Plugin บน Ubuntu Server พร้อมเพิ่มผู้ใช้เข้าสู่ docker group เพื่อให้สามารถใช้งานคำสั่ง docker ps, run, exec ได้โดยไม่ต้องใช้ sudo",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# 1. ถอดถอนแพ็กเกจรุ่นเก่าออก:\nfor pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove -y $pkg; done\n\n# 2. ติดตั้ง Docker Engine จาก Official Repository:\nsudo apt-get update\nsudo apt-get install -y ca-certificates curl gnupg\nsudo install -m 0755 -d /etc/apt/keyrings\ncurl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg\nsudo chmod a+r /etc/apt/keyrings/docker.gpg\n\necho \\\n  \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \\\n  $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable\" | \\\n  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null\n\nsudo apt-get update\nsudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin\n\n# 3. เพิ่ม User เข้า docker group เพื่อรันคำสั่งโดยไม่ต้อง sudo:\nsudo usermod -aG docker $USER\nsudo usermod -aG docker devops\n\n# 4. ทดสอบคำสั่ง Docker พื้นฐาน:\ndocker --version\ndocker run --rm hello-world\ndocker ps -a",
+    "steps": [
+      "ติดตั้ง Docker Engine และ Docker Compose ผ่าน Official APT Repository ของ Docker",
+      "เพิ่มสิทธิ์ให้ user ปัจจุบันและ devops เข้ากลุ่ม docker: sudo usermod -aG docker devops",
+      "ทดสอบคำสั่ง docker --version และ docker run --rm hello-world",
+      "ตรวจสอบสถานะ container ด้วย docker ps -a ต้องทำงานได้สมบูรณ์"
+    ],
+    "verify": "docker ps และ docker run --rm hello-world ทำงานสำเร็จโดยไม่ติด permission denied",
+    "executionPhase": 5,
+    "phaseName": "Phase 5: แพลตฟอร์ม DevOps & Git Central (Docker, GitLab & Registry)",
+    "executionStep": 26,
+    "execOrderDesc": "ติดตั้ง Docker Engine และ Docker Compose Plugin พร้อมเพิ่ม user เข้า docker group"
   },
   {
-    id: 'c14_2',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.2',
-    pdfPage: 13,
-    questionText: 'การออกแบบฐานข้อมูล (Database Design)\n- ตารางฐานข้อมูลมีความสัมพันธ์กันอย่างเหมาะสม (Relational Design)',
-    pts: 1,
-    note: '',
-    explanation: 'กำหนด Foreign Key ความสัมพันธ์ 1:N ระหว่าง categories -> items และ users -> items พร้อม ON DELETE RESTRICT / CASCADE',
-    solutionType: 'code',
-    lang: 'sql',
-    code: `ALTER TABLE items
-ADD CONSTRAINT fk_items_category
-FOREIGN KEY (category_id) REFERENCES categories(id)
-ON UPDATE CASCADE ON DELETE RESTRICT;
-
-ALTER TABLE items
-ADD CONSTRAINT fk_items_user
-FOREIGN KEY (created_by) REFERENCES users(id)
-ON UPDATE CASCADE ON DELETE RESTRICT;`,
-    verify: 'SHOW CREATE TABLE items;'
+    "id": "c10_2",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.4",
+    "pdfPage": 11,
+    "questionText": "ติดตั้งเครื่องมือ DevOps\n- ติดตั้ง GitLab ได้ใน container หรือ VM โดยเข้าเว็บได้",
+    "pts": 1,
+    "note": "",
+    "explanation": "ติดตั้ง GitLab Community Edition (CE) ผ่าน Docker Compose โดยกำหนด GITLAB_OMNIBUS_CONFIG ให้ listen พอร์ต 80 ภายใน และส่งต่อผ่าน Reverse Proxy (Caddy) เพื่อให้บริการ HTTPS ภายนอก พร้อมดึงรหัสผ่านเริ่มต้นของ root",
+    "solutionType": "code",
+    "lang": "yaml",
+    "code": "# 1. สร้าง Docker Network ส่วนกลาง (ทำครั้งเดียว):\n# sudo docker network create app_net\n\n# 2. สร้างไฟล์ docker-compose.yml สำหรับ GitLab CE:\n# sudo nano /srv/gitlab/docker-compose.yml\n\nversion: '3.8'\n\nservices:\n  gitlab:\n    image: 'gitlab/gitlab-ce:latest'\n    container_name: gitlab\n    restart: always\n    hostname: 'gitlab.competition.lab' # หรือ gitlab.vecskill.ovec\n    environment:\n      GITLAB_OMNIBUS_CONFIG: |\n        external_url 'https://gitlab.competition.lab'\n        nginx['listen_port'] = 80\n        nginx['listen_https'] = false\n        letsencrypt['enable'] = false\n        gitlab_rails['gitlab_shell_ssh_port'] = 2222\n        prometheus_monitoring['enable'] = false\n        nginx['real_ip_header'] = 'X-Forwarded-For'\n        nginx['real_ip_recursive'] = 'on'\n        nginx['real_ip_trusted_addresses'] = ['172.16.0.0/12','192.168.0.0/16','10.0.0.0/8']\n    ports:\n      - '2222:22' # พอร์ต SSH สำหรับ Git Clone\n    shm_size: \"1g\"\n    volumes:\n      - 'gitlab_config:/etc/gitlab'\n      - 'gitlab_logs:/var/log/gitlab'\n      - 'gitlab_data:/var/opt/gitlab'\n    networks:\n      - app_net\n\nnetworks:\n  app_net:\n    external: true\n\nvolumes:\n  gitlab_config:\n  gitlab_logs:\n  gitlab_data:\n\n# 3. รันคอนเทนเนอร์:\n# docker compose up -d\n\n# 4. ค้นหารหัสผ่านเริ่มต้นของ root (รอประมาณ 2-5 นาทีให้ระบบบูตเสร็จ):\n# sudo docker exec -it gitlab grep 'Password:' /etc/gitlab/initial_root_password",
+    "steps": [
+      "สร้าง shared network: docker network create app_net",
+      "สร้างโฟลเดอร์และไฟล์ docker-compose.yml สำหรับ gitlab-ce ตามคอนฟิกข้างต้น",
+      "สั่ง docker compose up -d แล้วรอ 3-5 นาทีให้ GitLab Healthcheck ขึ้นสถานะ healthy",
+      "ดึงรหัสผ่านเริ่มต้นของ root ด้วยคำสั่ง: sudo docker exec -it gitlab grep 'Password:' /etc/gitlab/initial_root_password",
+      "เปิดเว็บเบราว์เซอร์เข้าสู่ https://gitlab.competition.lab (หรือผ่าน IP) ล็อกอินด้วย root และรหัสผ่านที่ได้"
+    ],
+    "verify": "เปิดเบราว์เซอร์เข้าหน้าเว็บ GitLab แสดงหน้าล็อกอิน และสามารถล็อกอินด้วย root ได้สำเร็จ",
+    "executionPhase": 5,
+    "phaseName": "Phase 5: แพลตฟอร์ม DevOps & Git Central (Docker, GitLab & Registry)",
+    "executionStep": 27,
+    "execOrderDesc": "รัน GitLab Community Edition (CE) Container และตรวจสอบการเข้าถึงหน้าเว็บ"
   },
   {
-    id: 'c14_3',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.2',
-    pdfPage: 13,
-    questionText: 'การออกแบบฐานข้อมูล (Database Design)\n- มีการเลือกใช้ประเภทข้อมูล (Data Type) ได้เหมาะสมกับชนิดของข้อมูล',
-    pts: 1,
-    note: '',
-    explanation: 'เลือกใช้ Data Type สอดคล้อง: INT Auto Increment สำหรับ ID, VARCHAR สำหรับชื่อ, ENUM สำหรับ Role สิทธิ์, TEXT สำหรับคำอธิบายยาว, และ TIMESTAMP สำหรับบันทึกเวลา',
-    solutionType: 'text',
-    steps: [
-      'id: INT AUTO_INCREMENT PRIMARY KEY (เหมาะสมกับการเป็นดัชนีตัวเลข)',
-      'username: VARCHAR(50) UNIQUE NOT NULL (ความยาวเหมาะสมและป้องกันชื่อซ้ำ)',
-      'password_hash: VARCHAR(255) (รองรับความยาวของสตริงแฮช bcrypt 60 ตัวอักษร)',
-      'role: ENUM("admin", "user1", "user2") (จำกัดค่าสิทธิ์ได้แม่นยำ ไม่เปลืองพื้นที่)',
-      'created_at: TIMESTAMP DEFAULT CURRENT_TIMESTAMP (บันทึกเวลาอัตโนมัติ)'
-    ]
+    "id": "c10_3",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.4",
+    "pdfPage": 11,
+    "questionText": "ติดตั้งเครื่องมือ DevOps\n- สร้าง User ใน Gitlab และเข้าหน้า UI ได้",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้างบัญชีผู้ใช้งานใหม่ใน GitLab ผ่านหน้าจอ Admin Area UI หรือ Rails Console พร้อมกำหนดสิทธิ์ สมาชิกกลุ่ม และทดสอบล็อกอินเข้าสู่ GitLab Dashboard ด้วยผู้ใช้ใหม่ได้จริง",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# วิธีที่ 1: สร้างผ่าน GitLab Web Admin UI (วิธีมาตรฐานในการสอบ):\n# ==============================================================================\n# 1. ล็อกอินเข้า GitLab ด้วยบัญชี root\n# 2. คลิกไอคอน \"Admin Area\" (รูปประแจ หรือเมนู Admin มุมซ้ายล่าง/บน)\n# 3. ไปที่เมนู Overview > Users > คลิกปุ่ม \"New user\"\n# 4. กรอกข้อมูล:\n#    - Name: DevOps Candidate\n#    - Username: devops\n#    - Email: devops@competition.lab\n#    - Access level: Regular (หรือ Administrator)\n# 5. คลิก \"Create user\" แล้วไปที่แท็บ \"Password\" กำหนดรหัสผ่านใหม่ เช่น VECSki11@0vec2025\n# 6. ออกจากระบบ (Sign Out) แล้วทดสอบล็อกอินด้วย user: devops\n\n# ==============================================================================\n# วิธีที่ 2: สร้างผ่าน GitLab Rails Console CLI (รวดเร็วทันใจ):\n# ==============================================================================\ndocker exec -it gitlab gitlab-rails runner \"\nuser = User.new(name: 'DevOps User', username: 'devops', email: 'devops@competition.lab')\nuser.password = 'VECSki11@0vec2025'\nuser.password_confirmation = 'VECSki11@0vec2025'\nuser.skip_confirmation!\nuser.save!\nputs 'User devops created successfully!'\n\"",
+    "steps": [
+      "ล็อกอินเข้า GitLab Web UI ด้วยบัญชี root",
+      "เข้าสู่ Admin Area > เมนู Users > คลิกปุ่ม 'New user'",
+      "กรอก Username: devops, Email: devops@competition.lab และกำหนดรหัสผ่าน",
+      "กด Sign out ออกจากบัญชี root",
+      "ทดสอบ Sign in ด้วย Username: devops และรหัสผ่านที่ตั้งไว้ ตรวจสอบว่าเข้าหน้า Dashboard ของตนเองได้สมบูรณ์"
+    ],
+    "verify": "สามารถล็อกอินเข้าสู่ GitLab UI ด้วย user ใหม่ (devops) และแสดงหน้าแดชบอร์ดโครงการได้",
+    "executionPhase": 5,
+    "phaseName": "Phase 5: แพลตฟอร์ม DevOps & Git Central (Docker, GitLab & Registry)",
+    "executionStep": 28,
+    "execOrderDesc": "ดึงรหัสผ่านเริ่มต้นของ root และสร้างผู้ใช้ใหม่ใน GitLab Admin Area"
   },
   {
-    id: 'c14_4',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.2',
-    pdfPage: 13,
-    questionText: 'การออกแบบฐานข้อมูล (Database Design)\n- แสดง Class Diagram ที่สามารถอธิบายโครงสร้างได้อย่างถูกต้องและสมบูรณ์',
-    pts: 1,
-    note: '',
-    explanation: 'จัดทำ Class Diagram แสดง Attributes, Methods, และ Relationship ระหว่าง Entity Classes',
-    solutionType: 'mermaid',
-    code: `classDiagram
-    class User {
-        +int id
-        +string username
-        +string passwordHash
-        +string role
-        +datetime createdAt
-        +login(password) bool
-        +hasPermission(action) bool
-    }
-
-    class Category {
-        +int id
-        +string name
-        +string description
-        +datetime createdAt
-        +getItems() List~Item~
-    }
-
-    class Item {
-        +int id
-        +string title
-        +string description
-        +int categoryId
-        +string filePath
-        +int createdBy
-        +datetime createdAt
-        +update(data) bool
-        +delete() bool
-    }
-
-    User "1" --> "0..*" Item : creates
-    Category "1" --> "0..*" Item : categorizes`
+    "id": "c11_2",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.5",
+    "pdfPage": 12,
+    "questionText": "เขียน Dockerfile / docker-compose.yaml ใช้งานจริง\n- ใช้ docker-compose.yaml สำหรับบริการ reverse proxy เพื่อใช้บริการ https (caddy, NPM)",
+    "pts": 1,
+    "note": "",
+    "explanation": "ติดตั้ง Caddy Reverse Proxy ผ่าน docker-compose.yaml โดยใช้เทคนิค 'tls internal' (Internal CA) ตามแนวทางทางการของศูนย์ฝึก VECSkill BNCC เพื่อให้ระบบออกใบรับรอง SSL HTTPS ภายใน Local Network ได้อย่างสมบูรณ์แบบโดยไม่ต้องต่ออินเทอร์เน็ต และนำ Root CA ไปติดตั้งบนเครื่อง Client เพื่อให้เบราว์เซอร์แสดงกุญแจเขียวปลอดภัย",
+    "solutionType": "code",
+    "lang": "yaml",
+    "code": "# ==============================================================================\n# ไฟล์ docker-compose.yml สำหรับ Caddy Reverse Proxy & Internal CA:\n# ==============================================================================\nversion: '3.8'\n\nservices:\n  caddy:\n    image: caddy:latest\n    container_name: caddy-proxy\n    restart: always\n    ports:\n      - \"80:80\"\n      - \"443:443\"\n    volumes:\n      - ./Caddyfile:/etc/caddy/Caddyfile:ro\n      - caddy_data:/data\n      - caddy_config:/config\n    networks:\n      - app_net\n\nnetworks:\n  app_net:\n    external: true\n\nvolumes:\n  caddy_data:\n  caddy_config:\n\n# ==============================================================================\n# การส่งออก Root CA เพื่อให้เครื่อง Client ยอมรับ HTTPS เป็นสีเขียว:\n# ==============================================================================\n# 1. คัดลอกใบรับรอง Root CA จาก Caddy Container ออกมาที่โฮสต์:\n# docker cp caddy-proxy:/data/caddy/pki/authorities/local/root.crt ./caddy-root.crt\n#\n# 2. นำไปติดตั้งบน Windows Client:\n#    - ดับเบิลคลิกไฟล์ caddy-root.crt > Install Certificate...\n#    - เลือก \"Local Machine\" > Next\n#    - เลือก \"Place all certificates in the following store\" > Browse...\n#    - เลือกโฟลเดอร์ \"Trusted Root Certification Authorities\" > OK > Next > Finish",
+    "steps": [
+      "สร้างไฟล์ Caddyfile และ docker-compose.yml สำหรับ Caddy Reverse Proxy",
+      "สั่ง docker compose up -d บน network app_net",
+      "ดึงไฟล์ root.crt ของ Caddy ออกมา: docker cp caddy-proxy:/data/caddy/pki/authorities/local/root.crt ./caddy-root.crt",
+      "นำไฟล์ caddy-root.crt ไป Install ลงใน Trusted Root Certification Authorities บนเครื่อง Client",
+      "ทดสอบเข้าเว็บผ่าน https:// ด้วยเบราว์เซอร์ จะขึ้นแม่กุญแจปลอดภัยสีเขียว (Secure Connection)"
+    ],
+    "verify": "curl -k -I https://localhost คืนค่า HTTP/2 200 หรือเข้าเว็บผ่านเบราว์เซอร์แสดงแม่กุญแจปลอดภัย",
+    "executionPhase": 5,
+    "phaseName": "Phase 5: แพลตฟอร์ม DevOps & Git Central (Docker, GitLab & Registry)",
+    "executionStep": 29,
+    "execOrderDesc": "ติดตั้ง Caddy Reverse Proxy ด้วย tls internal และ Export Root CA ไปติดตั้งบนเครื่อง Client"
   },
   {
-    id: 'c14_5',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.2',
-    pdfPage: 13,
-    questionText: 'การออกแบบฐานข้อมูล (Database Design)\n- มีการตั้งชื่อตารางและฟิลด์สอดคล้องกับวัตถุประสงค์ของระบบ และเป็นไปตามมาตรฐานการเขียนชื่อทางเทคนิค',
-    pts: 1,
-    note: '',
-    explanation: 'ตั้งชื่อตารางเป็นคำนามพหูพจน์ (users, categories, items) และตั้งชื่อฟิลด์แบบ snake_case มาตรฐาน เช่น password_hash, category_id, file_path, created_at',
-    solutionType: 'text',
-    steps: [
-      'ใช้ชื่อตารางแบบ lowercase plural nouns: users, categories, items',
-      'ใช้ snake_case สำหรับชื่อฟิลด์: password_hash, category_id, file_path, created_at',
-      'ฟิลด์กุญแจหลักใช้ `id` และกุญแจร่วมใช้รูปแบบ `[table_singular]_id` เช่น `category_id`'
-    ]
+    "id": "c11_3",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.5",
+    "pdfPage": 12,
+    "questionText": "เขียน Dockerfile / docker-compose.yaml ใช้งานจริง\n- ใช้ reverse proxy กับ host และ domain ของระบบที่พัฒนาได้ registry, gitlab, frontend, backend เช่น https://gitlab.mydomain.lab",
+    "pts": 1,
+    "note": "",
+    "explanation": "กำหนดคอนฟิก Caddyfile ให้กระจายคำขอ HTTPS Reverse Proxy ไปยังโดเมนเนมของบริการต่างๆ ครบถ้วน ได้แก่ gitlab, registry, registry-ui, dns, frontend และ backend พร้อมเข้ารหัส tls internal",
+    "solutionType": "code",
+    "lang": "caddyfile",
+    "code": "# ==============================================================================\n# ไฟล์ Caddyfile มาตรฐานศูนย์สอบ DevOps VECSkill BNCC\n# ==============================================================================\n{\n    cert_issuer internal\n}\n\n# 1. GitLab Web Service\ngitlab.competition.lab {\n    tls internal\n    encode zstd gzip\n    reverse_proxy http://gitlab:80\n}\n\n# 2. Docker Private Registry API\nregistry.competition.lab {\n    tls internal\n    encode zstd gzip\n    reverse_proxy http://registry:5000\n}\n\n# 3. Docker Registry Web UI\nregistry-ui.competition.lab {\n    tls internal\n    encode zstd gzip\n    reverse_proxy http://registry-ui:80\n}\n\n# 4. Technitium DNS Server Web Admin\ndns.competition.lab {\n    tls internal\n    encode zstd gzip\n    reverse_proxy http://technitium-dns:5380\n}\n\n# 5. Application Frontend Web\napp.competition.lab {\n    tls internal\n    encode zstd gzip\n    reverse_proxy http://app:3000\n}\n\n# 6. Application Backend API\napi.competition.lab {\n    tls internal\n    encode zstd gzip\n    reverse_proxy http://api:7000\n}",
+    "steps": [
+      "เขียนไฟล์ Caddyfile กำหนดบล็อกเสมือนสำหรับแต่ละโดเมน (gitlab, registry, dns, app, api)",
+      "ระบุคำสั่ง tls internal ในทุกบล็อกเพื่อให้ Caddy ออก SSL อัตโนมัติ",
+      "รีโหลดคอนฟิก Caddy: docker exec -w /etc/caddy caddy-proxy caddy reload",
+      "ทดสอบเรียกเปิด https://gitlab.competition.lab และ https://dns.competition.lab จากเครื่อง Client ตรวจสอบการเข้าถึงแต่ละระบบได้ถูกต้อง"
+    ],
+    "verify": "เปิดเข้า https://gitlab.competition.lab และ https://dns.competition.lab ได้ถูกต้องผ่าน Caddy HTTPS",
+    "executionPhase": 5,
+    "phaseName": "Phase 5: แพลตฟอร์ม DevOps & Git Central (Docker, GitLab & Registry)",
+    "executionStep": 30,
+    "execOrderDesc": "คอนฟิก Caddyfile กระจาย HTTPS ไปยังแต่ละบริการ (gitlab, registry, dns, app, api)"
   },
   {
-    id: 'c15_1',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.3',
-    pdfPage: 14,
-    questionText: 'การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอผู้ดูแลระบบ',
-    pts: 1,
-    note: '',
-    explanation: 'วาดผังหน้าจอ Admin Layout ใน Draw.io: Sidebar เมนูครบครัน, การจัดการผู้ใช้, ตารางกำหนดสิทธิ์ Role, และปุ่มลบข้อมูลพร้อม Modal ยืนยัน',
-    solutionType: 'text',
-    steps: [
-      'Header: แสดง Admin Badge และปุ่ม Logout',
-      'Sidebar: เมนู Overview, User Management, Category Management, Audit Logs',
-      'Content: ตารางจัดการผู้ใช้ แสดงปุ่มแก้ไขสิทธิ์ และปุ่มลบสีแดงพร้อมยืนยัน Confirmation'
-    ]
+    "id": "c13_1",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.1",
+    "pdfPage": 13,
+    "questionText": "การออกแบบผังงาน (Flowchart) ตามความต้องการของผู้ใช้ (Requirement)\n- จัดทำผังงานระบบการเข้าสู่ระบบ (Login Flow)",
+    "pts": 1,
+    "note": "",
+    "explanation": "จัดทำ Flowchart แสดงกระบวนการเข้าสู่ระบบ: รับค่า Username/Password ตรวจสอบความครบถ้วน เช็ก User และรหัสผ่าน bcrypt ออก JWT Token และนำทางตามสิทธิ์",
+    "solutionType": "mermaid",
+    "code": "flowchart TD\n    Start([เริ่มต้น]) --> Input[/ผู้ใช้กรอก Username และ Password/]\n    Input --> Validate{ข้อมูลครบถ้วน?}\n    \n    Validate -- ไม่ครบ --> ShowErr1[/แจ้งเตือน: กรุณากรอกข้อมูลให้ครบถ้วน/]\n    ShowErr1 --> Input\n    \n    Validate -- ครบถ้วน --> SendReq[ประมวลผล POST /api/auth/login]\n    SendReq --> CheckUser{พบชื่อผู้ใช้ในระบบ?}\n    \n    CheckUser -- ไม่พบ (401) --> ShowErr2[/แจ้งเตือน: ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง/]\n    ShowErr2 --> Input\n    \n    CheckUser -- พบ --> CheckPass{ตรวจสอบรหัสผ่าน bcrypt}\n    CheckPass -- ไม่ถูกต้อง (401) --> ShowErr2\n    \n    CheckPass -- ถูกต้อง (200) --> GenJWT[สร้าง Signed JWT Token ระบุ Role]\n    GenJWT --> SaveStorage[บันทึก Token ลงใน LocalStorage]\n    SaveStorage --> CheckRole{ตรวจสอบสิทธิ์ Role}\n    \n    CheckRole -- admin --> GoAdmin[/นำทางไปหน้า Admin Management/]\n    CheckRole -- user1 --> GoOfficer[/นำทางไปหน้า Officer Dashboard/]\n    CheckRole -- user2 --> GoMember[/นำทางไปหน้า Member Catalog/]\n    \n    GoAdmin --> End([สิ้นสุด])\n    GoOfficer --> End\n    GoMember --> End",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 31,
+    "execOrderDesc": "จัดทำผังงาน (Flowchart) ระบบเข้าสู่ระบบ (Login Flow)"
   },
   {
-    id: 'c15_2',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.3',
-    pdfPage: 14,
-    questionText: 'การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอผู้ใช้งานระดับ 1',
-    pts: 1,
-    note: '',
-    explanation: 'วาดผังหน้าจอ Officer Layout (User 1): ฟอร์มเพิ่มข้อมูลพร้อมปุ่มแนบไฟล์ (Drag & Drop), ตารางแก้ไขรายการ, และตัวกรองข้อมูล',
-    solutionType: 'text',
-    steps: [
-      'Header: แสดง Officer Badge และชื่อผู้ใช้งาน',
-      'Action Bar: ปุ่ม "+ เพิ่มรายการใหม่" และช่องค้นหาข้อมูล',
-      'Content: ฟอร์มกรอกข้อมูล + ปุ่ม File Upload และตารางแก้ไขข้อมูล (ไม่มีปุ่มลบ)'
-    ]
+    "id": "c13_2",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.1",
+    "pdfPage": 13,
+    "questionText": "การออกแบบผังงาน (Flowchart)\n- จัดทำผังงานกระบวนการของผู้ดูแลระบบ",
+    "pts": 1,
+    "note": "",
+    "explanation": "Flowchart กระบวนการของผู้ดูแลระบบ (Admin Process): ดูสถิติรวม จัดการผู้ใช้ เปลี่ยน Role และมี Modal ยืนยันการลบข้อมูล (ใช้สัญลักษณ์มาตรฐานสากล ANSI)",
+    "solutionType": "mermaid",
+    "code": "flowchart TD\n    StartAdmin([เริ่มต้น Admin Dashboard]) --> ViewSummary[/แสดงผลสถิติผู้ใช้ และรายการอุปกรณ์/]\n    ViewSummary --> SelectAction{เลือกการทำงาน}\n    \n    SelectAction -- จัดการผู้ใช้งาน --> OpenUser[/เปิดหน้า User Management/]\n    OpenUser --> UserAction{เลือกคำสั่ง}\n    UserAction -- เพิ่มผู้ใช้ --> InputUser[/กรอกข้อมูลผู้ใช้ + กำหนด Role/] --> SaveUser[บันทึกข้อมูลเข้าสู่ฐานข้อมูล]\n    UserAction -- แก้ไข Role --> EditRole[/เลือกเปลี่ยนสิทธิ์ผู้ใช้/] --> SaveUser\n    UserAction -- ลบผู้ใช้ --> ShowModal[/แสดง Modal ยืนยันการลบ/] --> ConfirmDel{ยืนยันการลบ?}\n    ConfirmDel -- ยืนยัน --> DelReq[ส่งคำสั่ง DELETE /api/users/:id] --> SaveUser\n    ConfirmDel -- ยกเลิก --> OpenUser\n    \n    SelectAction -- จัดการหมวดหมู่ --> ManageCat[เพิ่ม / แก้ไข / ลบ หมวดหมู่ข้อมูล]\n    \n    SaveUser --> EndAdmin([สิ้นสุดการทำงาน])\n    ManageCat --> EndAdmin",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 32,
+    "execOrderDesc": "จัดทำผังงานกระบวนการทำงานของผู้ดูแลระบบ (Admin Flow)"
   },
   {
-    id: 'c15_3',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.3',
-    pdfPage: 14,
-    questionText: 'การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอผู้ใช้งานระดับ 2',
-    pts: 1,
-    note: '',
-    explanation: 'วาดผังหน้าจอ Member Layout (User 2): ตารางแบบ Read-Only, กล่องค้นหา/กรองหมวดหมู่, และปุ่มเปิดดู/ดาวน์โหลดไฟล์แนบ',
-    solutionType: 'text',
-    steps: [
-      'Header: แสดง Member Badge',
-      'Content: แคตตาล็อกรายการข้อมูล มีระบบแบ่งหน้า (Pagination)',
-      'Item View: ปุ่มดาวน์โหลดไฟล์แนบและดูรายละเอียด (ไม่มีฟอร์มเพิ่ม/แก้ไข/ลบ)'
-    ]
+    "id": "c13_3",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.1",
+    "pdfPage": 13,
+    "questionText": "การออกแบบผังงาน (Flowchart)\n- จัดทำผังงานกระบวนการของผู้ใช้งานระดับ 1",
+    "pts": 1,
+    "note": "",
+    "explanation": "Flowchart สำหรับผู้ใช้งานระดับ 1 (Officer): ค้นหาข้อมูล แบ่งหน้า เพิ่มข้อมูลพร้อมแนบไฟล์ แก้ไขข้อมูลและไฟล์ (ไม่มีปุ่มลบ) ตามมาตรฐาน ANSI",
+    "solutionType": "mermaid",
+    "code": "flowchart TD\n    StartU1([เริ่มต้น Officer Dashboard]) --> FetchData[ประมวลผลดึงข้อมูล GET /api/items]\n    FetchData --> ShowList[/แสดงตารางข้อมูลพร้อมระบบแบ่งหน้า/]\n    ShowList --> UserAction{เลือกคำสั่ง}\n    \n    UserAction -- ค้นหา/กรองข้อมูล --> InputSearch[/กรอกคำค้นหา Keyword/] --> FilterList[ประมวลผลกรองข้อมูล] --> ShowList\n    \n    UserAction -- เพิ่มรายการใหม่ --> OpenAddModal[/เปิดฟอร์มเพิ่มข้อมูล/]\n    OpenAddModal --> InputForm[/กรอกข้อมูล + แนบไฟล์เอกสาร/]\n    InputForm --> ValidateClient{ตรวจสอบความถูกต้อง?}\n    ValidateClient -- ไม่ผ่าน --> ShowErr[/แสดงข้อความแจ้งเตือนข้อผิดพลาด/] --> OpenAddModal\n    ValidateClient -- ผ่าน --> SendPost[ส่งข้อมูล POST /api/items พร้อมไฟล์แนบ]\n    SendPost --> ShowSuccess[/แสดงข้อความ: บันทึกข้อมูลสำเร็จ/] --> FetchData\n    \n    UserAction -- แก้ไขข้อมูล --> OpenEdit[/เปิดฟอร์มแก้ไข + เปลี่ยนไฟล์แนบ/]\n    OpenEdit --> SendPut[ส่งข้อมูล PUT /api/items/:id] --> ShowUpdate[/แสดงข้อความ: อัปเดตข้อมูลสำเร็จ/] --> FetchData\n    \n    ShowSuccess --> EndU1([สิ้นสุด])\n    ShowUpdate --> EndU1",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 33,
+    "execOrderDesc": "จัดทำผังงานกระบวนการของผู้ใช้งานระดับ 1 (Officer Flow)"
   },
   {
-    id: 'c15_4',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.3',
-    pdfPage: 14,
-    questionText: 'การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอหลักของระบบ (Dashboard/Overview)',
-    pts: 1,
-    note: '',
-    explanation: 'วาดผังหน้าจอ Dashboard Overview: การ์ดแสดงผลสถิติตัวเลข (KPI Summary), กราฟสรุปปริมาณข้อมูล, และกิจกรรมล่าสุด',
-    solutionType: 'text',
-    steps: [
-      'Metrics Cards: การ์ดนับจำนวนผู้ใช้ทั้งหมด, จำนวนรายการข้อมูล, จำนวนการอัปโหลดไฟล์',
-      'Data Visualisation: กราฟหรือตารางสถิติสรุปตามหมวดหมู่',
-      'Recent Activities: ฟีดประวัติการเพิ่มข้อมูลล่าสุดของระบบ'
-    ]
+    "id": "c13_4",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.1",
+    "pdfPage": 13,
+    "questionText": "การออกแบบผังงาน (Flowchart)\n- จัดทำผังงานกระบวนการของผู้ใช้งานระดับ 2",
+    "pts": 1,
+    "note": "",
+    "explanation": "Flowchart ผู้ใช้งานระดับ 2 (Member): สิทธิ์อ่านอย่างเดียว (Read-Only) ค้นหา ดูรายละเอียด และดาวน์โหลดไฟล์แนบ",
+    "solutionType": "mermaid",
+    "code": "flowchart TD\n    StartU2([เริ่มต้น Member Catalog]) --> ReadItems[ดึงรายการข้อมูลสถานะ Active]\n    ReadItems --> ShowCatalog[/แสดงผลแคตตาล็อกรายการข้อมูล/]\n    ShowCatalog --> ActionU2{เลือกการกระทำ}\n    \n    ActionU2 -- ค้นหาข้อมูล --> TypeSearch[/กรอกคำค้นหา หรือเลือกหมวดหมู่/] --> FilterProc[ประมวลผลตัวกรอง] --> ShowCatalog\n    \n    ActionU2 -- ดูรายละเอียด --> ClickDetail[/คลิกเลือกรายการที่สนใจ/]\n    ClickDetail --> ShowDetailModal[/แสดงหน้าต่างรายละเอียดข้อมูล/]\n    ShowDetailModal --> HasFile{มีไฟล์แนบหรือไม่?}\n    HasFile -- มี --> DownloadFile[/ดาวน์โหลดหรือเปิดดูไฟล์แนบ/]\n    HasFile -- ไม่มี --> CloseModal[ปิดหน้าต่างรายละเอียด]\n    \n    DownloadFile --> EndU2([สิ้นสุด])\n    CloseModal --> EndU2",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 34,
+    "execOrderDesc": "จัดทำผังงานกระบวนการของผู้ใช้งานระดับ 2 (User Read-Only Flow)"
   },
   {
-    id: 'c15_5',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.3',
-    pdfPage: 14,
-    questionText: 'การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอเข้าสู่ระบบ (Login Screen)',
-    pts: 1,
-    note: '',
-    explanation: 'วาดผังหน้าจอ Login Screen: การ์ดตรงกลางหน้าจอ ช่องกรอก Username, Password, ปุ่ม Login, และกล่อง Alert แจ้งเตือนข้อผิดพลาด',
-    solutionType: 'text',
-    steps: [
-      'Brand Header: โลโก้และชื่อระบบ "DevOps Management System"',
-      'Form Fields: ช่อง Input Username และ Password (มีไอคอนปิด/เปิดรหัสผ่าน)',
-      'Action Button: ปุ่มกด "เข้าสู่ระบบ (Login)"',
-      'Error Box: แถบสีแดงแสดงข้อความเตือนเมื่อกรอกรหัสผ่านไม่ถูกต้อง'
-    ]
+    "id": "c13_5",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.1",
+    "pdfPage": 13,
+    "questionText": "การออกแบบผังงาน (Flowchart)\n- จัดทำผังงานภาพรวมของระบบทั้งหมด (Usecase Diagram)",
+    "pts": 1,
+    "note": "",
+    "explanation": "Use Case Diagram จำแนกบทบาท 3 ตัวละคร: Admin (จัดการผู้ใช้/ระบบเต็มรูปแบบ), User Level 1 (สร้าง/แก้ไข/แนบไฟล์), User Level 2 (ค้นหา/ดู/ดาวน์โหลดไฟล์)",
+    "solutionType": "mermaid",
+    "code": "flowchart LR\n    Admin([\"ผู้ดูแลระบบ (Admin)\"])\n    Officer([\"เจ้าหน้าที่ (User 1)\"])\n    Member([\"สมาชิก (User 2)\"])\n\n    subgraph SystemScope [\"ระบบ DevOps Application\"]\n        UC_Auth[1. ล็อกอินด้วย JWT]\n        UC_ManageUsers[2. จัดการผู้ใช้งาน CRUD]\n        UC_Items[3. เพิ่ม/แก้ไขข้อมูลและแนบไฟล์]\n        UC_Delete[4. ลบข้อมูลและยืนยัน]\n        UC_Search[5. ค้นหาและดูข้อมูล]\n    end\n\n    Admin --> UC_Auth\n    Admin --> UC_ManageUsers\n    Admin --> UC_Items\n    Admin --> UC_Delete\n    Admin --> UC_Search\n\n    Officer --> UC_Auth\n    Officer --> UC_Items\n    Officer --> UC_Search\n\n    Member --> UC_Auth\n    Member --> UC_Search",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 35,
+    "execOrderDesc": "จัดทำภาพรวมผังงานระบบทั้งหมด (Overview Usecase Diagram)"
   },
   {
-    id: 'c16_1',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.4',
-    pdfPage: 14,
-    questionText: 'การออกแบบ RESTful API สำหรับใช้งานในระบบ (Design / README.md)\n- ออกแบบ API ตามหลัก RESTful (เช่น ใช้ GET, POST, PUT/Patch, DELETE อย่างเหมาะสม)',
-    pts: 1,
-    note: '',
-    explanation: 'ออกแบบ HTTP Methods ตามมาตรฐานสากล: GET สำหรับดึงข้อมูล, POST สำหรับสร้างข้อมูลใหม่, PUT สำหรับแก้ไขปรับปรุง, และ DELETE สำหรับลบข้อมูล',
-    solutionType: 'text',
-    steps: [
-      'GET /api/items -> ดึงรายการข้อมูลทั้งหมด',
-      'GET /api/items/:id -> ดึงข้อมูลรายชิ้น',
-      'POST /api/items -> สร้างข้อมูลใหม่พร้อมแนบไฟล์',
-      'PUT /api/items/:id -> แก้ไขปรับปรุงข้อมูล',
-      'DELETE /api/items/:id -> ลบข้อมูลออกจากระบบ'
-    ]
+    "id": "c14_1",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.2",
+    "pdfPage": 13,
+    "questionText": "การออกแบบฐานข้อมูล (Database Design) พร้อม Class Diagram\n- มีการสร้างฐานข้อมูลอย่างน้อย 3 ตาราง",
+    "pts": 1,
+    "note": "อย่างน้อย 3 ตาราง",
+    "explanation": "สร้างตารางฐานข้อมูล 3 ตาราง: users (ผู้ใช้และสิทธิ์), categories (หมวดหมู่ข้อมูล), items (รายการข้อมูลและไฟล์แนบ)",
+    "solutionType": "code",
+    "lang": "sql",
+    "code": "CREATE DATABASE IF NOT EXISTS competition_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\nUSE competition_db;\n\nCREATE TABLE users (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL UNIQUE,\n    password_hash VARCHAR(255) NOT NULL,\n    role ENUM('admin', 'user1', 'user2') NOT NULL DEFAULT 'user2',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE categories (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE items (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    title VARCHAR(150) NOT NULL,\n    description TEXT,\n    category_id INT NOT NULL,\n    file_path VARCHAR(255),\n    created_by INT NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);",
+    "verify": "SHOW TABLES;",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 36,
+    "execOrderDesc": "ออกแบบฐานข้อมูลสร้างตารางอย่างน้อย 3 ตาราง (users, roles, items/documents)"
   },
   {
-    id: 'c16_2',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.4',
-    pdfPage: 14,
-    questionText: 'การออกแบบ RESTful API\n- ตั้งชื่อ Endpoint สื่อความหมาย และมีความสอดคล้องกัน เช่น /api/teachers, /api/scores/{id}',
-    pts: 1,
-    note: '',
-    explanation: 'ใช้คำนามพหูพจน์ระบุ Resource เช่น /api/auth/login, /api/users, /api/items, /api/items/:id อย่างเป็นเอกภาพทั่วทั้งระบบ',
-    solutionType: 'code',
-    lang: 'markdown',
-    code: `### รายการ Endpoint มาตรฐาน:
-- POST   /api/auth/login       : ยืนยันตัวตนและขอรับ JWT Token
-- GET    /api/items            : ค้นหาและดึงรายการ (รองรับ ?search= และ ?page=)
-- GET    /api/items/:id        : ดึงรายละเอียดตาม ID
-- POST   /api/items            : เพิ่มข้อมูลใหม่พร้อมไฟล์แนบ (multipart/form-data)
-- PUT    /api/items/:id        : แก้ไขข้อมูลและไฟล์แนบ
-- DELETE /api/items/:id        : ลบรายการข้อมูล (เฉพาะ Admin)`
+    "id": "c14_2",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.2",
+    "pdfPage": 13,
+    "questionText": "การออกแบบฐานข้อมูล (Database Design)\n- ตารางฐานข้อมูลมีความสัมพันธ์กันอย่างเหมาะสม (Relational Design)",
+    "pts": 1,
+    "note": "",
+    "explanation": "กำหนด Foreign Key ความสัมพันธ์ 1:N ระหว่าง categories -> items และ users -> items พร้อม ON DELETE RESTRICT / CASCADE",
+    "solutionType": "code",
+    "lang": "sql",
+    "code": "ALTER TABLE items\nADD CONSTRAINT fk_items_category\nFOREIGN KEY (category_id) REFERENCES categories(id)\nON UPDATE CASCADE ON DELETE RESTRICT;\n\nALTER TABLE items\nADD CONSTRAINT fk_items_user\nFOREIGN KEY (created_by) REFERENCES users(id)\nON UPDATE CASCADE ON DELETE RESTRICT;",
+    "verify": "SHOW CREATE TABLE items;",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 37,
+    "execOrderDesc": "ออกแบบความสัมพันธ์ระหว่างตาราง (Relational Design: Foreign Keys, 1:M)"
   },
   {
-    id: 'c16_3',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.4',
-    pdfPage: 14,
-    questionText: 'การออกแบบ RESTful API\n- มีตัวอย่างรูปแบบ Response Body ที่สอดคล้องกับ HTTP Status Code อย่างเหมาะสม',
-    pts: 1,
-    note: '',
-    explanation: 'ระบุ JSON Response Structure มาตรฐาน: status, message, data สอดคล้องกับ 200 OK และ 201 Created',
-    solutionType: 'code',
-    lang: 'json',
-    code: `// HTTP 200 OK หรือ 201 Created
-{
-  "status": "success",
-  "message": "บันทึกข้อมูลสำเร็จ",
-  "data": {
-    "id": 1,
-    "title": "โครงการนำร่อง",
-    "file_path": "/uploads/report.pdf"
-  }
-}`
+    "id": "c14_3",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.2",
+    "pdfPage": 13,
+    "questionText": "การออกแบบฐานข้อมูล (Database Design)\n- มีการเลือกใช้ประเภทข้อมูล (Data Type) ได้เหมาะสมกับชนิดของข้อมูล",
+    "pts": 1,
+    "note": "",
+    "explanation": "เลือกใช้ Data Type สอดคล้อง: INT Auto Increment สำหรับ ID, VARCHAR สำหรับชื่อ, ENUM สำหรับ Role สิทธิ์, TEXT สำหรับคำอธิบายยาว, และ TIMESTAMP สำหรับบันทึกเวลา",
+    "solutionType": "text",
+    "steps": [
+      "id: INT AUTO_INCREMENT PRIMARY KEY (เหมาะสมกับการเป็นดัชนีตัวเลข)",
+      "username: VARCHAR(50) UNIQUE NOT NULL (ความยาวเหมาะสมและป้องกันชื่อซ้ำ)",
+      "password_hash: VARCHAR(255) (รองรับความยาวของสตริงแฮช bcrypt 60 ตัวอักษร)",
+      "role: ENUM(\"admin\", \"user1\", \"user2\") (จำกัดค่าสิทธิ์ได้แม่นยำ ไม่เปลืองพื้นที่)",
+      "created_at: TIMESTAMP DEFAULT CURRENT_TIMESTAMP (บันทึกเวลาอัตโนมัติ)"
+    ],
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 38,
+    "execOrderDesc": "เลือกใช้ชนิดข้อมูล (Data Types: VARCHAR, INT, TIMESTAMP) ได้ถูกต้องเหมาะสม"
   },
   {
-    id: 'c16_4',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.4',
-    pdfPage: 14,
-    questionText: 'การออกแบบ RESTful API\n- มีการออกแบบรองรับกรณีเกิด Error เช่น Unauthorized (401), Not Found (404)',
-    pts: 1,
-    note: '',
-    explanation: 'ออกแบบ Error Response สำหรับ HTTP 400 (Bad Request), 401 (Unauthorized), 403 (Forbidden), 404 (Not Found)',
-    solutionType: 'code',
-    lang: 'json',
-    code: `// HTTP 401 Unauthorized หรือ 404 Not Found
-{
-  "status": "error",
-  "message": "ไม่พบข้อมูลที่ระบุ หรือไม่มีสิทธิ์เข้าถึงระบบ",
-  "code": 401
-}`
+    "id": "c14_4",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.2",
+    "pdfPage": 13,
+    "questionText": "การออกแบบฐานข้อมูล (Database Design)\n- แสดง Class Diagram ที่สามารถอธิบายโครงสร้างได้อย่างถูกต้องและสมบูรณ์",
+    "pts": 1,
+    "note": "",
+    "explanation": "จัดทำ Class Diagram แสดง Attributes, Methods, และ Relationship ระหว่าง Entity Classes",
+    "solutionType": "mermaid",
+    "code": "classDiagram\n    class User {\n        +int id\n        +string username\n        +string passwordHash\n        +string role\n        +datetime createdAt\n        +login(password) bool\n        +hasPermission(action) bool\n    }\n\n    class Category {\n        +int id\n        +string name\n        +string description\n        +datetime createdAt\n        +getItems() List~Item~\n    }\n\n    class Item {\n        +int id\n        +string title\n        +string description\n        +int categoryId\n        +string filePath\n        +int createdBy\n        +datetime createdAt\n        +update(data) bool\n        +delete() bool\n    }\n\n    User \"1\" --> \"0..*\" Item : creates\n    Category \"1\" --> \"0..*\" Item : categorizes",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 39,
+    "execOrderDesc": "จัดทำ Class Diagram แสดง Entity, Attributes และ Methods ของระบบ"
   },
   {
-    id: 'c16_5',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.4',
-    pdfPage: 14,
-    questionText: 'การออกแบบ RESTful API\n- มีแนวทางด้านความปลอดภัยของ API เช่น JWT Token หรือการตรวจสอบสิทธิ์การเข้าถึง',
-    pts: 1,
-    note: '',
-    explanation: 'กำหนดกลไกการส่ง JWT Token ผ่าน Authorization: Bearer <token> Header และตรวจสอบความถูกต้องของ Digital Signature ทุก Request',
-    solutionType: 'code',
-    lang: 'markdown',
-    code: `### นโยบายความปลอดภัยของ API (Security Specs):
-1. ส่งผ่าน HTTP Header: \`Authorization: Bearer <JWT_TOKEN>\`
-2. Digital Signature: ลงนามด้วยกุญแจลับอัลกอริทึม HMAC-SHA256
-3. สิทธิ์การเข้าถึง (RBAC):
-   - Admin: ดำเนินการได้ทุก Endpoint รวมถึง DELETE
-   - User Level 1: ดำเนินการ GET, POST, PUT
-   - User Level 2: ดำเนินการได้เฉพาะ GET (Read-Only)`
+    "id": "c14_5",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.2",
+    "pdfPage": 13,
+    "questionText": "การออกแบบฐานข้อมูล (Database Design)\n- มีการตั้งชื่อตารางและฟิลด์สอดคล้องกับวัตถุประสงค์ของระบบ และเป็นไปตามมาตรฐานการเขียนชื่อทางเทคนิค",
+    "pts": 1,
+    "note": "",
+    "explanation": "ตั้งชื่อตารางเป็นคำนามพหูพจน์ (users, categories, items) และตั้งชื่อฟิลด์แบบ snake_case มาตรฐาน เช่น password_hash, category_id, file_path, created_at",
+    "solutionType": "text",
+    "steps": [
+      "ใช้ชื่อตารางแบบ lowercase plural nouns: users, categories, items",
+      "ใช้ snake_case สำหรับชื่อฟิลด์: password_hash, category_id, file_path, created_at",
+      "ฟิลด์กุญแจหลักใช้ `id` และกุญแจร่วมใช้รูปแบบ `[table_singular]_id` เช่น `category_id`"
+    ],
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 40,
+    "execOrderDesc": "ตั้งชื่อตารางและฟิลด์ตามมาตรฐานทางเทคนิค (snake_case, สื่อความหมาย)"
   },
   {
-    id: 'c17_1',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- สร้าง API แบบ GET พร้อมรับค่า (Query หรือ Path Parameters)',
-    pts: 1,
-    note: '',
-    explanation: 'สร้าง Route GET /api/items รองรับ Query Parameters เช่น req.query.search, req.query.page และ Path Parameter /api/items/:id',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `// backend/controllers/items.controller.js
-exports.getItems = async (req, res) => {
-  const { search, category, page = 1, limit = 10 } = req.query;
-  const offset = (page - 1) * limit;
-  // คิวรีข้อมูลตามเงื่อนไขค้นหาและแบ่งหน้า
-  const [rows] = await db.query(
-    'SELECT * FROM items WHERE title LIKE ? LIMIT ? OFFSET ?',
-    [\`%\${search || ''}%\`, parseInt(limit), parseInt(offset)]
-  );
-  res.status(200).json({ status: 'success', data: rows });
-};`,
-    verify: 'curl http://localhost:3000/api/items?search=test&page=1'
+    "id": "c15_1",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.3",
+    "pdfPage": 14,
+    "questionText": "การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอผู้ดูแลระบบ",
+    "pts": 1,
+    "note": "",
+    "explanation": "วาดผังหน้าจอ Admin Layout ใน Draw.io: Sidebar เมนูครบครัน, การจัดการผู้ใช้, ตารางกำหนดสิทธิ์ Role, และปุ่มลบข้อมูลพร้อม Modal ยืนยัน",
+    "solutionType": "text",
+    "steps": [
+      "Header: แสดง Admin Badge และปุ่ม Logout",
+      "Sidebar: เมนู Overview, User Management, Category Management, Audit Logs",
+      "Content: ตารางจัดการผู้ใช้ แสดงปุ่มแก้ไขสิทธิ์ และปุ่มลบสีแดงพร้อมยืนยัน Confirmation"
+    ],
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 41,
+    "execOrderDesc": "ออกแบบ Wireframe หน้าจอผู้ดูแลระบบด้วย Draw.io"
   },
   {
-    id: 'c17_2',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- สร้าง API แบบ POST ที่รับข้อมูลจาก Body อย่างถูกต้อง',
-    pts: 1,
-    note: '',
-    explanation: 'เปิดใช้งาน express.json() และดึงข้อมูลจาก req.body เพื่อนำไปบันทึกลงฐานข้อมูลอย่างถูกต้อง',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `// backend/controllers/items.controller.js
-exports.createItem = async (req, res) => {
-  const { title, description, category_id } = req.body;
-  if (!title) {
-    return res.status(400).json({ status: 'error', message: 'กรุณากรอกชื่อเรื่อง' });
-  }
-  const [result] = await db.query(
-    'INSERT INTO items (title, description, category_id, created_by) VALUES (?, ?, ?, ?)',
-    [title, description, category_id, req.user.id]
-  );
-  res.status(201).json({ status: 'success', message: 'บันทึกข้อมูลสำเร็จ', data: { id: result.insertId } });
-};`,
-    verify: 'curl -X POST http://localhost:3000/api/items -H "Content-Type: application/json" -d \'{"title":"งานใหม่"}\''
+    "id": "c15_2",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.3",
+    "pdfPage": 14,
+    "questionText": "การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอผู้ใช้งานระดับ 1",
+    "pts": 1,
+    "note": "",
+    "explanation": "วาดผังหน้าจอ Officer Layout (User 1): ฟอร์มเพิ่มข้อมูลพร้อมปุ่มแนบไฟล์ (Drag & Drop), ตารางแก้ไขรายการ, และตัวกรองข้อมูล",
+    "solutionType": "text",
+    "steps": [
+      "Header: แสดง Officer Badge และชื่อผู้ใช้งาน",
+      "Action Bar: ปุ่ม \"+ เพิ่มรายการใหม่\" และช่องค้นหาข้อมูล",
+      "Content: ฟอร์มกรอกข้อมูล + ปุ่ม File Upload และตารางแก้ไขข้อมูล (ไม่มีปุ่มลบ)"
+    ],
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 42,
+    "execOrderDesc": "ออกแบบ Wireframe หน้าจอผู้ใช้งานระดับ 1 ด้วย Draw.io"
   },
   {
-    id: 'c17_3',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- สร้าง API สำหรับอัปโหลดไฟล์',
-    pts: 1,
-    note: '',
-    explanation: 'ใช้งาน Multer Middleware เพื่อรับไฟล์แนบ ตรวจสอบชนิดไฟล์ และบันทึกลงในโฟลเดอร์ uploads/',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `const multer = require('multer');
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
-  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
-});
-const upload = multer({ storage });
-
-// นำไปใช้ใน Router:
-router.post('/', upload.single('attachment'), itemsController.createItemWithFile);`,
-    verify: 'curl -F "attachment=@test.pdf" http://localhost:3000/api/items'
+    "id": "c15_3",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.3",
+    "pdfPage": 14,
+    "questionText": "การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอผู้ใช้งานระดับ 2",
+    "pts": 1,
+    "note": "",
+    "explanation": "วาดผังหน้าจอ Member Layout (User 2): ตารางแบบ Read-Only, กล่องค้นหา/กรองหมวดหมู่, และปุ่มเปิดดู/ดาวน์โหลดไฟล์แนบ",
+    "solutionType": "text",
+    "steps": [
+      "Header: แสดง Member Badge",
+      "Content: แคตตาล็อกรายการข้อมูล มีระบบแบ่งหน้า (Pagination)",
+      "Item View: ปุ่มดาวน์โหลดไฟล์แนบและดูรายละเอียด (ไม่มีฟอร์มเพิ่ม/แก้ไข/ลบ)"
+    ],
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 43,
+    "execOrderDesc": "ออกแบบ Wireframe หน้าจอผู้ใช้งานระดับ 2 ด้วย Draw.io"
   },
   {
-    id: 'c17_4',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- สร้าง API Login โดยใช้ JWT Token (ซึ่งมีการลงนาม Signing เพื่อความปลอดภัย และใช้สำหรับตรวจสอบสิทธิ์ในการเข้าถึงระบบ)',
-    pts: 1,
-    note: '',
-    explanation: 'ตรวจสอบรหัสผ่านด้วย bcrypt.compare และออก Signed JWT Token ด้วย jwt.sign พร้อมระบุ Payload id, username, role',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-
-exports.login = async (req, res) => {
-  const { username, password } = req.body;
-  const [users] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
-  if (!users.length || !(await bcrypt.compare(password, users[0].password_hash))) {
-    return res.status(401).json({ status: 'error', message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' });
-  }
-  const token = jwt.sign(
-    { id: users[0].id, username: users[0].username, role: users[0].role },
-    process.env.JWT_SECRET || 'secret123',
-    { expiresIn: '8h' }
-  );
-  res.status(200).json({ status: 'success', token, role: users[0].role });
-};`,
-    verify: 'curl -X POST http://localhost:3000/api/auth/login -d \'{"username":"admin","password":"password"}\''
+    "id": "c15_4",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.3",
+    "pdfPage": 14,
+    "questionText": "การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอหลักของระบบ (Dashboard/Overview)",
+    "pts": 1,
+    "note": "",
+    "explanation": "วาดผังหน้าจอ Dashboard Overview: การ์ดแสดงผลสถิติตัวเลข (KPI Summary), กราฟสรุปปริมาณข้อมูล, และกิจกรรมล่าสุด",
+    "solutionType": "text",
+    "steps": [
+      "Metrics Cards: การ์ดนับจำนวนผู้ใช้ทั้งหมด, จำนวนรายการข้อมูล, จำนวนการอัปโหลดไฟล์",
+      "Data Visualisation: กราฟหรือตารางสถิติสรุปตามหมวดหมู่",
+      "Recent Activities: ฟีดประวัติการเพิ่มข้อมูลล่าสุดของระบบ"
+    ],
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 44,
+    "execOrderDesc": "ออกแบบ Wireframe หน้าจอหลักของระบบ (Dashboard / Overview) ด้วย Draw.io"
   },
   {
-    id: 'c17_5',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- มีการจัดการข้อผิดพลาด (Exception Handling) เช่น ตรวจสอบข้อมูลไม่ครบ, ไม่พบข้อมูล',
-    pts: 1,
-    note: '',
-    explanation: 'ใช้ try/catch ครอบคำสั่ง และมี Centralized Error Handling Middleware ส่ง Status Code ที่ถูกต้อง ป้องกันเซิร์ฟเวอร์แครช',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `// Global Error Middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({
-    status: 'error',
-    message: err.message || 'เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์'
-  });
-});`,
-    verify: 'ทดสอบส่ง Request ผิดรูปแบบ ระบบต้องไม่ล่มและตอบ 400/500 JSON'
+    "id": "c15_5",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.3",
+    "pdfPage": 14,
+    "questionText": "การออกแบบหน้าจอด้วยโปรแกรมสำเร็จรูป (Draw.io)\n- มี Template Layout สำหรับหน้าจอเข้าสู่ระบบ (Login Screen)",
+    "pts": 1,
+    "note": "",
+    "explanation": "วาดผังหน้าจอ Login Screen: การ์ดตรงกลางหน้าจอ ช่องกรอก Username, Password, ปุ่ม Login, และกล่อง Alert แจ้งเตือนข้อผิดพลาด",
+    "solutionType": "text",
+    "steps": [
+      "Brand Header: โลโก้และชื่อระบบ \"DevOps Management System\"",
+      "Form Fields: ช่อง Input Username และ Password (มีไอคอนปิด/เปิดรหัสผ่าน)",
+      "Action Button: ปุ่มกด \"เข้าสู่ระบบ (Login)\"",
+      "Error Box: แถบสีแดงแสดงข้อความเตือนเมื่อกรอกรหัสผ่านไม่ถูกต้อง"
+    ],
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 45,
+    "execOrderDesc": "ออกแบบ Wireframe หน้าจอเข้าสู่ระบบ (Login Screen) ด้วย Draw.io"
   },
   {
-    id: 'c17_6',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- API ส่ง Response ที่เหมาะสม เช่น JSON มี status, message เพิ่มเติม, data อย่างเป็นระบบ',
-    pts: 1,
-    note: '',
-    explanation: 'สร้าง Response Structure แบบมาตรฐานเดียวกันทุก Route: { status: "success"|"error", message: "...", data: ... }',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `// Helper function ตอบกลับ
-const successResponse = (res, data, message = 'ดำเนินการสำเร็จ', code = 200) => {
-  return res.status(code).json({ status: 'success', message, data });
-};`,
-    verify: 'res.json() ต้องมีทั้ง status, message, data ครบถ้วน'
+    "id": "c16_1",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.4",
+    "pdfPage": 14,
+    "questionText": "การออกแบบ RESTful API สำหรับใช้งานในระบบ (Design / README.md)\n- ออกแบบ API ตามหลัก RESTful (เช่น ใช้ GET, POST, PUT/Patch, DELETE อย่างเหมาะสม)",
+    "pts": 1,
+    "note": "",
+    "explanation": "ออกแบบ HTTP Methods ตามมาตรฐานสากล: GET สำหรับดึงข้อมูล, POST สำหรับสร้างข้อมูลใหม่, PUT สำหรับแก้ไขปรับปรุง, และ DELETE สำหรับลบข้อมูล",
+    "solutionType": "text",
+    "steps": [
+      "GET /api/items -> ดึงรายการข้อมูลทั้งหมด",
+      "GET /api/items/:id -> ดึงข้อมูลรายชิ้น",
+      "POST /api/items -> สร้างข้อมูลใหม่พร้อมแนบไฟล์",
+      "PUT /api/items/:id -> แก้ไขปรับปรุงข้อมูล",
+      "DELETE /api/items/:id -> ลบข้อมูลออกจากระบบ"
+    ],
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 46,
+    "execOrderDesc": "ออกแบบ RESTful API Spec ใช้ HTTP Methods (GET, POST, PUT, DELETE) ถูกต้อง"
   },
   {
-    id: 'c17_7',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- มีคำอธิบาย API และการเรียกใช้ แต่ละ Service (GET, POST, PUT/PATCH, DELETE) ครบอย่างน้อย Method ละ 1 API',
-    pts: 1,
-    note: 'ครบอย่างน้อย Method ละ 1 API',
-    explanation: 'เขียน JSDoc / Code Comment กำกับหัวฟังก์ชันของทั้ง 4 Methods: GET, POST, PUT, DELETE อย่างชัดเจน',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `/**
- * @method GET /api/items
- * @description ดึงรายการข้อมูลทั้งหมด รองรับ query: search, page
- */
-router.get('/', itemsController.getItems);
-
-/**
- * @method POST /api/items
- * @description เพิ่มข้อมูลใหม่พร้อมแนบไฟล์ body: { title, description }
- */
-router.post('/', upload.single('file'), itemsController.createItem);
-
-/**
- * @method PUT /api/items/:id
- * @description ปรับปรุงแก้ไขข้อมูลตาม ID
- */
-router.put('/:id', itemsController.updateItem);
-
-/**
- * @method DELETE /api/items/:id
- * @description ลบข้อมูลออกจากระบบ (เฉพาะผู้ดูแลระบบ)
- */
-router.delete('/:id', itemsController.deleteItem);`,
-    verify: 'ตรวจสอบ Comment ในไฟล์ backend/routes/items.routes.js'
+    "id": "c16_2",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.4",
+    "pdfPage": 14,
+    "questionText": "การออกแบบ RESTful API\n- ตั้งชื่อ Endpoint สื่อความหมาย และมีความสอดคล้องกัน เช่น /api/teachers, /api/scores/{id}",
+    "pts": 1,
+    "note": "",
+    "explanation": "ใช้คำนามพหูพจน์ระบุ Resource เช่น /api/auth/login, /api/users, /api/items, /api/items/:id อย่างเป็นเอกภาพทั่วทั้งระบบ",
+    "solutionType": "code",
+    "lang": "markdown",
+    "code": "### รายการ Endpoint มาตรฐาน:\n- POST   /api/auth/login       : ยืนยันตัวตนและขอรับ JWT Token\n- GET    /api/items            : ค้นหาและดึงรายการ (รองรับ ?search= และ ?page=)\n- GET    /api/items/:id        : ดึงรายละเอียดตาม ID\n- POST   /api/items            : เพิ่มข้อมูลใหม่พร้อมไฟล์แนบ (multipart/form-data)\n- PUT    /api/items/:id        : แก้ไขข้อมูลและไฟล์แนบ\n- DELETE /api/items/:id        : ลบรายการข้อมูล (เฉพาะ Admin)",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 47,
+    "execOrderDesc": "ตั้งชื่อ Endpoint สื่อความหมายและสอดคล้องตามมาตรฐาน REST"
   },
   {
-    id: 'c17_8',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- ระบุข้อมูลที่ใช้ส่งในแต่ละ API เช่น query, path, body อย่างชัดเจน',
-    pts: 1,
-    note: '',
-    explanation: 'กำหนดและตรวจสอบข้อมูล Request Parameters ผ่านตัวแปรอย่างชัดเจน: req.query, req.params.id, req.body',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `exports.updateItem = async (req, res) => {
-  const { id } = req.params;             // Path Parameter
-  const { title, description } = req.body; // Body Data
-  const { notify } = req.query;          // Query Parameter
-  // ดำเนินการอัปเดตข้อมูล...
-};`,
-    verify: 'ตรวจสอบการอ่าน req.params, req.body, req.query ใน Controller'
+    "id": "c16_3",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.4",
+    "pdfPage": 14,
+    "questionText": "การออกแบบ RESTful API\n- มีตัวอย่างรูปแบบ Response Body ที่สอดคล้องกับ HTTP Status Code อย่างเหมาะสม",
+    "pts": 1,
+    "note": "",
+    "explanation": "ระบุ JSON Response Structure มาตรฐาน: status, message, data สอดคล้องกับ 200 OK และ 201 Created",
+    "solutionType": "code",
+    "lang": "json",
+    "code": "// HTTP 200 OK หรือ 201 Created\n{\n  \"status\": \"success\",\n  \"message\": \"บันทึกข้อมูลสำเร็จ\",\n  \"data\": {\n    \"id\": 1,\n    \"title\": \"โครงการนำร่อง\",\n    \"file_path\": \"/uploads/report.pdf\"\n  }\n}",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 48,
+    "execOrderDesc": "ระบุตัวอย่าง Response Body JSON สอดคล้องกับ HTTP Status Code"
   },
   {
-    id: 'c17_9',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- โค้ด Back-end มีโครงสร้างดี อ่านง่าย โดยใช้ router หรือ async/await อย่างเหมาะสม',
-    pts: 1,
-    note: '',
-    explanation: 'แยกโครงสร้าง MVC: โฟลเดอร์ routes/, controllers/, middleware/ และเขียนโค้ดด้วย async/await ไม่ใช้ callback ซ้อน',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `// ใช้ express.Router() และ async/await อย่างถูกต้อง
-const express = require('express');
-const router = express.Router();
-
-router.get('/', async (req, res, next) => {
-  try {
-    const data = await itemService.findAll();
-    res.json({ status: 'success', data });
-  } catch (err) {
-    next(err);
-  }
-});`,
-    verify: 'โครงสร้างไฟล์เป็นสัดส่วน มี routes และ controllers แยกกัน'
+    "id": "c16_4",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.4",
+    "pdfPage": 14,
+    "questionText": "การออกแบบ RESTful API\n- มีการออกแบบรองรับกรณีเกิด Error เช่น Unauthorized (401), Not Found (404)",
+    "pts": 1,
+    "note": "",
+    "explanation": "ออกแบบ Error Response สำหรับ HTTP 400 (Bad Request), 401 (Unauthorized), 403 (Forbidden), 404 (Not Found)",
+    "solutionType": "code",
+    "lang": "json",
+    "code": "// HTTP 401 Unauthorized หรือ 404 Not Found\n{\n  \"status\": \"error\",\n  \"message\": \"ไม่พบข้อมูลที่ระบุ หรือไม่มีสิทธิ์เข้าถึงระบบ\",\n  \"code\": 401\n}",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 49,
+    "execOrderDesc": "ออกแบบ Error Response รูปแบบมาตรฐาน (400, 401, 403, 404, 500)"
   },
   {
-    id: 'c17_10',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.5',
-    pdfPage: 15,
-    questionText: 'พัฒนาระบบ Back-end การพัฒนา API\n- API มีความปลอดภัย และมีระบบตรวจสอบสิทธิ์ก่อนเข้าถึงข้อมูล',
-    pts: 1,
-    note: '',
-    explanation: 'สร้าง Authentication Middleware ตรวจสอบ JWT Token และ Authorization Middleware (RBAC) ตรวจสอบสิทธิ์ Role ก่อนให้เข้าถึงข้อมูล',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `// backend/middleware/auth.middleware.js
-const verifyToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) return res.status(401).json({ status: 'error', message: 'กรุณาเข้าสู่ระบบ' });
-  jwt.verify(token, process.env.JWT_SECRET || 'secret123', (err, user) => {
-    if (err) return res.status(403).json({ status: 'error', message: 'Token ไม่ถูกต้องหรือหมดอายุ' });
-    req.user = user;
-    next();
-  });
-};
-
-const requireRole = (role) => (req, res, next) => {
-  if (req.user.role !== role) {
-    return res.status(403).json({ status: 'error', message: 'คุณไม่มีสิทธิ์ในการกระทำนี้' });
-  }
-  next();
-};`,
-    verify: 'curl http://localhost:3000/api/items (ไม่มี Token ต้องตอบ 401 Unauthorized)'
+    "id": "c16_5",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.4",
+    "pdfPage": 14,
+    "questionText": "การออกแบบ RESTful API\n- มีแนวทางด้านความปลอดภัยของ API เช่น JWT Token หรือการตรวจสอบสิทธิ์การเข้าถึง",
+    "pts": 1,
+    "note": "",
+    "explanation": "กำหนดกลไกการส่ง JWT Token ผ่าน Authorization: Bearer <token> Header และตรวจสอบความถูกต้องของ Digital Signature ทุก Request",
+    "solutionType": "code",
+    "lang": "markdown",
+    "code": "### นโยบายความปลอดภัยของ API (Security Specs):\n1. ส่งผ่าน HTTP Header: `Authorization: Bearer <JWT_TOKEN>`\n2. Digital Signature: ลงนามด้วยกุญแจลับอัลกอริทึม HMAC-SHA256\n3. สิทธิ์การเข้าถึง (RBAC):\n   - Admin: ดำเนินการได้ทุก Endpoint รวมถึง DELETE\n   - User Level 1: ดำเนินการ GET, POST, PUT\n   - User Level 2: ดำเนินการได้เฉพาะ GET (Read-Only)",
+    "executionPhase": 6,
+    "phaseName": "Phase 6: การออกแบบสถาปัตยกรรมระบบและ UI Wireframe",
+    "executionStep": 50,
+    "execOrderDesc": "จัดทำเอกสารข้อกำหนด API (API Spec / README.md) ครบถ้วนชัดเจน"
   },
   {
-    id: 'c18_1',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มี Layout ใช้งานง่าย มี Responsive',
-    pts: 1,
-    note: '',
-    explanation: 'พัฒนาหน้าจอแบบ Responsive รองรับทั้งจอมือถือ แท็บเล็ต และหน้าจอคอมพิวเตอร์เดสก์ท็อป โดยจัดวางองค์ประกอบให้ใช้งานสะดวก',
-    solutionType: 'text',
-    steps: [
-      'ใช้ CSS Flexbox / Grid หรือ TailwindCSS breakpoint (sm, md, lg)',
-      'บนจอมือถือ: ซ่อน Sidebar เป็น Drawer Menu อัตโนมัติ',
-      'บนจอคอมพิวเตอร์: แสดง Sidebar และตารางข้อมูลเต็มความกว้าง'
-    ]
+    "id": "c17_1",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- สร้าง API แบบ GET พร้อมรับค่า (Query หรือ Path Parameters)",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้าง Route GET /api/items รองรับ Query Parameters เช่น req.query.search, req.query.page และ Path Parameter /api/items/:id",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// backend/controllers/items.controller.js\nexports.getItems = async (req, res) => {\n  const { search, category, page = 1, limit = 10 } = req.query;\n  const offset = (page - 1) * limit;\n  // คิวรีข้อมูลตามเงื่อนไขค้นหาและแบ่งหน้า\n  const [rows] = await db.query(\n    'SELECT * FROM items WHERE title LIKE ? LIMIT ? OFFSET ?',\n    [`%${search || ''}%`, parseInt(limit), parseInt(offset)]\n  );\n  res.status(200).json({ status: 'success', data: rows });\n};",
+    "verify": "curl http://localhost:3000/api/items?search=test&page=1",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 51,
+    "execOrderDesc": "สร้างฐานข้อมูลจริงและเขียนโค้ด Backend เชื่อมต่อ Database MySQL/MariaDB สำเร็จ"
   },
   {
-    id: 'c18_2',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีหน้าจอ ระบบ Login หรือ Authentication ด้วย JWT ที่ใช้งานได้จริง',
-    pts: 1,
-    note: '',
-    explanation: 'สร้างฟอร์ม Login ส่งค่า Username/Password ไปตรวจสอบที่ Backend และบันทึก JWT Token ลงใน LocalStorage',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `async function handleLogin(username, password) {
-  const res = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-  const data = await res.json();
-  if (res.ok && data.token) {
-    localStorage.setItem('auth_token', data.token);
-    localStorage.setItem('auth_role', data.role);
-    window.location.href = '/dashboard';
-  }
-}`,
-    verify: 'ทดสอบล็อกอินในหน้าเว็บ ตรวจดู LocalStorage จะพบ auth_token'
+    "id": "c17_2",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- สร้าง API แบบ POST ที่รับข้อมูลจาก Body อย่างถูกต้อง",
+    "pts": 1,
+    "note": "",
+    "explanation": "เปิดใช้งาน express.json() และดึงข้อมูลจาก req.body เพื่อนำไปบันทึกลงฐานข้อมูลอย่างถูกต้อง",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// backend/controllers/items.controller.js\nexports.createItem = async (req, res) => {\n  const { title, description, category_id } = req.body;\n  if (!title) {\n    return res.status(400).json({ status: 'error', message: 'กรุณากรอกชื่อเรื่อง' });\n  }\n  const [result] = await db.query(\n    'INSERT INTO items (title, description, category_id, created_by) VALUES (?, ?, ?, ?)',\n    [title, description, category_id, req.user.id]\n  );\n  res.status(201).json({ status: 'success', message: 'บันทึกข้อมูลสำเร็จ', data: { id: result.insertId } });\n};",
+    "verify": "curl -X POST http://localhost:3000/api/items -H \"Content-Type: application/json\" -d '{\"title\":\"งานใหม่\"}'",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 52,
+    "execOrderDesc": "พัฒนาระบบ Authentication: Hash รหัสผ่านด้วย bcrypt และออก JWT Token"
   },
   {
-    id: 'c18_3',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- แยกระบบ Login ของกลุ่มผู้ใช้งานแต่ละระดับได้ ด้วย JWT',
-    pts: 1,
-    note: '',
-    explanation: 'ตรวจสอบ Role ใน JWT Payload เมื่อผู้ใช้ล็อกอินสำเร็จ ให้นำทางไปยังหน้าจอเฉพาะสิทธิ์ (Admin, Officer, Member)',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `const role = localStorage.getItem('auth_role');
-if (role === 'admin') {
-  showAdminMenu();
-} else if (role === 'user1') {
-  showOfficerMenu();
-} else {
-  showMemberMenu();
-}`,
-    verify: 'ล็อกอินด้วย user ต่าง role หน้าจอและเมนูจะปรับเปลี่ยนตามสิทธิ์ทันที'
+    "id": "c17_3",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- สร้าง API สำหรับอัปโหลดไฟล์",
+    "pts": 1,
+    "note": "",
+    "explanation": "ใช้งาน Multer Middleware เพื่อรับไฟล์แนบ ตรวจสอบชนิดไฟล์ และบันทึกลงในโฟลเดอร์ uploads/",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "const multer = require('multer');\nconst storage = multer.diskStorage({\n  destination: (req, file, cb) => cb(null, 'uploads/'),\n  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)\n});\nconst upload = multer({ storage });\n\n// นำไปใช้ใน Router:\nrouter.post('/', upload.single('attachment'), itemsController.createItemWithFile);",
+    "verify": "curl -F \"attachment=@test.pdf\" http://localhost:3000/api/items",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 53,
+    "execOrderDesc": "พัฒนา CRUD APIs จัดการข้อมูลหลัก (เพิ่ม, ดู, แก้ไข, ลบรายการ)"
   },
   {
-    id: 'c18_4',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีการเพิ่มข้อมูลได้สมบูรณ์ตามแบบฟอร์มที่ออกแบบ',
-    pts: 1,
-    note: '',
-    explanation: 'มีฟอร์มกรอกข้อมูลครบทุกฟิลด์ เมื่อกดยืนยัน ข้อมูลจะถูกส่งไปบันทึกลงฐานข้อมูลและตารางจะรีเฟรชแสดงข้อมูลใหม่',
-    solutionType: 'text',
-    steps: [
-      'คลิกปุ่ม "+ เพิ่มรายการใหม่"',
-      'กรอกชื่อเรื่อง คำอธิบาย และเลือกหมวดหมู่',
-      'กดปุ่มบันทึก ข้อมูลใหม่จะปรากฏในตารางทันที'
-    ]
+    "id": "c17_4",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- สร้าง API Login โดยใช้ JWT Token (ซึ่งมีการลงนาม Signing เพื่อความปลอดภัย และใช้สำหรับตรวจสอบสิทธิ์ในการเข้าถึงระบบ)",
+    "pts": 1,
+    "note": "",
+    "explanation": "ตรวจสอบรหัสผ่านด้วย bcrypt.compare และออก Signed JWT Token ด้วย jwt.sign พร้อมระบุ Payload id, username, role",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "const jwt = require('jsonwebtoken');\nconst bcrypt = require('bcryptjs');\n\nexports.login = async (req, res) => {\n  const { username, password } = req.body;\n  const [users] = await db.query('SELECT * FROM users WHERE username = ?', [username]);\n  if (!users.length || !(await bcrypt.compare(password, users[0].password_hash))) {\n    return res.status(401).json({ status: 'error', message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' });\n  }\n  const token = jwt.sign(\n    { id: users[0].id, username: users[0].username, role: users[0].role },\n    process.env.JWT_SECRET || 'secret123',\n    { expiresIn: '8h' }\n  );\n  res.status(200).json({ status: 'success', token, role: users[0].role });\n};",
+    "verify": "curl -X POST http://localhost:3000/api/auth/login -d '{\"username\":\"admin\",\"password\":\"password\"}'",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 54,
+    "execOrderDesc": "พัฒนาระบบอัปโหลดและแนบไฟล์ (Multer file upload) ตรวจสอบชนิดไฟล์"
   },
   {
-    id: 'c18_5',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีการแนบไฟล์พร้อมกับเพิ่มข้อมูลได้สมบูรณ์',
-    pts: 1,
-    note: '',
-    explanation: 'ในฟอร์มเพิ่มข้อมูลมี input type="file" เมื่อเลือกไฟล์จะส่งข้อมูลผ่าน FormData ไปยังเซิร์ฟเวอร์สมบูรณ์',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `const formData = new FormData();
-formData.append('title', document.getElementById('title').value);
-formData.append('file', document.getElementById('fileInput').files[0]);
-
-fetch('/api/items', {
-  method: 'POST',
-  headers: { 'Authorization': 'Bearer ' + token },
-  body: formData
-});`,
-    verify: 'แนบไฟล์รูปภาพหรือ PDF เมื่อบันทึกแล้วสามารถคลิกดูไฟล์ได้'
+    "id": "c17_5",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- มีการจัดการข้อผิดพลาด (Exception Handling) เช่น ตรวจสอบข้อมูลไม่ครบ, ไม่พบข้อมูล",
+    "pts": 1,
+    "note": "",
+    "explanation": "ใช้ try/catch ครอบคำสั่ง และมี Centralized Error Handling Middleware ส่ง Status Code ที่ถูกต้อง ป้องกันเซิร์ฟเวอร์แครช",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// Global Error Middleware\napp.use((err, req, res, next) => {\n  console.error(err.stack);\n  res.status(err.status || 500).json({\n    status: 'error',\n    message: err.message || 'เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์'\n  });\n});",
+    "verify": "ทดสอบส่ง Request ผิดรูปแบบ ระบบต้องไม่ล่มและตอบ 400/500 JSON",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 55,
+    "execOrderDesc": "พัฒนาระบบตรวจสอบสิทธิ์ Role-Based Access Control (RBAC 3 สิทธิ์)"
   },
   {
-    id: 'c18_6',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีการแก้ไขและปรับปรุงข้อมูลได้',
-    pts: 1,
-    note: '',
-    explanation: 'มีปุ่มแก้ไขในแต่ละแถว เมื่อคลิกจะโหลดข้อมูลเดิมขึ้นมาในฟอร์ม แก้ไขแล้วบันทึกส่ง PUT ไปอัปเดตข้อมูล',
-    solutionType: 'text',
-    steps: [
-      'คลิกปุ่ม "แก้ไข" ที่รายการในตาราง',
-      'แก้ไขข้อความในฟอร์ม แล้วกดบันทึก',
-      'ข้อมูลในตารางจะอัปเดตตามที่แก้ไขทันที'
-    ]
+    "id": "c17_6",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- API ส่ง Response ที่เหมาะสม เช่น JSON มี status, message เพิ่มเติม, data อย่างเป็นระบบ",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้าง Response Structure แบบมาตรฐานเดียวกันทุก Route: { status: \"success\"|\"error\", message: \"...\", data: ... }",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// Helper function ตอบกลับ\nconst successResponse = (res, data, message = 'ดำเนินการสำเร็จ', code = 200) => {\n  return res.status(code).json({ status: 'success', message, data });\n};",
+    "verify": "res.json() ต้องมีทั้ง status, message, data ครบถ้วน",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 56,
+    "execOrderDesc": "พัฒนา API สำหรับค้นหาและกรองข้อมูล (Search & Filter Queries)"
   },
   {
-    id: 'c18_7',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีการแก้ไขไฟล์แนบที่เกี่ยวข้องกับข้อมูลได้',
-    pts: 1,
-    note: '',
-    explanation: 'ในฟอร์มแก้ไข ผู้ใช้สามารถเลือกไฟล์แนบอันใหม่เพื่ออัปโหลดแทนที่ไฟล์เดิมได้',
-    solutionType: 'text',
-    steps: [
-      'ในหน้าแก้ไขรายการ สามารถกดเลือกไฟล์ใหม่เพื่อ Replace ไฟล์แนบเดิม',
-      'เมื่อกดบันทึก ระบบจะลบหรือแทนที่พาธไฟล์ในฐานข้อมูล'
-    ]
+    "id": "c17_7",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- มีคำอธิบาย API และการเรียกใช้ แต่ละ Service (GET, POST, PUT/PATCH, DELETE) ครบอย่างน้อย Method ละ 1 API",
+    "pts": 1,
+    "note": "ครบอย่างน้อย Method ละ 1 API",
+    "explanation": "เขียน JSDoc / Code Comment กำกับหัวฟังก์ชันของทั้ง 4 Methods: GET, POST, PUT, DELETE อย่างชัดเจน",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "/**\n * @method GET /api/items\n * @description ดึงรายการข้อมูลทั้งหมด รองรับ query: search, page\n */\nrouter.get('/', itemsController.getItems);\n\n/**\n * @method POST /api/items\n * @description เพิ่มข้อมูลใหม่พร้อมแนบไฟล์ body: { title, description }\n */\nrouter.post('/', upload.single('file'), itemsController.createItem);\n\n/**\n * @method PUT /api/items/:id\n * @description ปรับปรุงแก้ไขข้อมูลตาม ID\n */\nrouter.put('/:id', itemsController.updateItem);\n\n/**\n * @method DELETE /api/items/:id\n * @description ลบข้อมูลออกจากระบบ (เฉพาะผู้ดูแลระบบ)\n */\nrouter.delete('/:id', itemsController.deleteItem);",
+    "verify": "ตรวจสอบ Comment ในไฟล์ backend/routes/items.routes.js",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 57,
+    "execOrderDesc": "พัฒนา API สำหรับแบ่งหน้า (Pagination) และจัดเรียงข้อมูล (Sorting)"
   },
   {
-    id: 'c18_8',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีแจ้งเตือนการลบข้อมูลได้',
-    pts: 1,
-    note: '',
-    explanation: 'เมื่อผู้ดูแลระบบกดปุ่มลบ จะมี Modal หรือ Dialog ป๊อปอัปขึ้นมาถามยืนยันก่อนเสมอเพื่อป้องกันการลบโดยไม่ตั้งใจ',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `function confirmDelete(id) {
-  if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้? การกระทำนี้ไม่สามารถย้อนกลับได้')) {
-    deleteItem(id);
-  }
-}`,
-    verify: 'กดปุ่มลบ ต้องมีหน้าต่างถามยืนยันก่อนลบจริง'
+    "id": "c17_8",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- ระบุข้อมูลที่ใช้ส่งในแต่ละ API เช่น query, path, body อย่างชัดเจน",
+    "pts": 1,
+    "note": "",
+    "explanation": "กำหนดและตรวจสอบข้อมูล Request Parameters ผ่านตัวแปรอย่างชัดเจน: req.query, req.params.id, req.body",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "exports.updateItem = async (req, res) => {\n  const { id } = req.params;             // Path Parameter\n  const { title, description } = req.body; // Body Data\n  const { notify } = req.query;          // Query Parameter\n  // ดำเนินการอัปเดตข้อมูล...\n};",
+    "verify": "ตรวจสอบการอ่าน req.params, req.body, req.query ใน Controller",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 58,
+    "execOrderDesc": "เขียน Data Validation ฝั่ง Backend และจัดการ Error อย่างเป็นระบบ"
   },
   {
-    id: 'c18_9',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีระบบค้นหา/Filter ข้อมูลในหน้า UI ตามสิทธิ์ผู้ใช้งาน แต่ละระดับ',
-    pts: 1,
-    note: '',
-    explanation: 'มีช่อง Search Box และ Dropdown ตัวกรองหมวดหมู่ ค้นหาข้อมูลได้แบบ Real-time หรือกดปุ่มค้นหา',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `document.getElementById('searchInput').addEventListener('input', (e) => {
-  const keyword = e.target.value.toLowerCase();
-  const filtered = allItems.filter(item => item.title.toLowerCase().includes(keyword));
-  renderTable(filtered);
-});`,
-    verify: 'พิมพ์ค้นหาในช่อง ค้นหารายชื่อในตารางจะกรองตามทันที'
+    "id": "c17_9",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- โค้ด Back-end มีโครงสร้างดี อ่านง่าย โดยใช้ router หรือ async/await อย่างเหมาะสม",
+    "pts": 1,
+    "note": "",
+    "explanation": "แยกโครงสร้าง MVC: โฟลเดอร์ routes/, controllers/, middleware/ และเขียนโค้ดด้วย async/await ไม่ใช้ callback ซ้อน",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// ใช้ express.Router() และ async/await อย่างถูกต้อง\nconst express = require('express');\nconst router = express.Router();\n\nrouter.get('/', async (req, res, next) => {\n  try {\n    const data = await itemService.findAll();\n    res.json({ status: 'success', data });\n  } catch (err) {\n    next(err);\n  }\n});",
+    "verify": "โครงสร้างไฟล์เป็นสัดส่วน มี routes และ controllers แยกกัน",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 59,
+    "execOrderDesc": "จัดโครงสร้างโค้ด Backend แบบ Modular Router แยก Controllers และ Services"
   },
   {
-    id: 'c18_10',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีระบบการแบ่งหน้าแสดงข้อมูล ในหน้า UI ตามสิทธิ์ผู้ใช้งาน แต่ละระดับ',
-    pts: 1,
-    note: '',
-    explanation: 'มีระบบแบ่งหน้า Pagination แสดงปุ่ม ก่อนหน้า (Previous), เลขหน้า 1 2 3, และ ถัดไป (Next)',
-    solutionType: 'text',
-    steps: [
-      'จำกัดแสดงผลหน้าละ 5 หรือ 10 รายการ',
-      'มีปุ่มเปลี่ยนหน้าด้านล่างตาราง กดหน้า 2 ข้อมูลจะเปลี่ยนอย่างถูกต้อง'
-    ]
+    "id": "c17_10",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.5",
+    "pdfPage": 15,
+    "questionText": "พัฒนาระบบ Back-end การพัฒนา API\n- API มีความปลอดภัย และมีระบบตรวจสอบสิทธิ์ก่อนเข้าถึงข้อมูล",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้าง Authentication Middleware ตรวจสอบ JWT Token และ Authorization Middleware (RBAC) ตรวจสอบสิทธิ์ Role ก่อนให้เข้าถึงข้อมูล",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// backend/middleware/auth.middleware.js\nconst verifyToken = (req, res, next) => {\n  const authHeader = req.headers['authorization'];\n  const token = authHeader && authHeader.split(' ')[1];\n  if (!token) return res.status(401).json({ status: 'error', message: 'กรุณาเข้าสู่ระบบ' });\n  jwt.verify(token, process.env.JWT_SECRET || 'secret123', (err, user) => {\n    if (err) return res.status(403).json({ status: 'error', message: 'Token ไม่ถูกต้องหรือหมดอายุ' });\n    req.user = user;\n    next();\n  });\n};\n\nconst requireRole = (role) => (req, res, next) => {\n  if (req.user.role !== role) {\n    return res.status(403).json({ status: 'error', message: 'คุณไม่มีสิทธิ์ในการกระทำนี้' });\n  }\n  next();\n};",
+    "verify": "curl http://localhost:3000/api/items (ไม่มี Token ต้องตอบ 401 Unauthorized)",
+    "executionPhase": 7,
+    "phaseName": "Phase 7: พัฒนาฐานข้อมูลและระบบหลังบ้าน (Database & Backend API)",
+    "executionStep": 60,
+    "execOrderDesc": "ติดตั้ง Middleware ความปลอดภัย (Helmet, CORS, Rate Limit) ป้องกันการโจมตี"
   },
   {
-    id: 'c18_11',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีการ Validate ข้อมูล ฝั่ง Frontend ก่อนส่งไปยัง Backend',
-    pts: 1,
-    note: '',
-    explanation: 'ตรวจสอบฟอร์มก่อน Submit เช่น ชื่อเรื่องห้ามว่าง รหัสผ่านขั้นต่ำ 6 ตัวอักษร หากไม่ผ่านจะแจ้งเตือนใต้ช่อง Input ทันที',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `if (!title.trim()) {
-  document.getElementById('titleError').innerText = 'กรุณาระบุชื่อเรื่อง';
-  return false;
-}`,
-    verify: 'ลองกดบันทึกโดยไม่กรอกข้อมูล ระบบจะแจ้งเตือนและไม่ส่ง Request'
+    "id": "c18_1",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มี Layout ใช้งานง่าย มี Responsive",
+    "pts": 1,
+    "note": "",
+    "explanation": "พัฒนาหน้าจอแบบ Responsive รองรับทั้งจอมือถือ แท็บเล็ต และหน้าจอคอมพิวเตอร์เดสก์ท็อป โดยจัดวางองค์ประกอบให้ใช้งานสะดวก",
+    "solutionType": "text",
+    "steps": [
+      "ใช้ CSS Flexbox / Grid หรือ TailwindCSS breakpoint (sm, md, lg)",
+      "บนจอมือถือ: ซ่อน Sidebar เป็น Drawer Menu อัตโนมัติ",
+      "บนจอคอมพิวเตอร์: แสดง Sidebar และตารางข้อมูลเต็มความกว้าง"
+    ],
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 61,
+    "execOrderDesc": "พัฒนา Frontend UI Responsive รองรับทั้งจอ Desktop และ Mobile"
   },
   {
-    id: 'c18_12',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีการเขียนโปรแกรมที่มีการทำ Error Handling ในฝั่ง Frontend (ข้อความแจ้งข้อผิดพลาดที่ผู้ใช้งานเข้าใจง่าย)',
-    pts: 1,
-    note: '',
-    explanation: 'แสดงกล่องแจ้งเตือน (Toast Notification) หรือ Alert ข้อความภาษาไทยที่เข้าใจง่าย เช่น "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้"',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `catch (err) {
-  showToast('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง', 'error');
-}`,
-    verify: 'ทดสอบปิดเน็ตแล้วกดบันทึก จะมีแจ้งเตือนภาษาไทยเข้าใจง่าย'
+    "id": "c18_2",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีหน้าจอ ระบบ Login หรือ Authentication ด้วย JWT ที่ใช้งานได้จริง",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้างฟอร์ม Login ด้วย React ส่งค่า Username/Password ไปตรวจสอบที่ Backend ผ่าน Axios และบันทึก JWT Token ลงใน LocalStorage",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// ตัวอย่าง React Login Handler (เข้าใจง่าย ตรงไปตรงมา ไม่ Over-engineered)\nconst handleLogin = async (e) => {\n  e.preventDefault();\n  setLoginError('');\n  try {\n    const res = await api.post('/auth/login', { username, password });\n    const { token, user } = res.data.data || res.data;\n    \n    // จัดเก็บ Token และ User Profile ลง LocalStorage\n    localStorage.setItem('token', token);\n    localStorage.setItem('user', JSON.stringify(user));\n    \n    setUser(user);\n    setToken(token);\n    showToast('เข้าสู่ระบบสำเร็จ');\n  } catch (err) {\n    setLoginError(err.response?.data?.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');\n  }\n};",
+    "verify": "ทดสอบล็อกอินในหน้าเว็บ ตรวจดู LocalStorage จะพบ auth_token",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 62,
+    "execOrderDesc": "พัฒนาหน้าจอ Login ฟอร์มเชื่อมต่อ API และจัดเก็บ JWT Token"
   },
   {
-    id: 'c18_13',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีการเขียนโปรแกรมที่มีการแสดงข้อความผิดพลาด ที่เกิดจาก Error ฝั่ง Backend (การแปลงรหัสข้อผิดพลาดเป็นข้อความที่เหมาะสม)',
-    pts: 1,
-    note: '',
-    explanation: 'แปลง HTTP Status Code จาก Backend เป็นข้อความที่เหมาะสม เช่น 401 แปลงเป็น "รหัสผ่านไม่ถูกต้อง", 403 แปลงเป็น "คุณไม่มีสิทธิ์ในการเข้าถึง"',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `if (res.status === 401) {
-  showError('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-} else if (res.status === 403) {
-  showError('คุณไม่มีสิทธิ์ในการกระทำรายการนี้');
-} else if (res.status === 404) {
-  showError('ไม่พบข้อมูลที่ต้องการ');
-}`,
-    verify: 'กรอกรหัสผ่านผิด หน้าจอจะแสดงข้อความ "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"'
+    "id": "c18_3",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- แยกระบบ Login ของกลุ่มผู้ใช้งานแต่ละระดับได้ ด้วย JWT",
+    "pts": 1,
+    "note": "",
+    "explanation": "ตรวจสอบ Role ใน JWT Payload หรือ User Object เมื่อผู้ใช้ล็อกอินสำเร็จ นำทางและควบคุมการแสดงผลตามสิทธิ์ 3 ระดับ (Admin, Officer, Member)",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// การแสดงผลและควบคุมสิทธิ์ใน React (RBAC 3 ระดับ)\nconst isAdmin = user?.role === 'admin';\nconst isOfficer = user?.role === 'user1' || user?.role === 'officer';\nconst canModify = isAdmin || isOfficer; // Admin และ Officer เพิ่ม/แก้ไขได้\nconst canDelete = isAdmin;             // เฉพาะ Admin เท่านั้นที่ลบได้\n\nreturn (\n  <div className=\"dashboard\">\n    <Badge role={user?.role} />\n    {canModify && <button onClick={openAddModal}>+ เพิ่มรายการ</button>}\n    <Table items={items} canModify={canModify} canDelete={canDelete} />\n  </div>\n);",
+    "verify": "ล็อกอินด้วย user ต่าง role หน้าจอและเมนูจะปรับเปลี่ยนตามสิทธิ์ทันที",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 63,
+    "execOrderDesc": "ควบคุมการแสดงผลและเส้นทาง (Routing) แยกตาม Role สิทธิ์ของผู้ใช้งาน"
   },
   {
-    id: 'c18_14',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- มีการสร้าง Dockerfile สำหรับ Backend',
-    pts: 1,
-    note: '',
-    explanation: 'สร้างไฟล์ Dockerfile ในโฟลเดอร์ Backend เพื่อใช้รันเซอร์วิสผ่าน Docker Container',
-    solutionType: 'code',
-    lang: 'dockerfile',
-    code: `# backend/Dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-EXPOSE 3000
-CMD ["npm", "start"]`,
-    verify: 'cat modules/04_Fullstack_DevOps_App/Dockerfile'
+    "id": "c18_4",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีการเพิ่มข้อมูลได้สมบูรณ์ตามแบบฟอร์มที่ออกแบบ",
+    "pts": 1,
+    "note": "",
+    "explanation": "มีฟอร์มกรอกข้อมูลครบทุกฟิลด์ เมื่อกดยืนยัน ข้อมูลจะถูกส่งไปบันทึกลงฐานข้อมูลและตารางจะรีเฟรชแสดงข้อมูลใหม่",
+    "solutionType": "text",
+    "steps": [
+      "คลิกปุ่ม \"+ เพิ่มรายการใหม่\"",
+      "กรอกชื่อเรื่อง คำอธิบาย และเลือกหมวดหมู่",
+      "กดปุ่มบันทึก ข้อมูลใหม่จะปรากฏในตารางทันที"
+    ],
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 64,
+    "execOrderDesc": "พัฒนาฟอร์มเพิ่มข้อมูลครบถ้วนตาม Schema ที่ออกแบบไว้"
   },
   {
-    id: 'c18_15',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 16,
-    questionText: 'พัฒนาระบบ Front-end\n- เขียน Pipeline config ประกอบด้วย stages build, test, push, deploy ทำงานได้ทุก stages',
-    pts: 1,
-    note: '',
-    explanation: 'ตั้งค่า Pipeline ให้รันผ่านทั้ง 4 stages ครบถ้วนและไม่ติด Error',
-    solutionType: 'code',
-    lang: 'yaml',
-    code: `stages:
-  - build
-  - test
-  - push
-  - deploy`,
-    verify: 'ตรวจสอบหน้า GitLab CI/CD Pipeline ผ่านทุก Stage'
+    "id": "c18_5",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีการแนบไฟล์พร้อมกับเพิ่มข้อมูลได้สมบูรณ์",
+    "pts": 1,
+    "note": "",
+    "explanation": "ในฟอร์มเพิ่มข้อมูลมี input type=\"file\" เมื่อเลือกไฟล์จะส่งข้อมูลผ่าน FormData ไปยังเซิร์ฟเวอร์สมบูรณ์",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "const formData = new FormData();\nformData.append('title', document.getElementById('title').value);\nformData.append('file', document.getElementById('fileInput').files[0]);\n\nfetch('/api/items', {\n  method: 'POST',\n  headers: { 'Authorization': 'Bearer ' + token },\n  body: formData\n});",
+    "verify": "แนบไฟล์รูปภาพหรือ PDF เมื่อบันทึกแล้วสามารถคลิกดูไฟล์ได้",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 65,
+    "execOrderDesc": "พัฒนาฟังก์ชันแนบไฟล์ประกอบการบันทึกข้อมูล"
   },
   {
-    id: 'c19_1',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 17,
-    questionText: 'เขียน Pipeline ทำงานอัตโนมัติเมื่อมี Push ขึ้น Git Server (Auto Build/Test)',
-    pts: 1,
-    note: '',
-    explanation: 'ตั้งค่า GitLab CI ให้สั่งรัน Pipeline อัตโนมัติทุกครั้งเมื่อมีการ git push commit',
-    solutionType: 'text',
-    steps: [
-      'เมื่อผู้พัฒนาพิมพ์ git push origin main',
-      'GitLab จะดัก Event Push และเรียก GitLab Runner มาเริ่มงาน Build & Test อัตโนมัติ'
-    ]
+    "id": "c18_6",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีการแก้ไขและปรับปรุงข้อมูลได้",
+    "pts": 1,
+    "note": "",
+    "explanation": "มีปุ่มแก้ไขในแต่ละแถว เมื่อคลิกจะโหลดข้อมูลเดิมขึ้นมาในฟอร์ม แก้ไขแล้วบันทึกส่ง PUT ไปอัปเดตข้อมูล",
+    "solutionType": "text",
+    "steps": [
+      "คลิกปุ่ม \"แก้ไข\" ที่รายการในตาราง",
+      "แก้ไขข้อความในฟอร์ม แล้วกดบันทึก",
+      "ข้อมูลในตารางจะอัปเดตตามที่แก้ไขทันที"
+    ],
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 66,
+    "execOrderDesc": "พัฒนาฟอร์ม Modal สำหรับแก้ไขและปรับปรุงข้อมูล"
   },
   {
-    id: 'c19_2',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 17,
-    questionText: 'มี Test ขั้นพื้นฐานใน Pipeline (Unit Testing / Integration Testing) อย่างละ 1 Test Case',
-    pts: 1,
-    note: 'อย่างละ 1 Test Case',
-    explanation: 'เขียน Unit Test (ทดสอบแฮชรหัสผ่าน bcrypt และออก JWT) และ Integration Test (ทดสอบ API Login ด้วย Supertest) ผ่านฉลุย 100%',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `// tests/api.test.js
-const test = require('node:test');
-const assert = require('node:assert');
-
-// 1. Unit Testing: ตรวจสอบการออกและถอดรหัส JWT Token
-test('UNIT-001: JWT Sign & Verify Payload', () => {
-  const token = jwt.sign({ username: 'admin', role: 'admin' }, 'secret');
-  const decoded = jwt.verify(token, 'secret');
-  assert.strictEqual(decoded.role, 'admin');
-});
-
-// 2. Integration Testing: ทดสอบ API Login
-test('INT-001: POST /api/auth/login 200 OK', async () => {
-  const res = await request(app).post('/api/auth/login').send({ username: 'admin', password: 'password' });
-  assert.strictEqual(res.statusCode, 200);
-  assert.ok(res.body.token);
-});`,
-    verify: 'npm test (ผลลัพธ์ pass 5 | fail 0)'
+    "id": "c18_7",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีการแก้ไขไฟล์แนบที่เกี่ยวข้องกับข้อมูลได้",
+    "pts": 1,
+    "note": "",
+    "explanation": "ในฟอร์มแก้ไข ผู้ใช้สามารถเลือกไฟล์แนบอันใหม่เพื่ออัปโหลดแทนที่ไฟล์เดิมได้",
+    "solutionType": "text",
+    "steps": [
+      "ในหน้าแก้ไขรายการ สามารถกดเลือกไฟล์ใหม่เพื่อ Replace ไฟล์แนบเดิม",
+      "เมื่อกดบันทึก ระบบจะลบหรือแทนที่พาธไฟล์ในฐานข้อมูล"
+    ],
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 67,
+    "execOrderDesc": "พัฒนาฟังก์ชันแก้ไขและอัปเดตไฟล์แนบ"
   },
   {
-    id: 'c20',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 17,
-    questionText: 'มี E to E Test เป็นการทดสอบ Work flow ตั้งแต่เริ่มต้นจนจบ ตัวอย่างเช่น E2E-001: ผู้ใช้เข้าสู่ระบบสำเร็จ, E2E-002: ผู้ใช้ส่งข้อมูลสำเร็จ (ผลที่คาดหวัง: ข้อมูลถูกบันทึก และแสดงข้อความ "บันทึกข้อมูลสำเร็จ")',
-    pts: 2,
-    note: 'กรรมการจัดการแข่งขันกำหนดเอง',
-    explanation: 'เขียน Playwright E2E Test ครบทั้ง 2 Workflows: E2E-001 (เปิดหน้า Login -> กรอกข้อมูล -> กด Login -> พาไป Dashboard) และ E2E-002 (เปิดหน้าเพิ่มข้อมูล -> กรอกฟอร์ม -> กดบันทึก -> แสดงข้อความ "บันทึกข้อมูลสำเร็จ")',
-    solutionType: 'code',
-    lang: 'javascript',
-    code: `// tests/e2e.spec.js
-const { test, expect } = require('@playwright/test');
-
-test('E2E-001: ผู้ใช้เข้าสู่ระบบสำเร็จ', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  await page.fill('#username', 'admin');
-  await page.fill('#password', 'password');
-  await page.click('#loginBtn');
-  await expect(page).toHaveURL(/.*dashboard/);
-  await expect(page.locator('#userRoleBadge')).toContainText('admin');
-});
-
-test('E2E-002: ผู้ใช้ส่งข้อมูลสำเร็จ', async ({ page }) => {
-  await page.click('#openAddModalBtn');
-  await page.fill('#itemTitle', 'รายการทดสอบ E2E');
-  await page.click('#submitItemBtn');
-  await expect(page.locator('#toastMessage')).toContainText('บันทึกข้อมูลสำเร็จ');
-});`,
-    verify: 'npx playwright test'
+    "id": "c18_8",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีแจ้งเตือนการลบข้อมูลได้",
+    "pts": 1,
+    "note": "",
+    "explanation": "เมื่อผู้ดูแลระบบกดปุ่มลบ จะมี Modal หรือ Dialog ป๊อปอัปขึ้นมาถามยืนยันก่อนเสมอเพื่อป้องกันการลบโดยไม่ตั้งใจ",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "function confirmDelete(id) {\n  if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้? การกระทำนี้ไม่สามารถย้อนกลับได้')) {\n    deleteItem(id);\n  }\n}",
+    "verify": "กดปุ่มลบ ต้องมีหน้าต่างถามยืนยันก่อนลบจริง",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 68,
+    "execOrderDesc": "พัฒนากล่องยืนยันการลบข้อมูล (Confirmation Dialog) เพื่อความปลอดภัย"
   },
   {
-    id: 'c21',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 18,
-    questionText: 'มีการใช้ Git และ Branch Strategy ในการกำหนดบทบาท Backend / Frontend / DevOps(merge)',
-    pts: 1,
-    note: '',
-    explanation: 'แบ่ง Branch ตามบทบาทสมาชิกในทีม: branch frontend, branch backend, branch devops และทำ Merge Request รวมเข้าสู่ main branch',
-    solutionType: 'code',
-    lang: 'bash',
-    code: `git checkout -b feature/backend-api
-# พัฒนาโค้ด Backend...
-git checkout -b feature/frontend-ui
-# พัฒนาโค้ด Frontend...
-git checkout main
-git merge feature/backend-api
-git merge feature/frontend-ui`,
-    verify: 'git log --graph --oneline --all'
+    "id": "c18_9",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีระบบค้นหา/Filter ข้อมูลในหน้า UI ตามสิทธิ์ผู้ใช้งาน แต่ละระดับ",
+    "pts": 1,
+    "note": "",
+    "explanation": "มีช่อง Search Box และ Dropdown ตัวกรองหมวดหมู่ ค้นหาข้อมูลได้แบบ Real-time หรือกดปุ่มค้นหา",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "document.getElementById('searchInput').addEventListener('input', (e) => {\n  const keyword = e.target.value.toLowerCase();\n  const filtered = allItems.filter(item => item.title.toLowerCase().includes(keyword));\n  renderTable(filtered);\n});",
+    "verify": "พิมพ์ค้นหาในช่อง ค้นหารายชื่อในตารางจะกรองตามทันที",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 69,
+    "execOrderDesc": "พัฒนาช่องค้นหาและกรองข้อมูลบนตาราง UI แบบ Real-time"
   },
   {
-    id: 'c22',
-    secId: 'sec4',
-    qNum: 'ข้อ 4.6',
-    pdfPage: 18,
-    questionText: 'ความสมบูรณ์ของระบบทั้งหมด Application',
-    pts: 3,
-    note: '',
-    explanation: 'ระบบแอปพลิเคชันทำงานเชื่อมโยงกันอย่างสมบูรณ์แบบตั้งแต่ Frontend, Backend REST API, Database MariaDB, จนถึง CI/CD Pipeline ไม่มี Error ตกค้าง',
-    solutionType: 'text',
-    steps: [
-      'Frontend และ Backend คุยกันผ่าน RESTful API ด้วยสถานะ 200/201/401 สมบูรณ์',
-      'Database มีข้อมูลสัมพันธ์กัน 3 ตาราง และบันทึกไฟล์แนบได้จริง',
-      'CI/CD Pipeline ผ่านครบทุกขั้นตอน และระบบรันอยู่บน Docker Container'
-    ]
-  },
-
-  // ==========================================================================
-  // ส่วนที่ 5: การนำเสนอและตอบคำถามคณะกรรมการ (10 คะแนนเต็ม) - หน้า 18
-  // ==========================================================================
-  {
-    id: 'c23_1',
-    secId: 'sec5',
-    qNum: 'ข้อ 5.1',
-    pdfPage: 18,
-    questionText: 'การตอบคำถามจากคณะกรรมการ จากชุดคำถาม Backend Frontend และแนวทางการแก้ปัญหา 5 นาที\n[คำถามที่ 1: ด้าน Backend & Security]',
-    pts: 1,
-    note: 'คำถามละ 1 คะแนน (รวม 3 คะแนน)',
-    explanation: 'คำถามของกรรมการ: "ทำไมถึงเลือกใช้ JWT ในการยืนยันตัวตน และหากผู้ใช้ Logout หรือต้องการระงับสิทธิ์ทันที มีแนวทางจัดการอย่างไร?"',
-    solutionType: 'qa',
-    qSample: 'ทำไมถึงเลือกใช้ JWT ในการยืนยันตัวตน และหากผู้ใช้ Logout หรือต้องการระงับสิทธิ์ทันที มีแนวทางจัดการอย่างไร?',
-    answerText: 'แนวทางการตอบที่ถูกต้องตามมาตรฐานสากล:\n1. เหตุผลที่ใช้ JWT: เป็น Stateless Authentication ไม่ต้องเก็บ Session ลง RAM ใน Server จึงรองรับผู้ใช้งานจำนวนมากได้ดี และมีความปลอดภัยด้วย Digital Signature (HMAC-SHA256)\n2. การยกเลิกสิทธิ์ทันที:\n   - วิธี Token Blacklist ใน Redis: เมื่อผู้ใช้ Logout ให้นำ JWT Token ไปบันทึกลง Redis พร้อมตั้ง TTL ตามเวลาหมดอายุของ Token หากมี Request เข้ามาให้ Middleware ตรวจสอบ Blacklist ก่อน\n   - วิธี Token Versioning: เพิ่มฟิลด์ token_version ในตาราง users เมื่อต้องการระงับสิทธิ์ ให้บวกเลขเวอร์ชันเพิ่มขึ้น Token เก่าจะถูกปฏิเสธทันทีครับ'
+    "id": "c18_10",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีระบบการแบ่งหน้าแสดงข้อมูล ในหน้า UI ตามสิทธิ์ผู้ใช้งาน แต่ละระดับ",
+    "pts": 1,
+    "note": "",
+    "explanation": "มีระบบแบ่งหน้า Pagination แสดงปุ่ม ก่อนหน้า (Previous), เลขหน้า 1 2 3, และ ถัดไป (Next)",
+    "solutionType": "text",
+    "steps": [
+      "จำกัดแสดงผลหน้าละ 5 หรือ 10 รายการ",
+      "มีปุ่มเปลี่ยนหน้าด้านล่างตาราง กดหน้า 2 ข้อมูลจะเปลี่ยนอย่างถูกต้อง"
+    ],
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 70,
+    "execOrderDesc": "พัฒนาปุ่มเปลี่ยนหน้า Pagination บนตาราง UI"
   },
   {
-    id: 'c23_2',
-    secId: 'sec5',
-    qNum: 'ข้อ 5.1',
-    pdfPage: 18,
-    questionText: 'การตอบคำถามจากคณะกรรมการ จากชุดคำถาม Backend Frontend และแนวทางการแก้ปัญหา 5 นาที\n[คำถามที่ 2: ด้าน Frontend & UX/UI]',
-    pts: 1,
-    note: 'คำถามละ 1 คะแนน (รวม 3 คะแนน)',
-    explanation: 'คำถามของกรรมการ: "ระบบของคุณมีการจัดการ Error Handling ระหว่าง Frontend กับ Backend อย่างไร เพื่อไม่ให้หน้าจอค้างหรือผู้ใช้สับสน?"',
-    solutionType: 'qa',
-    qSample: 'ระบบของคุณมีการจัดการ Error Handling ระหว่าง Frontend กับ Backend อย่างไร เพื่อไม่ให้หน้าจอค้างหรือผู้ใช้สับสน?',
-    answerText: 'แนวทางการตอบที่ถูกต้องตามมาตรฐานสากล:\n1. ตรวจสอบข้อมูลฝั่ง Client ล่วงหน้า (Client-side Validation): เช็กความถูกต้องของข้อมูลก่อนส่ง Request เสมอ ทำให้ผู้ใช้ทราบข้อผิดพลาดทันทีโดยไม่ต้องรอเซิร์ฟเวอร์\n2. ส่ง HTTP Status Code ที่ชัดเจน: Backend ตอบกลับด้วย Status Code มาตรฐาน (เช่น 400 ข้อมูลไม่ครบ, 401 รหัสผ่านผิด, 404 ไม่พบข้อมูล) พร้อม JSON รูปแบบ { status, message, data }\n3. แปลงเป็นข้อความภาษาไทยที่เข้าใจง่าย: Frontend นำ error code หรือ message มาแปลงเป็นคำอธิบายที่สุภาพผ่าน Toast Notification และระบุช่องที่ผิดพลาดด้วยสีแดงอย่างชัดเจนครับ'
+    "id": "c18_11",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีการ Validate ข้อมูล ฝั่ง Frontend ก่อนส่งไปยัง Backend",
+    "pts": 1,
+    "note": "",
+    "explanation": "ตรวจสอบฟอร์มก่อน Submit เช่น ชื่อเรื่องห้ามว่าง รหัสผ่านขั้นต่ำ 6 ตัวอักษร หากไม่ผ่านจะแจ้งเตือนใต้ช่อง Input ทันที",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "if (!title.trim()) {\n  document.getElementById('titleError').innerText = 'กรุณาระบุชื่อเรื่อง';\n  return false;\n}",
+    "verify": "ลองกดบันทึกโดยไม่กรอกข้อมูล ระบบจะแจ้งเตือนและไม่ส่ง Request",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 71,
+    "execOrderDesc": "เขียน Form Validation ฝั่ง Frontend ป้องกันการส่งข้อมูลผิดพลาด"
   },
   {
-    id: 'c23_3',
-    secId: 'sec5',
-    qNum: 'ข้อ 5.1',
-    pdfPage: 18,
-    questionText: 'การตอบคำถามจากคณะกรรมการ จากชุดคำถาม Backend Frontend และแนวทางการแก้ปัญหา 5 นาที\n[คำถามที่ 3: ด้าน DevOps & Troubleshooting]',
-    pts: 1,
-    note: 'คำถามละ 1 คะแนน (รวม 3 คะแนน)',
-    explanation: 'คำถามของกรรมการ: "หากใน CI/CD Pipeline ขั้นตอนที่ 4 Deploy เกิดข้อผิดพลาด Failed ขึ้นมา คุณมีกระบวนการแก้ไขและ Rollback อย่างไร?"',
-    solutionType: 'qa',
-    qSample: 'หากใน CI/CD Pipeline ขั้นตอนที่ 4 Deploy เกิดข้อผิดพลาด Failed ขึ้นมา คุณมีกระบวนการแก้ไขและ Rollback อย่างไร และทำไมในระบบเครือข่ายจึงต้องแยก VLAN?',
-    answerText: 'แนวทางการตอบที่ถูกต้องตามมาตรฐานสากล:\n1. การกู้คืนระบบ (Rollback): ตรวจสอบสาเหตุจาก GitLab CI Job Logs ทันที และใช้คำสั่ง Redeploy Docker Image Tag เวอร์ชั่นก่อนหน้าจาก Private Registry ของตนเองกลับมาทำงานแทน ซึ่งใช้เวลาเพียงไม่กี่วินาที (Zero Downtime)\n2. เหตุผลที่ต้องแยก VLAN (Server, Dev, Guest): เพื่อจำกัด Broadcast Domain และความปลอดภัย โดยใช้ ACL กั้นไม่ให้บุคคลภายนอกเข้าถึงวง Server ได้โดยตรง\n3. Reverse Proxy: ทำหน้าที่รวมศูนย์การจัดการ SSL Certificate และซ่อนพอร์ตภายในของ Container ครับ'
+    "id": "c18_12",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีการเขียนโปรแกรมที่มีการทำ Error Handling ในฝั่ง Frontend (ข้อความแจ้งข้อผิดพลาดที่ผู้ใช้งานเข้าใจง่าย)",
+    "pts": 1,
+    "note": "",
+    "explanation": "แสดงกล่องแจ้งเตือน (Toast Notification) หรือ Alert ข้อความภาษาไทยที่เข้าใจง่าย เช่น \"ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้\"",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "catch (err) {\n  showToast('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง', 'error');\n}",
+    "verify": "ทดสอบปิดเน็ตแล้วกดบันทึก จะมีแจ้งเตือนภาษาไทยเข้าใจง่าย",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 72,
+    "execOrderDesc": "เขียน Error Handling แสดง Notification แจ้งผู้ใช้งานอย่างสุภาพ"
   },
   {
-    id: 'c24',
-    secId: 'sec5',
-    qNum: 'ข้อ 5.2',
-    pdfPage: 18,
-    questionText: 'นำเสนอวิธีการทำงานร่วมกัน โดยกระจายการทำงานกันอย่างเหมาะสม',
-    pts: 3,
-    note: '',
-    explanation: 'อธิบายการแบ่งหน้าที่ 3 คนตามความเชี่ยวชาญ: คนที่ 1 ดูแล Network & Linux Server, คนที่ 2 ดูแล Backend API & CI/CD, คนที่ 3 ดูแล Frontend UI & Automated Test',
-    solutionType: 'text',
-    steps: [
-      'คนที่ 1 (Network & Infrastructure): จัดการ Switch L3, VLAN, IP Gateway, DHCP, NAT, ACL และติดตั้ง Ubuntu บน Proxmox',
-      'คนที่ 2 (Backend & DevOps): ออกแบบตารางฐานข้อมูล, พัฒนา REST API Node.js, เขียน .gitlab-ci.yml และทดสอบ Unit Test',
-      'คนที่ 3 (Frontend & QA): วาดผังงาน Flowchart และ Draw.io, พัฒนาหน้าจอ Responsive UI, และเขียน Playwright E2E Tests'
-    ]
+    "id": "c18_13",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีการเขียนโปรแกรมที่มีการแสดงข้อความผิดพลาด ที่เกิดจาก Error ฝั่ง Backend (การแปลงรหัสข้อผิดพลาดเป็นข้อความที่เหมาะสม)",
+    "pts": 1,
+    "note": "",
+    "explanation": "แปลง HTTP Status Code จาก Backend เป็นข้อความที่เหมาะสม เช่น 401 แปลงเป็น \"รหัสผ่านไม่ถูกต้อง\", 403 แปลงเป็น \"คุณไม่มีสิทธิ์ในการเข้าถึง\"",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "if (res.status === 401) {\n  showError('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');\n} else if (res.status === 403) {\n  showError('คุณไม่มีสิทธิ์ในการกระทำรายการนี้');\n} else if (res.status === 404) {\n  showError('ไม่พบข้อมูลที่ต้องการ');\n}",
+    "verify": "กรอกรหัสผ่านผิด หน้าจอจะแสดงข้อความ \"ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง\"",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 73,
+    "execOrderDesc": "เขียนฟังก์ชันแปลง Error จาก Backend เป็นข้อความที่ผู้ใช้เข้าใจง่าย"
   },
   {
-    id: 'c25_1',
-    secId: 'sec5',
-    qNum: 'ข้อ 5.3',
-    pdfPage: 18,
-    questionText: 'บุคลิกภาพ',
-    pts: 3,
-    note: '',
-    explanation: 'การแต่งกายด้วยชุดนักศึกษาถูกต้องตามระเบียบ กิริยาวาจาสุภาพ มั่นใจ ตอบคำถามอย่างชัดเจนและมีลำดับขั้นตอน',
-    solutionType: 'text',
-    steps: [
-      'แต่งกายด้วยเครื่องแบบนักศึกษาของสถานศึกษาถูกต้อง เรียบร้อย',
-      'มีสัมมาคารวะ ไหว้และกล่าวทักทายคณะกรรมการอย่างสุภาพ',
-      'สบตาผู้ฟัง พูดจาฉะฉาน ชัดเจน และแสดงความมั่นใจในผลงานของทีม'
-    ]
+    "id": "c21",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 18,
+    "questionText": "มีการใช้ Git และ Branch Strategy ในการกำหนดบทบาท Backend / Frontend / DevOps(merge)",
+    "pts": 1,
+    "note": "",
+    "explanation": "แบ่ง Branch ตามบทบาทสมาชิกในทีม: branch frontend, branch backend, branch devops และทำ Merge Request รวมเข้าสู่ main branch",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "git checkout -b feature/backend-api\n# พัฒนาโค้ด Backend...\ngit checkout -b feature/frontend-ui\n# พัฒนาโค้ด Frontend...\ngit checkout main\ngit merge feature/backend-api\ngit merge feature/frontend-ui",
+    "verify": "git log --graph --oneline --all",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 74,
+    "execOrderDesc": "จัดการ Git Branch Strategy: แยก main, backend, frontend, devops อย่างเป็นระบบ"
   },
   {
-    id: 'c25_2',
-    secId: 'sec5',
-    qNum: 'ข้อ 5.4',
-    pdfPage: 18,
-    questionText: 'การนำเสนอภายในระยะเวลาที่กำหนด (ไม่เกิน 30 นาที ตอบคำถามไม่เกิน 10 นาที)',
-    pts: 1,
-    note: '',
-    explanation: 'บริหารเวลาการนำเสนอไม่เกินทีมละ 30 นาที และตอบคำถามคณะกรรมการไม่เกิน 3 คำถาม ภายในเวลาไม่เกิน 10 นาที',
-    solutionType: 'text',
-    steps: [
-      'ช่วงที่ 1 (15-20 นาที): บรรยายภาพรวมระบบ ผังเครือข่าย โครงสร้างฐานข้อมูล และสาธิตการทำงานจริงของเว็บและ CI/CD Pipeline',
-      'ช่วงที่ 2 (5-10 นาที): ตอบคำถามจากคณะกรรมการ 3 ข้ออย่างกระชับ ตรงประเด็น และสรุปจบการนำเสนอตรงตามเวลา'
-    ]
+    "id": "c20",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 17,
+    "questionText": "มี E to E Test เป็นการทดสอบ Work flow ตั้งแต่เริ่มต้นจนจบ ตัวอย่างเช่น E2E-001: ผู้ใช้เข้าสู่ระบบสำเร็จ, E2E-002: ผู้ใช้ส่งข้อมูลสำเร็จ (ผลที่คาดหวัง: ข้อมูลถูกบันทึก และแสดงข้อความ \"บันทึกข้อมูลสำเร็จ\")",
+    "pts": 2,
+    "note": "กรรมการจัดการแข่งขันกำหนดเอง",
+    "explanation": "เขียน Playwright E2E Test ครบทั้ง 2 Workflows: E2E-001 (เปิดหน้า Login -> กรอกข้อมูล -> กด Login -> พาไป Dashboard) และ E2E-002 (เปิดหน้าเพิ่มข้อมูล -> กรอกฟอร์ม -> กดบันทึก -> แสดงข้อความ \"บันทึกข้อมูลสำเร็จ\")",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// tests/e2e.spec.js\nconst { test, expect } = require('@playwright/test');\nconst BASE_URL = process.env.BASE_URL || 'http://localhost:3000';\n\ntest.describe('DevOps E2E Workflow Testing', () => {\n  test('E2E-001: ผู้ใช้เข้าสู่ระบบสำเร็จ (Login to Dashboard)', async ({ page }) => {\n    await page.goto(BASE_URL);\n    await expect(page.locator('#view-login')).toBeVisible();\n\n    await page.fill('#input-username', 'officer1');\n    await page.fill('#input-password', 'Password123!');\n    await page.click('#btn-login');\n\n    await expect(page.locator('#view-app')).toBeVisible({ timeout: 5000 });\n    await expect(page.locator('#badge-user-name')).toContainText('IT Officer');\n  });\n\n  test('E2E-002: ผู้ใช้ส่งข้อมูลสำเร็จ (Create Item and Verify Toast)', async ({ page }) => {\n    await page.goto(BASE_URL);\n    await page.fill('#input-username', 'admin');\n    await page.fill('#input-password', 'Password123!');\n    await page.click('#btn-login');\n\n    await page.click('#tab-inventory');\n    await page.click('#btn-open-create-modal');\n\n    const code = `AUTO-${Date.now().toString().slice(-4)}`;\n    await page.fill('#input-item-code', code);\n    await page.selectOption('#select-item-category', '1');\n    await page.fill('#input-item-title', 'MikroTik Router Switch');\n    await page.fill('#input-item-value', '8900');\n    await page.click('#btn-submit-item');\n\n    await expect(page.locator('#toast-container')).toContainText('บันทึกข้อมูลสำเร็จ', { timeout: 5000 });\n  });\n});",
+    "verify": "npx playwright test",
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 75,
+    "execOrderDesc": "เขียนและทดสอบ E2E Tests: E2E-001 (Login สำเร็จ) และ E2E-002 (บันทึกข้อมูลสำเร็จ)"
+  },
+  {
+    "id": "c22",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 18,
+    "questionText": "ความสมบูรณ์ของระบบทั้งหมด Application",
+    "pts": 3,
+    "note": "",
+    "explanation": "ระบบแอปพลิเคชันทำงานเชื่อมโยงกันอย่างสมบูรณ์แบบตั้งแต่ Frontend, Backend REST API, Database MariaDB, จนถึง CI/CD Pipeline ไม่มี Error ตกค้าง",
+    "solutionType": "text",
+    "steps": [
+      "Frontend และ Backend คุยกันผ่าน RESTful API ด้วยสถานะ 200/201/401 สมบูรณ์",
+      "Database มีข้อมูลสัมพันธ์กัน 3 ตาราง และบันทึกไฟล์แนบได้จริง",
+      "CI/CD Pipeline ผ่านครบทุกขั้นตอน และระบบรันอยู่บน Docker Container"
+    ],
+    "executionPhase": 8,
+    "phaseName": "Phase 8: พัฒนาระบบหน้าบ้านและการทดสอบ (Frontend UI & Testing)",
+    "executionStep": 76,
+    "execOrderDesc": "ตรวจสอบความสมบูรณ์ ความถูกต้อง และความลื่นไหลของระบบ Application ทั้งหมด"
+  },
+  {
+    "id": "c11_1",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.5",
+    "pdfPage": 12,
+    "questionText": "เขียน Dockerfile / docker-compose.yaml ใช้งานจริง\n- สร้างและใช้งาน Dockerfile สำหรับแอป Node/เว็บที่พัฒนา ได้",
+    "pts": 1,
+    "note": "",
+    "explanation": "เขียน Dockerfile สำหรับแอปพลิเคชัน Node.js / Express หรือ Frontend ที่พัฒนาขึ้น โดยใช้เทคนิค Multi-stage Build ตามมาตรฐานทางการของ VECSkill เพื่อลดขนาดอิมเมจ และจัดการสิทธิ์ความปลอดภัย",
+    "solutionType": "code",
+    "lang": "dockerfile",
+    "code": "# ==============================================================================\n# Production-ready Dockerfile สำหรับ Node.js Application (Multi-stage Build)\n# ==============================================================================\n# Stage 1: Build Dependencies\nFROM node:20-alpine AS builder\nWORKDIR /app\n\n# คัดลอก package.json เพื่อทำ Docker Layer Cache\nCOPY package*.json ./\nRUN npm ci || npm install\n\n# คัดลอก Source Code ทั้งหมดและทำการ Build\nCOPY . .\n# RUN npm run build (หากเป็น TypeScript / Frontend framework)\n\n# Stage 2: Production Runtime\nFROM node:20-alpine AS runner\nWORKDIR /app\n\nENV NODE_ENV=production\nENV PORT=3000\n\n# คัดลอกเฉพาะไฟล์ที่จำเป็นสำหรับ Runtime จาก builder stage\nCOPY --from=builder /app/package*.json ./\nCOPY --from=builder /app/node_modules ./node_modules\nCOPY --from=builder /app/src ./src\n# COPY --from=builder /app/dist ./dist (ถ้ามี)\n\n# ใช้งานผู้ใช้ node (Non-root user เพื่อความปลอดภัยตามเกณฑ์)\nUSER node\n\nEXPOSE 3000\n\nCMD [\"node\", \"src/index.js\"]",
+    "steps": [
+      "สร้างไฟล์ Dockerfile ภายในไดเรกทอรีโปรเจกต์ของระบบที่พัฒนา",
+      "เขียนคำสั่ง Multi-stage build โดยใช้ Base image node:20-alpine เพื่อประหยัดพื้นที่",
+      "คัดลอก package.json สั่ง npm ci และคัดลอกโค้ดต้นฉบับ",
+      "ทดสอบ Build อิมเมจด้วยคำสั่ง: docker build -t competition-app:v1 .",
+      "ทดสอบรันด้วยคำสั่ง: docker run -d -p 3000:3000 --name test-app competition-app:v1 และตรวจสอบผล"
+    ],
+    "verify": "docker build -t competition-app:v1 . ผ่านสำเร็จ 100% และ docker run รันคอนเทนเนอร์ได้",
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 77,
+    "execOrderDesc": "เขียน Dockerfile แบบ Multi-stage build สำหรับแอปพลิเคชันเพื่อลดขนาดอิมเมจ"
+  },
+  {
+    "id": "c18_14",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- มีการสร้าง Dockerfile สำหรับ Backend",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้างไฟล์ Dockerfile ในโฟลเดอร์ Backend เพื่อใช้รันเซอร์วิสผ่าน Docker Container",
+    "solutionType": "code",
+    "lang": "dockerfile",
+    "code": "# backend/Dockerfile\nFROM node:18-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\nCOPY . .\nEXPOSE 3000\nCMD [\"npm\", \"start\"]",
+    "verify": "cat modules/04_Fullstack_DevOps_App/Dockerfile",
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 78,
+    "execOrderDesc": "เขียน Dockerfile สำหรับ Backend Service ให้พร้อมสำหรับรันบนคอนเทนเนอร์"
+  },
+  {
+    "id": "c11_4",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.5",
+    "pdfPage": 12,
+    "questionText": "เขียน Dockerfile / docker-compose.yaml ใช้งานจริง\n- ใช้ docker-compose.yaml สำหรับบริการมากกว่า 1 (เช่น app + db) ใน 1 compose",
+    "pts": 1,
+    "note": "",
+    "explanation": "สร้าง docker-compose.yaml รวบรวมบริการมากกว่า 1 บริการขึ้นไปในไฟล์เดียว ประกอบด้วย Backend API, ฐานข้อมูล MySQL 8 / MariaDB, phpMyAdmin และ Docker Registry พร้อมกำหนด Volume ข้อมูลถาวร และ Healthcheck ให้บริการสตาร์ตตามลำดับอย่างถูกต้อง",
+    "solutionType": "code",
+    "lang": "yaml",
+    "code": "# ==============================================================================\n# ไฟล์ docker-compose.yaml (App + DB + phpMyAdmin + Registry)\n# ==============================================================================\nversion: \"3.9\"\n\nservices:\n  # 1. บริการฐานข้อมูล MySQL / MariaDB\n  db:\n    image: mysql:8.0\n    container_name: competition-db\n    restart: always\n    environment:\n      MYSQL_ROOT_PASSWORD: RootPassword123!\n      MYSQL_DATABASE: competition_db\n      MYSQL_USER: devops\n      MYSQL_PASSWORD: UserPassword123!\n    volumes:\n      - db_data:/var/lib/mysql\n    healthcheck:\n      test: [\"CMD\", \"mysqladmin\", \"ping\", \"-pRootPassword123!\"]\n      interval: 10s\n      timeout: 5s\n      retries: 10\n    networks:\n      - app_net\n\n  # 2. บริการ phpMyAdmin สำหรับบริหารจัดการฐานข้อมูล\n  phpmyadmin:\n    image: phpmyadmin:latest\n    container_name: competition-pma\n    restart: always\n    ports:\n      - \"8081:80\"\n    environment:\n      PMA_HOST: db\n      PMA_USER: root\n      PMA_PASSWORD: RootPassword123!\n    depends_on:\n      db:\n        condition: service_healthy\n    networks:\n      - app_net\n\n  # 3. บริการแอปพลิเคชันหลัก (Backend API)\n  api:\n    image: 192.168.10.10:5000/competition-app:latest\n    container_name: competition-api\n    restart: always\n    ports:\n      - \"7000:7000\"\n    environment:\n      DB_HOST: db\n      DB_PORT: 3306\n      DB_NAME: competition_db\n      DB_USER: devops\n      DB_PASSWORD: UserPassword123!\n      NODE_ENV: production\n    depends_on:\n      db:\n        condition: service_healthy\n    networks:\n      - app_net\n\n  # 4. บริการ Docker Private Registry v2\n  registry:\n    image: registry:2\n    container_name: registry\n    restart: always\n    ports:\n      - \"5000:5000\"\n    environment:\n      REGISTRY_STORAGE_DELETE_ENABLED: \"true\"\n    volumes:\n      - registry_data:/var/lib/registry\n    networks:\n      - app_net\n\nvolumes:\n  db_data:\n  registry_data:\n\nnetworks:\n  app_net:\n    external: true",
+    "steps": [
+      "เขียนไฟล์ docker-compose.yaml รวม services: db, phpmyadmin, api และ registry",
+      "กำหนด healthcheck ให้กับ db เพื่อให้ api รอจนกว่าฐานข้อมูลจะพร้อมใช้งานจริง (condition: service_healthy)",
+      "รันคำสั่ง docker compose up -d เพื่อเปิดใช้งานทุกเซอร์วิสพร้อมกัน",
+      "ตรวจสอบสถานะด้วย docker compose ps ให้แสดงสถานะ Up หรือ healthy ครบทุกตัว"
+    ],
+    "verify": "docker compose ps แสดงสถานะ running/healthy ครบทั้ง 4 คอนเทนเนอร์ (db, phpmyadmin, api, registry)",
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 79,
+    "execOrderDesc": "เขียน docker-compose.yaml รวม services (app, db, phpmyadmin, registry) บน Production"
+  },
+  {
+    "id": "c12_1",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.6",
+    "pdfPage": 12,
+    "questionText": "กำหนด CI/CD Pipeline\n- สร้าง .gitlab-ci.yml เชื่อมโยงกับการกำหนด State ครบทั้ง 4 ขั้นตอน Build, Test, Push ขึ้น Registry ของตนเอง, Deploy ไปยัง Server ของตนเอง (พิจารณาการเขียนคำสั่งได้ถูกต้อง)",
+    "pts": 1,
+    "note": "พิจารณาการเขียนคำสั่งได้ถูกต้อง",
+    "explanation": "เขียนไฟล์ .gitlab-ci.yml กำหนดลำดับ stages ครบถ้วน 4 ขั้นตอน: build, test, push (นำอิมเมจขึ้น Local Private Registry), deploy (นำคอนเทนเนอร์ขึ้นรันบน Production Server ผ่าน SSH) ตามมาตรฐานทางการของศูนย์ฝึก VECSkill BNCC",
+    "solutionType": "code",
+    "lang": "yaml",
+    "code": "# ==============================================================================\n# ไฟล์ .gitlab-ci.yml (4 ขั้นตอนครบถ้วนตามเกณฑ์ทางการ: build, test, push, deploy)\n# อ้างอิงตามคู่มือทางการ VECSkill BNCC (Node.js + Docker + SSH Deploy)\n# ==============================================================================\nstages:\n  - build\n  - test\n  - push\n  - deploy\n\nvariables:\n  REGISTRY_HOST: \"192.168.10.10:5000\"\n  IMAGE_NAME: \"competition-app\"\n  PRODUCTION_IP: \"192.168.10.10\"\n  PRODUCTION_USER: \"devops\"\n  DOCKER_TLS_CERTDIR: \"\"\n\n# ------------------------------------------------------------------------------\n# 1. STAGE: BUILD (ติดตั้ง Dependencies และคอมไพล์โค้ด)\n# ------------------------------------------------------------------------------\nbuild-job:\n  stage: build\n  image: node:20-alpine\n  tags:\n    - docker\n  script:\n    - echo \"=== [Stage 1: Build] ตรวจสอบ Dependencies และเตรียมแพ็กเกจ ===\"\n    - npm ci || npm install\n    - echo \"Build completed successfully.\"\n  artifacts:\n    paths:\n      - node_modules/\n    expire_in: 1 hour\n\n# ------------------------------------------------------------------------------\n# 2. STAGE: TEST (รัน Automated Unit Tests)\n# ------------------------------------------------------------------------------\ntest-job:\n  stage: test\n  image: node:20-alpine\n  tags:\n    - docker\n  dependencies:\n    - build-job\n  script:\n    - echo \"=== [Stage 2: Test] รัน Automated Unit & Integration Tests ===\"\n    - npm test || npm run test:unit\n    - echo \"All tests passed successfully!\"\n  allow_failure: false\n\n# ------------------------------------------------------------------------------\n# 3. STAGE: PUSH (สร้าง Docker Image และ Push ขึ้น Private Registry)\n# ------------------------------------------------------------------------------\npush-job:\n  stage: push\n  image: docker:24\n  tags:\n    - docker\n  script:\n    - echo \"=== [Stage 3: Push] สร้างและพุช Docker Image ไปยัง Private Registry ===\"\n    - docker build -t \"$REGISTRY_HOST/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA\" .\n    - docker tag \"$REGISTRY_HOST/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA\" \"$REGISTRY_HOST/$IMAGE_NAME:latest\"\n    - docker push \"$REGISTRY_HOST/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA\"\n    - docker push \"$REGISTRY_HOST/$IMAGE_NAME:latest\"\n    - echo \"Image pushed to $REGISTRY_HOST/$IMAGE_NAME:latest\"\n  only:\n    - main\n    - master\n\n# ------------------------------------------------------------------------------\n# 4. STAGE: DEPLOY (เชื่อมต่อไปยัง Production Server ผ่าน SSH และ Deploy คอนเทนเนอร์)\n# ------------------------------------------------------------------------------\ndeploy-job:\n  stage: deploy\n  image: alpine:3.20\n  tags:\n    - docker\n  before_script:\n    - echo \"=== ติดตั้ง SSH Client และเตรียม SSH Key สำหรับ Remote ===\"\n    - apk add --no-cache openssh-client\n    - mkdir -p ~/.ssh\n    - chmod 700 ~/.ssh\n    - echo \"$SSH_PRIVATE_KEY\" | tr -d '\r' > ~/.ssh/id_ed25519\n    - chmod 600 ~/.ssh/id_ed25519\n    - ssh-keyscan -H $PRODUCTION_IP >> ~/.ssh/known_hosts 2>/dev/null || true\n  script:\n    - echo \"=== [Stage 4: Deploy] Remote SSH สั่ง Pull และ Restart Container บน Production ===\"\n    - |\n      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 $PRODUCTION_USER@$PRODUCTION_IP \"\n        cd /srv/app &&\n        docker compose pull api &&\n        docker compose up -d api &&\n        echo 'Production Deployment Completed Successfully!'\n      \"\n  only:\n    - main\n    - master",
+    "steps": [
+      "สร้างไฟล์ .gitlab-ci.yml ไว้ที่ Root Directory ของ Repository ในโปรเจกต์",
+      "ระบุคำสั่ง stages ครบถ้วน 4 รายการ: build, test, push, deploy",
+      "ในแต่ละ Job ผูก stage ให้ตรง และใช้แท็ก 'docker' เพื่อให้ GitLab Runner รับงานไปประมวลผล",
+      "ตรวจสอบไวยากรณ์ด้วย CI Lint บนหน้าเว็บ GitLab (CI/CD > Pipelines > CI Lint)"
+    ],
+    "verify": "cat .gitlab-ci.yml แสดง stages ครบ 4 รายการ (build, test, push, deploy) อย่างสมบูรณ์",
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 80,
+    "execOrderDesc": "เขียน .gitlab-ci.yml กำหนด 4 Stages ครบถ้วน: build, test, push, deploy"
+  },
+  {
+    "id": "c18_15",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 16,
+    "questionText": "พัฒนาระบบ Front-end\n- เขียน Pipeline config ประกอบด้วย stages build, test, push, deploy ทำงานได้ทุก stages",
+    "pts": 1,
+    "note": "",
+    "explanation": "ตั้งค่า Pipeline ให้รันผ่านทั้ง 4 stages ครบถ้วนและไม่ติด Error",
+    "solutionType": "code",
+    "lang": "yaml",
+    "code": "stages:\n  - build\n  - test\n  - push\n  - deploy",
+    "verify": "ตรวจสอบหน้า GitLab CI/CD Pipeline ผ่านทุก Stage",
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 81,
+    "execOrderDesc": "ทดสอบ Pipeline config ทั้ง 4 stages ให้ทำงานเชื่อมโยงกันอย่างสมบูรณ์"
+  },
+  {
+    "id": "c19_1",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 17,
+    "questionText": "เขียน Pipeline ทำงานอัตโนมัติเมื่อมี Push ขึ้น Git Server (Auto Build/Test)",
+    "pts": 1,
+    "note": "",
+    "explanation": "ตั้งค่า GitLab CI ให้สั่งรัน Pipeline อัตโนมัติทุกครั้งเมื่อมีการ git push commit",
+    "solutionType": "text",
+    "steps": [
+      "เมื่อผู้พัฒนาพิมพ์ git push origin main",
+      "GitLab จะดัก Event Push และเรียก GitLab Runner มาเริ่มงาน Build & Test อัตโนมัติ"
+    ],
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 82,
+    "execOrderDesc": "ตั้งค่า Auto Trigger ให้ Pipeline เริ่มทำงานอัตโนมัติเมื่อมีการ Git Push"
+  },
+  {
+    "id": "c12_2",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.7",
+    "pdfPage": 12,
+    "questionText": "ทดสอบใช้งาน Pipeline\n- Push code แล้วเกิด Trigger ได้จริง",
+    "pts": 0.5,
+    "note": "",
+    "explanation": "เมื่อทำการเพิ่ม/แก้ไขโค้ด สร้าง Commit และรันคำสั่ง git push ขึ้นไปยัง GitLab Server หน้า CI/CD Pipelines จะตรวจจับ Push Event และทำการ Trigger รัน Pipeline อัตโนมัติทันที",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# 1. ผูก Git Remote ไปยัง GitLab Repository ของตนเอง:\ngit remote set-url origin http://gitlab.competition.lab/devops/competition-project.git\n\n# 2. เพิ่มไฟล์และสร้าง Commit:\ngit add .\ngit commit -m \"feat: setup full 4-stage ci/cd pipeline\"\n\n# 3. สั่ง Push โค้ดขึ้น Branch main:\ngit push origin main\n\n# 4. ตรวจสอบการ Trigger บนหน้าเว็บ GitLab:\n# ไปที่เมนู CI/CD > Pipelines จะเห็น Pipeline ใหม่ถูกสร้างขึ้นและมีสถานะเป็น \"running\" ทันที",
+    "steps": [
+      "รันคำสั่ง git add . และ git commit -m 'feat: trigger ci cd'",
+      "รันคำสั่ง git push origin main ส่งขึ้นสู่ GitLab Server",
+      "เปิดหน้าเว็บ GitLab เข้าไปที่เมนู CI/CD > Pipelines ในโปรเจกต์",
+      "สังเกตว่ามี Pipeline ใหม่โผล่ขึ้นมาทันที และแสดงสถานะ 'running' (สีฟ้า) หมุนทำงาน"
+    ],
+    "verify": "หน้า GitLab CI/CD > Pipelines แสดง Pipeline สถานะ 'running' หรือ 'passed' ที่ทริกเกอร์จาก Commit ล่าสุด",
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 83,
+    "execOrderDesc": "ทดสอบ Git Push โค้ดขึ้น GitLab แล้วตรวจสอบว่าเกิด Trigger ทำงานทันที"
+  },
+  {
+    "id": "c19_2",
+    "secId": "sec4",
+    "qNum": "ข้อ 4.6",
+    "pdfPage": 17,
+    "questionText": "มี Test ขั้นพื้นฐานใน Pipeline (Unit Testing / Integration Testing) อย่างละ 1 Test Case",
+    "pts": 1,
+    "note": "อย่างละ 1 Test Case",
+    "explanation": "เขียน Unit Test (ทดสอบแฮชรหัสผ่าน bcrypt และออก JWT) และ Integration Test (ทดสอบ API Login ด้วย Supertest) ผ่านฉลุย 100%",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// tests/api.test.js\nconst test = require('node:test');\nconst assert = require('node:assert');\n\n// 1. Unit Testing: ตรวจสอบการออกและถอดรหัส JWT Token\ntest('UNIT-001: JWT Sign & Verify Payload', () => {\n  const token = jwt.sign({ username: 'admin', role: 'admin' }, 'secret');\n  const decoded = jwt.verify(token, 'secret');\n  assert.strictEqual(decoded.role, 'admin');\n});\n\n// 2. Integration Testing: ทดสอบ API Login\ntest('INT-001: POST /api/auth/login 200 OK', async () => {\n  const res = await request(app).post('/api/auth/login').send({ username: 'admin', password: 'password' });\n  assert.strictEqual(res.statusCode, 200);\n  assert.ok(res.body.token);\n});",
+    "verify": "npm test (ผลลัพธ์ pass 5 | fail 0)",
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 84,
+    "execOrderDesc": "รัน Automated Unit & Integration Tests ใน Pipeline ให้ผ่าน 100%"
+  },
+  {
+    "id": "c12_3",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.7",
+    "pdfPage": 12,
+    "questionText": "ทดสอบใช้งาน Pipeline\n- กำหนด Stage ครบ 4 ขั้นตอน (build, test, push ขึ้น registry, deploy) และทำงานได้จริงทุกขั้นตอน (หมายเหตุ: ถ้าได้ข้อใดข้อหนึ่งจะไม่ได้คะแนน ไม่มีการหารเฉลี่ย)",
+    "pts": 2,
+    "note": "ถ้าได้ข้อใดข้อหนึ่งจะไม่ได้คะแนน ไม่มีการหารเฉลี่ย",
+    "explanation": "Pipeline ต้องประมวลผลผ่านครบทุกขั้นตอนโดยไม่มีข้อผิดพลาด (Passed สีเขียวทั้ง 4 Stages) ได้แก่ Stage 1: build, Stage 2: test, Stage 3: push, Stage 4: deploy โดยมีเทคนิคการลงทะเบียน Runner และแก้ปัญหา SSL/Registry ตามคู่มือทางการของ VECSkill BNCC",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# 1. ติดตั้งและ Register GitLab Runner (Docker Executor Mode)\n# ==============================================================================\n# รัน Runner Container พร้อมเชื่อมต่อ Docker Socket:\ndocker run -d \\\n  --name gitlab-runner \\\n  --restart always \\\n  --network app_net \\\n  -v /srv/gitlab-runner/config:/etc/gitlab-runner \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  gitlab/gitlab-runner:latest\n\n# ลงทะเบียน Runner (ดึง Token จาก GitLab Admin Area > CI/CD > Runners):\ndocker exec -it gitlab-runner gitlab-runner register \\\n  --non-interactive \\\n  --url \"http://gitlab:80\" \\\n  --registration-token \"<YOUR_REGISTRATION_TOKEN>\" \\\n  --executor \"docker\" \\\n  --docker-image \"node:20-alpine\" \\\n  --description \"competition-runner\" \\\n  --tag-list \"docker\" \\\n  --run-untagged=\"true\" \\\n  --locked=\"false\"\n\n# ==============================================================================\n# 2. ปรับแต่งไฟล์ /srv/gitlab-runner/config/config.toml (เทคนิคสำคัญ VECSkill BNCC):\n# เพื่อให้ Runner สามารถ Clone ผ่านเครือข่ายภายใน และแชร์ Docker Socket ได้\n# ==============================================================================\n# [runners.docker]\n#   network_mode = \"app_net\"\n#   volumes = [\"/cache\", \"/var/run/docker.sock:/var/run/docker.sock\"]\n#   clone_url = \"http://gitlab\"   # ป้องกันปัญหา SSL Handshake เมื่อ Clone\n\n# รีสตาร์ต Runner:\ndocker restart gitlab-runner\n\n# ==============================================================================\n# 3. ตั้งค่า Insecure Registry ใน /etc/docker/daemon.json บนเซิร์ฟเวอร์:\n# ==============================================================================\n# sudo nano /etc/docker/daemon.json\n# {\n#   \"insecure-registries\": [\"192.168.10.10:5000\", \"registry.competition.lab:5000\"]\n# }\n# sudo systemctl restart docker\n\n# ==============================================================================\n# 4. ตรวจสอบผลการทำงานบนหน้า GitLab Pipelines:\n# Stage 1: build-job   -> [✓ Passed] (เขียว)\n# Stage 2: test-job    -> [✓ Passed] (เขียว)\n# Stage 3: push-job    -> [✓ Passed] (เขียว - นำ Image ขึ้น Registry)\n# Stage 4: deploy-job  -> [✓ Passed] (เขียว - Remote Deploy สำเร็จ)\n# ==============================================================================",
+    "steps": [
+      "ลงทะเบียน GitLab Runner ในโหมด Docker Executor และแมป /var/run/docker.sock เข้าไป",
+      "ปรับแต่ง config.toml ให้ network_mode = 'app_net' และ clone_url = 'http://gitlab'",
+      "ตั้งค่า Insecure Registry ใน /etc/docker/daemon.json ให้ชี้ไปยังพอร์ต 5000 และ restart docker",
+      "ใส่ตัวแปร SSH_PRIVATE_KEY ใน GitLab Project Settings > CI/CD > Variables (เลือก Masked)",
+      "รัน Pipeline และเฝ้าดูหน้า Pipelines จนกระทั่งขึ้นเครื่องหมายถูกสีเขียว (Passed) ครบทั้ง 4 Stages"
+    ],
+    "verify": "หน้าจอ GitLab CI/CD > Pipelines แสดงแถบสถานะ 'passed' สีเขียวครบทั้ง 4 ขั้นตอน (build, test, push, deploy)",
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 85,
+    "execOrderDesc": "เฝ้าดูและตรวจสอบผล Pipeline ให้แสดงผล Passed สีเขียวครบทั้ง 4 Stages!"
+  },
+  {
+    "id": "c12_4",
+    "secId": "sec2",
+    "qNum": "ข้อ 2.7",
+    "pdfPage": 12,
+    "questionText": "ทดสอบใช้งาน Pipeline\n- ระบบสามารถ build และสร้าง image ได้",
+    "pts": 0.5,
+    "note": "",
+    "explanation": "ในระหว่างที่ Pipeline ทำงานใน Stage push ระบบสามารถคอมไพล์โค้ด สร้างเป็น Docker Image และอัปโหลดไปยัง Docker Private Registry สำเร็จ สามารถเรียกตรวจสอบรายชื่ออิมเมจผ่าน Registry HTTP API และหน้าเว็บ Registry UI ได้จริง",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# 1. ตรวจสอบรายการ Repositories ทั้งหมดบน Local Registry ผ่าน REST API:\ncurl -s http://192.168.10.10:5000/v2/_catalog\n# ผลลัพธ์: {\"repositories\":[\"competition-app\"]}\n\n# 2. ตรวจสอบ Tags ของ Image ที่ถูก Push ขึ้นไปล่าสุด:\ncurl -s http://192.168.10.10:5000/v2/competition-app/tags/list\n# ผลลัพธ์: {\"name\":\"competition-app\",\"tags\":[\"latest\",\"a1b2c3d\"]}\n\n# 3. ทดสอบ Pull Image ที่สร้างขึ้นจากเครื่องอื่นในวง Network:\ndocker pull 192.168.10.10:5000/competition-app:latest\n\n# 4. หรือเปิดดูผ่าน Docker Registry Web UI:\n# URL: http://192.168.10.10:8080 หรือ https://registry-ui.competition.lab",
+    "steps": [
+      "รันคำสั่ง curl -s http://192.168.10.10:5000/v2/_catalog เพื่อดูรายชื่อ Repository ใน Private Registry",
+      "รันคำสั่ง curl -s http://192.168.10.10:5000/v2/competition-app/tags/list ตรวจสอบแท็ก latest",
+      "ทดสอบคำสั่ง docker pull 192.168.10.10:5000/competition-app:latest เพื่อยืนยันว่าดึงอิมเมจมาใช้งานได้จริง",
+      "เปิดหน้าเว็บ Docker Registry UI http://192.168.10.10:8080 ตรวจสอบว่ามีชื่ออิมเมจแสดงบนหน้าเว็บ"
+    ],
+    "verify": "curl http://192.168.10.10:5000/v2/_catalog คืนค่า JSON แสดงชื่ออิมเมจ ['competition-app'] อย่างถูกต้อง",
+    "executionPhase": 9,
+    "phaseName": "Phase 9: อัตโนมัติ CI/CD Pipeline และขึ้นสู่ Production",
+    "executionStep": 86,
+    "execOrderDesc": "ตรวจสอบ Docker Image ที่ถูกสร้างขึ้นใน Private Registry ผ่าน API curl /v2/_catalog"
+  },
+  {
+    "id": "c23_1",
+    "secId": "sec5",
+    "qNum": "ข้อ 5.1",
+    "pdfPage": 18,
+    "questionText": "การตอบคำถามจากคณะกรรมการ จากชุดคำถาม Backend Frontend และแนวทางการแก้ปัญหา 5 นาที\n[คำถามที่ 1: ด้าน Backend & Security]",
+    "pts": 1,
+    "note": "คำถามละ 1 คะแนน (รวม 3 คะแนน)",
+    "explanation": "คำถามของกรรมการ: \"ทำไมถึงเลือกใช้ JWT ในการยืนยันตัวตน และหากผู้ใช้ Logout หรือต้องการระงับสิทธิ์ทันที มีแนวทางจัดการอย่างไร?\"",
+    "solutionType": "qa",
+    "qSample": "ทำไมถึงเลือกใช้ JWT ในการยืนยันตัวตน และหากผู้ใช้ Logout หรือต้องการระงับสิทธิ์ทันที มีแนวทางจัดการอย่างไร?",
+    "answerText": "แนวทางการตอบที่ถูกต้องตามมาตรฐานสากล:\n1. เหตุผลที่ใช้ JWT: เป็น Stateless Authentication ไม่ต้องเก็บ Session ลง RAM ใน Server จึงรองรับผู้ใช้งานจำนวนมากได้ดี และมีความปลอดภัยด้วย Digital Signature (HMAC-SHA256)\n2. การยกเลิกสิทธิ์ทันที:\n   - วิธี Token Blacklist ใน Redis: เมื่อผู้ใช้ Logout ให้นำ JWT Token ไปบันทึกลง Redis พร้อมตั้ง TTL ตามเวลาหมดอายุของ Token หากมี Request เข้ามาให้ Middleware ตรวจสอบ Blacklist ก่อน\n   - วิธี Token Versioning: เพิ่มฟิลด์ token_version ในตาราง users เมื่อต้องการระงับสิทธิ์ ให้บวกเลขเวอร์ชันเพิ่มขึ้น Token เก่าจะถูกปฏิเสธทันทีครับ",
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 87,
+    "execOrderDesc": "ซ้อมตอบคำถามกรรมการชุดที่ 1 ด้าน Backend Architecture & Logic (ไม่เกิน 5 นาที)"
+  },
+  {
+    "id": "c23_2",
+    "secId": "sec5",
+    "qNum": "ข้อ 5.1",
+    "pdfPage": 18,
+    "questionText": "การตอบคำถามจากคณะกรรมการ จากชุดคำถาม Backend Frontend และแนวทางการแก้ปัญหา 5 นาที\n[คำถามที่ 2: ด้าน Frontend & UX/UI]",
+    "pts": 1,
+    "note": "คำถามละ 1 คะแนน (รวม 3 คะแนน)",
+    "explanation": "คำถามของกรรมการ: \"ระบบของคุณมีการจัดการ Error Handling ระหว่าง Frontend กับ Backend อย่างไร เพื่อไม่ให้หน้าจอค้างหรือผู้ใช้สับสน?\"",
+    "solutionType": "qa",
+    "qSample": "ระบบของคุณมีการจัดการ Error Handling ระหว่าง Frontend กับ Backend อย่างไร เพื่อไม่ให้หน้าจอค้างหรือผู้ใช้สับสน?",
+    "answerText": "แนวทางการตอบที่ถูกต้องตามมาตรฐานสากล:\n1. ตรวจสอบข้อมูลฝั่ง Client ล่วงหน้า (Client-side Validation): เช็กความถูกต้องของข้อมูลก่อนส่ง Request เสมอ ทำให้ผู้ใช้ทราบข้อผิดพลาดทันทีโดยไม่ต้องรอเซิร์ฟเวอร์\n2. ส่ง HTTP Status Code ที่ชัดเจน: Backend ตอบกลับด้วย Status Code มาตรฐาน (เช่น 400 ข้อมูลไม่ครบ, 401 รหัสผ่านผิด, 404 ไม่พบข้อมูล) พร้อม JSON รูปแบบ { status, message, data }\n3. แปลงเป็นข้อความภาษาไทยที่เข้าใจง่าย: Frontend นำ error code หรือ message มาแปลงเป็นคำอธิบายที่สุภาพผ่าน Toast Notification และระบุช่องที่ผิดพลาดด้วยสีแดงอย่างชัดเจนครับ",
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 88,
+    "execOrderDesc": "ซ้อมตอบคำถามกรรมการชุดที่ 2 ด้าน Frontend State & Security (ไม่เกิน 5 นาที)"
+  },
+  {
+    "id": "c23_3",
+    "secId": "sec5",
+    "qNum": "ข้อ 5.1",
+    "pdfPage": 18,
+    "questionText": "การตอบคำถามจากคณะกรรมการ จากชุดคำถาม Backend Frontend และแนวทางการแก้ปัญหา 5 นาที\n[คำถามที่ 3: ด้าน DevOps & Troubleshooting]",
+    "pts": 1,
+    "note": "คำถามละ 1 คะแนน (รวม 3 คะแนน)",
+    "explanation": "คำถามของกรรมการ: \"หากใน CI/CD Pipeline ขั้นตอนที่ 4 Deploy เกิดข้อผิดพลาด Failed ขึ้นมา คุณมีกระบวนการแก้ไขและ Rollback อย่างไร?\"",
+    "solutionType": "qa",
+    "qSample": "หากใน CI/CD Pipeline ขั้นตอนที่ 4 Deploy เกิดข้อผิดพลาด Failed ขึ้นมา คุณมีกระบวนการแก้ไขและ Rollback อย่างไร และทำไมในระบบเครือข่ายจึงต้องแยก VLAN?",
+    "answerText": "แนวทางการตอบที่ถูกต้องตามมาตรฐานสากล:\n1. การกู้คืนระบบ (Rollback): ตรวจสอบสาเหตุจาก GitLab CI Job Logs ทันที และใช้คำสั่ง Redeploy Docker Image Tag เวอร์ชั่นก่อนหน้าจาก Private Registry ของตนเองกลับมาทำงานแทน ซึ่งใช้เวลาเพียงไม่กี่วินาที (Zero Downtime)\n2. เหตุผลที่ต้องแยก VLAN (Server, Dev, Guest): เพื่อจำกัด Broadcast Domain และความปลอดภัย โดยใช้ ACL กั้นไม่ให้บุคคลภายนอกเข้าถึงวง Server ได้โดยตรง\n3. Reverse Proxy: ทำหน้าที่รวมศูนย์การจัดการ SSL Certificate และซ่อนพอร์ตภายในของ Container ครับ",
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 89,
+    "execOrderDesc": "ซ้อมตอบคำถามกรรมการชุดที่ 3 ด้าน DevOps Troubleshooting & Recovery (ไม่เกิน 5 นาที)"
+  },
+  {
+    "id": "c24",
+    "secId": "sec5",
+    "qNum": "ข้อ 5.2",
+    "pdfPage": 18,
+    "questionText": "นำเสนอวิธีการทำงานร่วมกัน โดยกระจายการทำงานกันอย่างเหมาะสม",
+    "pts": 3,
+    "note": "",
+    "explanation": "อธิบายการแบ่งหน้าที่ 3 คนตามความเชี่ยวชาญ: คนที่ 1 ดูแล Network & Linux Server, คนที่ 2 ดูแล Backend API & CI/CD, คนที่ 3 ดูแล Frontend UI & Automated Test",
+    "solutionType": "text",
+    "steps": [
+      "คนที่ 1 (Network & Infrastructure): จัดการ Switch L3, VLAN, IP Gateway, DHCP, NAT, ACL และติดตั้ง Ubuntu บน Proxmox",
+      "คนที่ 2 (Backend & DevOps): ออกแบบตารางฐานข้อมูล, พัฒนา REST API Node.js, เขียน .gitlab-ci.yml และทดสอบ Unit Test",
+      "คนที่ 3 (Frontend & QA): วาดผังงาน Flowchart และ Draw.io, พัฒนาหน้าจอ Responsive UI, และเขียน Playwright E2E Tests"
+    ],
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 90,
+    "execOrderDesc": "ซ้อมนำเสนอการทำงานร่วมกันเป็นทีม และการแบ่งหน้าที่ความรับผิดชอบ"
+  },
+  {
+    "id": "c25_1",
+    "secId": "sec5",
+    "qNum": "ข้อ 5.3",
+    "pdfPage": 18,
+    "questionText": "บุคลิกภาพ",
+    "pts": 3,
+    "note": "",
+    "explanation": "การแต่งกายด้วยชุดนักศึกษาถูกต้องตามระเบียบ กิริยาวาจาสุภาพ มั่นใจ ตอบคำถามอย่างชัดเจนและมีลำดับขั้นตอน",
+    "solutionType": "text",
+    "steps": [
+      "แต่งกายด้วยเครื่องแบบนักศึกษาของสถานศึกษาถูกต้อง เรียบร้อย",
+      "มีสัมมาคารวะ ไหว้และกล่าวทักทายคณะกรรมการอย่างสุภาพ",
+      "สบตาผู้ฟัง พูดจาฉะฉาน ชัดเจน และแสดงความมั่นใจในผลงานของทีม"
+    ],
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 91,
+    "execOrderDesc": "รักษาบุคลิกภาพที่ดี มีความมั่นใจ และตอบคำถามอย่างมืออาชีพ"
+  },
+  {
+    "id": "c25_2",
+    "secId": "sec5",
+    "qNum": "ข้อ 5.4",
+    "pdfPage": 18,
+    "questionText": "การนำเสนอภายในระยะเวลาที่กำหนด (ไม่เกิน 30 นาที ตอบคำถามไม่เกิน 10 นาที)",
+    "pts": 1,
+    "note": "",
+    "explanation": "บริหารเวลาการนำเสนอไม่เกินทีมละ 30 นาที และตอบคำถามคณะกรรมการไม่เกิน 3 คำถาม ภายในเวลาไม่เกิน 10 นาที",
+    "solutionType": "text",
+    "steps": [
+      "ช่วงที่ 1 (15-20 นาที): บรรยายภาพรวมระบบ ผังเครือข่าย โครงสร้างฐานข้อมูล และสาธิตการทำงานจริงของเว็บและ CI/CD Pipeline",
+      "ช่วงที่ 2 (5-10 นาที): ตอบคำถามจากคณะกรรมการ 3 ข้ออย่างกระชับ ตรงประเด็น และสรุปจบการนำเสนอตรงตามเวลา"
+    ],
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 92,
+    "execOrderDesc": "บริหารเวลาการนำเสนอและสาธิตระบบให้อยู่ในกรอบ 30 นาทีตามเกณฑ์"
+  },
+  {
+    "id": "c_iot_1",
+    "secId": "sec3",
+    "qNum": "ข้อ 3.1",
+    "pdfPage": 22,
+    "questionText": "ติดตั้งและตั้งค่า MQTT Server + Node-RED\n- ติดตั้ง MQTT Server และ ตั้งค่าการเข้าถึง (ACL/Auth) ได้",
+    "pts": 1,
+    "note": "เฉพาะกรณีโหมดมี IoT",
+    "explanation": "ติดตั้ง MQTT Broker (เช่น EMQX หรือ Eclipse Mosquitto) บน Docker พร้อมเปิดพอร์ต 1883 (MQTT) และ 18083 (Web Dashboard) กำหนด Username/Password Authentication และ Access Control List (ACL) ให้ยอมรับเฉพาะอุปกรณ์และ Node-RED ที่ได้รับอนุญาต",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# ==============================================================================\n# รัน EMQX MQTT Broker Container:\n# ==============================================================================\ndocker run -d \\\n  --name emqx \\\n  --restart always \\\n  --network app_net \\\n  -p 1883:1883 \\\n  -p 8083:8083 \\\n  -p 8084:8084 \\\n  -p 8883:8883 \\\n  -p 18083:18083 \\\n  emqx/emqx:5.8.0\n\n# ตรวจสอบการเข้าถึง Web Dashboard:\n# http://192.168.10.10:18083 (User: admin / Pass: public)",
+    "steps": [
+      "รันคอนเทนเนอร์ EMQX ด้วย Docker บน network app_net",
+      "เปิดเว็บเบราว์เซอร์เข้าสู่ http://192.168.10.10:18083 ล็อกอิน admin / public",
+      "ไปที่เมนู Access Control > Authentication สร้าง User: esp32_client และ node_red_client",
+      "ไปที่เมนู Authorization (ACL) กำหนดสิทธิ์ให้อ่านและเขียนเฉพาะ Topic sensors/#"
+    ],
+    "verify": "mosquitto_sub -h 192.168.10.10 -u node_red_client -P <password> -t 'sensors/#' สามารถเชื่อมต่อสำเร็จ",
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 93,
+    "execOrderDesc": "ติดตั้ง MQTT Broker รองรับการเชื่อมต่อจาก ESP32 และ Node-RED"
+  },
+  {
+    "id": "c_iot_2",
+    "secId": "sec3",
+    "qNum": "ข้อ 3.2",
+    "pdfPage": 22,
+    "questionText": "ทดสอบ MQTT Client ได้ (เช่น MQTT Explorer หรือ Node-RED MQTT In/Out)\n- Pub/Sub สำเร็จตาม Topic ที่กำหนด",
+    "pts": 1,
+    "note": "เฉพาะกรณีโหมดมี IoT",
+    "explanation": "ทดสอบการรับส่งข้อความ (Publish / Subscribe) ระหว่าง MQTT Broker และ MQTT Client (เช่น Node-RED mqtt in / mqtt out node หรือ MQTT Explorer) ตาม Topic ที่กรรมการกำหนด เช่น sensors/environment/data",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# 1. Subscribe รอรับข้อมูลบน Topic:\nmosquitto_sub -h 192.168.10.10 -t \"sensors/environment/data\" -v\n\n# 2. Publish ข้อความ JSON ทดสอบจากอีก Terminal:\nmosquitto_pub -h 192.168.10.10 -t \"sensors/environment/data\" -m '{\"temperature\": 28.5, \"humidity\": 65.0, \"status\": \"normal\"}'",
+    "steps": [
+      "เปิด Node-RED Web UI (http://192.168.10.10:1880)",
+      "ลากโหนด 'mqtt in' และตั้งค่า Server: 192.168.10.10:1883, Topic: sensors/environment/data",
+      "ต่อเข้ากับโหนด 'debug' เพื่อดู Payload ข้อมูล",
+      "กด Deploy และทดสอบส่งข้อมูล ตรวจสอบแถบ Debug ต้องได้รับข้อความ JSON ตรงตามที่ส่ง"
+    ],
+    "verify": "หน้าต่าง Debug ใน Node-RED ได้รับ payload JSON จาก Topic ที่ส่งสำเร็จ 100%",
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 94,
+    "execOrderDesc": "ทดสอบการส่งและรับข้อมูล Pub/Sub ผ่าน MQTT Topic"
+  },
+  {
+    "id": "c_iot_3",
+    "secId": "sec3",
+    "qNum": "ข้อ 3.3",
+    "pdfPage": 22,
+    "questionText": "Hardware Integration (ESP32 + Sensor)\n- Hardware Pub ค่า payload ไปยัง Topic ที่กำหนด และ Hardware Sub ค่าเพื่อตอบสนองคำสั่งจาก Server",
+    "pts": 1,
+    "note": "เฉพาะกรณีโหมดมี IoT",
+    "explanation": "เขียนโปรแกรมบนบอร์ดไมโครคอนโทรลเลอร์ ESP32 ด้วย Arduino IDE เชื่อมต่อเครือข่าย WiFi (VLAN dev/guest) อ่านค่าจาก Sensor จริง (เช่น DHT22 อุณหภูมิ/ความชื้น) แล้ว Publish ขึ้น MQTT Broker พร้อมทั้ง Subscribe คำสั่งควบคุม (เช่น สั่งเปิด/ปิด Relay LED) จาก Server",
+    "solutionType": "code",
+    "lang": "c",
+    "code": "// โค้ด ESP32 (Arduino C++) สำหรับส่งค่า Sensor และรับคำสั่ง Relay\n#include <WiFi.h>\n#include <PubSubClient.h>\n#include <DHT.h>\n\nconst char* ssid = \"Competition_WiFi\";\nconst char* password = \"WiFiPassword123\";\nconst char* mqtt_server = \"192.168.10.10\";\n\nWiFiClient espClient;\nPubSubClient client(espClient);\n#define DHTPIN 4\n#define DHTTYPE DHT22\nDHT dht(DHTPIN, DHTTYPE);\n#define RELAY_PIN 2\n\nvoid callback(char* topic, byte* payload, unsigned int length) {\n  String msg = \"\";\n  for (int i = 0; i < length; i++) msg += (char)payload[i];\n  if (msg == \"ON\") digitalWrite(RELAY_PIN, HIGH);\n  else if (msg == \"OFF\") digitalWrite(RELAY_PIN, LOW);\n}\n\nvoid setup() {\n  pinMode(RELAY_PIN, OUTPUT);\n  Serial.begin(115200);\n  dht.begin();\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  client.setServer(mqtt_server, 1883);\n  client.setCallback(callback);\n}\n\nvoid loop() {\n  if (!client.connected()) {\n    while (!client.connected()) {\n      if (client.connect(\"ESP32_Device\", \"esp32_client\", \"password123\")) {\n        client.subscribe(\"commands/relay\");\n      } else delay(2000);\n    }\n  }\n  client.loop();\n  \n  float t = dht.readTemperature();\n  float h = dht.readHumidity();\n  char payload[100];\n  snprintf(payload, sizeof(payload), \"{\\\"temp\\\":%.2f,\\\"hum\\\":%.2f}\", t, h);\n  client.publish(\"sensors/environment/data\", payload);\n  delay(5000);\n}",
+    "steps": [
+      "ต่อวงจร ESP32 เข้ากับ Sensor DHT22 (ขา Data เข้า GPIO 4) และ Relay (ขา Control เข้า GPIO 2)",
+      "เปิดโปรแกรม Arduino IDE คอมไพล์และอัปโหลดโค้ดลงบอร์ด ESP32",
+      "เปิด Serial Monitor ตรวจสอบการเชื่อมต่อ WiFi และ MQTT Broker สำเร็จ",
+      "ส่งคำสั่ง 'ON' เข้า Topic 'commands/relay' สังเกตว่าหลอดไฟ Relay สว่างขึ้นตอบสนองคำสั่งทันที"
+    ],
+    "verify": "ESP32 ส่งข้อมูลอุณหภูมิขึ้น Topic สม่ำเสมอ และตอบสนองต่อคำสั่งเปิด/ปิด Relay ได้จริง",
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 95,
+    "execOrderDesc": "เบิร์นโค้ดลง ESP32 เชื่อมโยง Sensor และ Relay กับ MQTT Broker"
+  },
+  {
+    "id": "c_iot_4",
+    "secId": "sec3",
+    "qNum": "ข้อ 3.4",
+    "pdfPage": 22,
+    "questionText": "Software Interaction & Database Logging\n- Software (Node-RED หรือ Script) Sub ข้อมูลจาก Topic โดยบันทึกข้อมูลลงฐานข้อมูล (เช่น MySQL, MariaDB, SQLite)",
+    "pts": 1,
+    "note": "เฉพาะกรณีโหมดมี IoT",
+    "explanation": "สร้าง Flow การทำงานบน Node-RED (หรือเขียน Background Script) รับข้อมูล (Subscribe) จาก MQTT Topic แปลงค่า JSON และบันทึกข้อมูล Sensor ลงในตาราง iot_logs บนฐานข้อมูล MySQL/MariaDB โดยอัตโนมัติ",
+    "solutionType": "code",
+    "lang": "json",
+    "code": "// ตัวอย่าง Function Node ใน Node-RED สำหรับเตรียม SQL Insert\nmsg.topic = \"INSERT INTO iot_logs (temperature, humidity, device_id, recorded_at) VALUES (?, ?, ?, NOW())\";\nmsg.payload = [\n    msg.payload.temp,\n    msg.payload.hum,\n    \"ESP32-ROOM1\"\n];\nreturn msg;",
+    "steps": [
+      "ติดตั้งพาเล็ต 'node-red-node-mysql' บน Node-RED",
+      "ลากโหนด 'mqtt in' เชื่อมต่อไปยังโหนด 'json' เพื่อแปลง payload เป็น JavaScript Object",
+      "ต่อเข้ากับโหนด 'function' เตรียม SQL Statement บันทึกข้อมูล",
+      "ต่อเข้ากับโหนด 'mysql' ตั้งค่าเชื่อมต่อไปยัง competition-db พอร์ต 3306",
+      "เปิดดูข้อมูลใน phpMyAdmin ตาราง iot_logs ตรวจสอบว่ามีแถวข้อมูลใหม่ถูกเพิ่มทุกๆ 5 วินาที"
+    ],
+    "verify": "SELECT * FROM iot_logs ORDER BY id DESC LIMIT 5; แสดงประวัติข้อมูล Sensor ล่าสุด",
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 96,
+    "execOrderDesc": "บันทึกข้อมูล Sensor จาก MQTT Topic ลงตารางฐานข้อมูล MySQL อัตโนมัติ"
+  },
+  {
+    "id": "c_iot_5",
+    "secId": "sec3",
+    "qNum": "ข้อ 3.5",
+    "pdfPage": 22,
+    "questionText": "การแสดงผลบน Dashboard\n- มีใช้ Node-RED Dashboard แสดงข้อมูลแบบเรียลไทม์ โดยมีการแจ้งเตือน/แสดงผลเมื่อ Hardware ตอบสนอง",
+    "pts": 1,
+    "note": "เฉพาะกรณีโหมดมี IoT",
+    "explanation": "สร้างหน้า Dashboard บน Node-RED ด้วย @flowfuse/node-red-dashboard หรือ node-red-dashboard แสดงผลข้อมูล Sensor แบบ Real-time เช่น Gauge วัดอุณหภูมิ, Chart แสดงความชื้น, ปุ่ม Switch สั่งงาน Relay และไฟสถานะแจ้งเตือน",
+    "solutionType": "code",
+    "lang": "bash",
+    "code": "# เข้าสู่ Node-RED Dashboard ผ่านเว็บเบราว์เซอร์:\n# URL: http://192.168.10.10:1880/dashboard (หรือ /ui)",
+    "steps": [
+      "ติดตั้ง Node-RED Dashboard พาเล็ตใน Node-RED",
+      "สร้าง UI Gauge สำหรับแสดงค่า Temperature (0 - 50 °C) มีสีเขียว-เหลือง-แดง",
+      "สร้าง UI Chart สำหรับพล็อตเส้นแนวโน้มความชื้นย้อนหลัง",
+      "สร้าง UI Switch สำหรับส่งค่า ON/OFF ไปควบคุม Relay บนบอร์ด ESP32",
+      "เปิดหน้า http://192.168.10.10:1880/ui ตรวจสอบเข็มวัดและกราฟขยับตามค่า Sensor จริง"
+    ],
+    "verify": "หน้าเว็บ Node-RED Dashboard แสดงผล Gauge, กราฟเส้น Real-time และปุ่มสั่งงานได้จริง",
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 97,
+    "execOrderDesc": "สร้าง Dashboard บน Node-RED แสดงข้อมูลและควบคุมอุปกรณ์แบบ Real-time"
+  },
+  {
+    "id": "c_iot_6",
+    "secId": "sec3",
+    "qNum": "ข้อ 3.5",
+    "pdfPage": 22,
+    "questionText": "การแสดงผลบน Dashboard\n- มีการแสดงผลผ่านหน้า Web Application ในรูปแบบ Dashboard ไม่น้อยกว่า 5 รูปแบบที่แตกต่างกัน (กำหนดให้แสดงรูปแบบละ 1 หน้าเว็บ) ตามที่กรรมการกำหนด",
+    "pts": 5,
+    "note": "เฉพาะกรณีโหมดมี IoT - 5 รูปแบบ รูปแบบละ 1 คะแนน",
+    "explanation": "พัฒนาหน้าจอ Dashboard บน Web Application หลักครบถ้วนไม่น้อยกว่า 5 รูปแบบที่แตกต่างกัน (หน้าละ 1 รูปแบบ) ได้แก่ 1) KPI Card Stat Widgets, 2) Real-time Time-series Line Chart, 3) Distribution Donut/Bar Chart, 4) Real-time Data Table with Live Stream, 5) Device Control Panel with Interactive Toggles",
+    "solutionType": "code",
+    "lang": "javascript",
+    "code": "// 5 รูปแบบ Dashboard บน Web Application:\n// 1. KPI Metric Summary Cards (/dashboard/summary)\n// 2. Real-time Environmental Line Chart (/dashboard/charts)\n// 3. Status Distribution Donut Chart (/dashboard/distribution)\n// 4. Live Sensor Data Stream Table (/dashboard/table)\n// 5. Hardware Interactive Control Panel (/dashboard/controls)",
+    "steps": [
+      "สร้างหน้า Dashboard 1: การ์ดตัวเลขสรุป (KPI Cards: อุณหภูมิเฉลี่ย, สูงสุด, ต่ำสุด, จำนวนอุปกรณ์)",
+      "สร้างหน้า Dashboard 2: กราฟเส้นแนวโน้มสภาพแวดล้อม (Time-series Line Chart) อัปเดตทุกวินาที",
+      "สร้างหน้า Dashboard 3: แผนภูมิแท่ง/วงกลม สัดส่วนการทำงานของอุปกรณ์ (Distribution Chart)",
+      "สร้างหน้า Dashboard 4: ตารางแสดง Log ข้อมูลล่าสุดแบบ Real-time พร้อมแถบสีสถานะ",
+      "สร้างหน้า Dashboard 5: แผงควบคุมสวิตช์เปิด-ปิด Relay และสไลเดอร์ปรับค่าแบบ Interactive"
+    ],
+    "verify": "เปิดเข้าดูหน้า Web Application มีเมนู Dashboard ครบ 5 รูปแบบที่แตกต่างกันอย่างชัดเจน",
+    "executionPhase": 10,
+    "phaseName": "Phase 10: ระบบ IoT (ถ้ามี) และเตรียมการนำเสนอส่งมอบ",
+    "executionStep": 98,
+    "execOrderDesc": "พัฒนา Web Dashboard 5 รูปแบบบนเว็บแอปพลิเคชันหลัก"
   }
 ];

@@ -1,5 +1,7 @@
-# คู่มือการติดตั้ง รันโปรเจกต์ และรันการทดสอบ (DevOps Asset Center)
+# คู่มือการติดตั้ง รันโปรเจกต์ และรันการทดสอบ (DevOps Asset Center - React & Node.js)
 > เอกสารฉบับสมบูรณ์สำหรับผู้เข้าแข่งขันและคณะกรรมการตรวจผลงาน
+> Frontend: React 18 (Vite, Tailwind CSS, Lucide Icons)
+> Backend: Node.js Express (RESTful API, JWT, RBAC 3 Roles, File Upload)
 
 ---
 

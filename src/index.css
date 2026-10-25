@@ -39,3 +39,38 @@ p, span, div, td, th {
   stroke-linecap: round !important;
   stroke-width: 1.75px !important;
 }
+
+/* ปรับปรุงการแสดงผล Mermaid Flowchart ให้คมชัดทั้ง Light Mode และ Dark Mode */
+.mermaid-light-theme svg text,
+.mermaid-light-theme svg .nodeLabel,
+.mermaid-light-theme svg .label {
+  font-family: 'Sarabun', 'Inter', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+}
+
+.mermaid-dark-theme svg text,
+.mermaid-dark-theme svg .nodeLabel,
+.mermaid-dark-theme svg .label {
+  font-family: 'Sarabun', 'Inter', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+  fill: #f8fafc !important;
+}
+
+.mermaid-dark-theme svg .edgeLabel {
+  background-color: #121217 !important;
+  color: #f1f5f9 !important;
+}
+
+.mermaid-dark-theme svg .edgeLabel rect {
+  fill: #121217 !important;
+  opacity: 0.92 !important;
+}
+
+.mermaid-dark-theme svg .edgePath .path {
+  stroke: #94a3b8 !important;
+}
+
+.mermaid-dark-theme svg marker path {
+  fill: #94a3b8 !important;
+  stroke: #94a3b8 !important;
+}

@@ -9,8 +9,8 @@ WORKDIR /app
 
 RUN apk add --no-cache curl
 
-COPY package*.json ./
-RUN npm install --omit=dev
+COPY backend/package*.json ./backend/
+RUN cd backend && npm install --omit=dev
 
 COPY . .
 

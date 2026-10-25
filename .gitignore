@@ -27,3 +27,9 @@ dist-ssr
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Temporary / Large local files
+DockerDesktopInstaller.exe
+bncc_cache/
+pdf_extracted.txt
+
