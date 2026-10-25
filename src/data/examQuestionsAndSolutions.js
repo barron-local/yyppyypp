@@ -710,15 +710,16 @@ export const examQuestionsAndSolutions = [
     "questionText": "ติดตั้ง Linux Server บน VM\n- ตั้งค่า IP แบบ Static / DHCP ได้ถูกต้องตามผังที่กรรมการกำหนดให้",
     "pts": 1,
     "note": "",
-    "explanation": "กำหนด Static IP Address ให้กับ Ubuntu Server ผ่าน Netplan ตามมาตรฐานทางการของศูนย์ฝึก VECSkill BNCC โดยระบุ IP Address, Gateway และ DNS Nameservers ให้ถูกต้องตามแผนผังเครือข่าย",
+    "explanation": "กำหนด Static IP Address ให้กับ Ubuntu Server ผ่าน Netplan หรือในขั้นตอนติดตั้ง Ubuntu Installer ตามมาตรฐานการสอบ VECSkill โดยระบุ Subnet, Address, Gateway และ DNS ให้ตรงกับวงเครือข่าย",
     "solutionType": "code",
     "lang": "yaml",
-    "code": "# 1. สำรองไฟล์คอนฟิก Netplan เดิมก่อนแก้ไข:\n# sudo cp /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.bak (หรือ 00-installer-config.yaml)\n\n# 2. แก้ไขไฟล์คอนฟิก (สำคัญ: ห้ามใช้ TAB ให้ใช้ Space 2 ช่องในการย่อหน้า):\n# sudo nano /etc/netplan/50-cloud-init.yaml\n\nnetwork:\n  version: 2\n  renderer: networkd\n  ethernets:\n    ens33: # หรือ eth0 / ens18 (ตรวจสอบชื่อการ์ดด้วยคำสั่ง ip link)\n      dhcp4: false\n      addresses:\n        - 192.168.10.10/24\n      routes:\n        - to: default\n          via: 192.168.10.1\n      nameservers:\n        addresses:\n          - 192.168.10.10   # ชี้เข้า Technitium DNS ของตนเอง\n          - 8.8.8.8          # สำรองออกภายนอก\n        search:\n          - competition.lab # หรือ vecskill.ovec\n\n# 3. สั่ง Apply การตั้งค่า Netplan:\n# sudo chmod 600 /etc/netplan/50-cloud-init.yaml\n# sudo netplan apply\n\n# 4. ตรวจสอบผลลัพธ์:\n# ip a show ens33\n# ip route show",
+    "code": "# ====================================================================\n# วิธีดูค่า Network ของเครื่อง Host (Windows) เพื่อนำมากรอกใน Installer หรือ Netplan:\n# รันบน PowerShell ของ Windows:\n# ipconfig /all\n# ดูที่ Adapter ที่ต่อเน็ต (เช่น Wi-Fi หรือ Ethernet):\n#   - IPv4 Address       : เช่น 192.168.1.37\n#   - Subnet Mask        : 255.255.255.0  (= /24 หรือ Subnet: 192.168.1.0/24)\n#   - Default Gateway    : 192.168.1.1\n#   - DNS Servers        : 192.168.1.1 หรือ 8.8.8.8, 1.1.1.1\n# ====================================================================\n\n# 1. การกรอกในหน้าติดตั้ง Ubuntu Server (Installer Network Configuration):\n# [ ens33 ] -> Edit IPv4 -> เลือก Manual:\n#   Subnet:          192.168.1.0/24   (เปลี่ยน 192.168.1 ตามวงเน็ตเครื่องคุณ)\n#   Address:         192.168.1.200    (เลือกเลขท้ายที่ไม่ชนกับเครื่องอื่น เช่น .200)\n#   Gateway:         192.168.1.1      (Default Gateway ของเราเตอร์)\n#   Name servers:    192.168.1.1,8.8.8.8\n#   Search domains:  (เว้นว่างไว้)\n\n# 2. หรือแก้ไขผ่าน Netplan หลังติดตั้งเสร็จ (/etc/netplan/50-cloud-init.yaml):\nnetwork:\n  version: 2\n  renderer: networkd\n  ethernets:\n    ens33: # ตรวจสอบชื่อการ์ดด้วยคำสั่ง ip link (เช่น ens33 หรือ ens18)\n      dhcp4: false\n      addresses:\n        - 192.168.1.200/24   # หรือ 192.168.10.10/24 ตามผังข้อสอบกรรมการ\n      routes:\n        - to: default\n          via: 192.168.1.1   # หรือ 192.168.10.1\n      nameservers:\n        addresses:\n          - 192.168.1.1\n          - 8.8.8.8          # สำรองออกภายนอก\n        search:\n          - competition.lab # หรือ vecskill.ovec",
     "steps": [
-      "รันคำสั่ง ip link เพื่อดูชื่อ Interface การ์ดแลนจริงของเครื่อง (เช่น ens18 หรือ ens33)",
-      "แก้ไขไฟล์คอนฟิก Netplan ใน /etc/netplan/ ด้วย sudo nano ระบุ static IP 192.168.10.10/24 และ gateway 192.168.10.1",
-      "รักษาระยะย่อหน้า (Indentation) ในไฟล์ YAML ให้เป็น Space คู่ ห้ามใช้ Tab เด็ดขาด",
-      "สั่ง sudo netplan apply แล้วตรวจสอบด้วยคำสั่ง ip a และ ip route show"
+      "วิธีหาค่า Network: เปิด PowerShell บน Windows รันคำสั่ง 'ipconfig /all' สังเกตการ์ดที่ใช้งาน (Wi-Fi หรือ Ethernet)",
+      "สังเกต IPv4 Address (เช่น 192.168.1.37) แสดงว่าวง Network คือ 192.168.1.0/24 และ Gateway คือ 192.168.1.1",
+      "ในหน้าจอ Network configuration ของ Ubuntu: เลื่อนไปที่ [ ens33 ] กด Enter เลือก 'Edit IPv4' เปลี่ยนเป็น 'Manual'",
+      "กรอก Subnet: 192.168.1.0/24, Address: 192.168.1.200 (หรือ IP อื่นที่ไม่ชน), Gateway: 192.168.1.1, Name servers: 192.168.1.1,8.8.8.8",
+      "กด Save จะมีปุ่ม 'Done' ด้านล่างโผล่ขึ้นมาให้กดไปยังขั้นตอนต่อไปได้ทันที"
     ],
     "verify": "ip a คืนค่า inet 192.168.10.10/24 และ ip route คืนค่า default via 192.168.10.1",
     "executionPhase": 2,
