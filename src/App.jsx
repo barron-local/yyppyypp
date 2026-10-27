@@ -34,7 +34,10 @@ import {
   ArrowRight,
   PlayCircle,
   Cpu,
-  Box
+  Box,
+  Lock,
+  KeyRound,
+  LogOut
 } from 'lucide-react';
 import { sectionsMeta, executionPhases, examQuestionsAndSolutions } from './data/examQuestionsAndSolutions';
 import MermaidViewer from './components/MermaidViewer';
@@ -53,6 +56,28 @@ export default function App() {
   const [expandedSolutions, setExpandedSolutions] = useState({});
   const [activeCardTabs, setActiveCardTabs] = useState({});
   const [selectedHypervisor, setSelectedHypervisor] = useState('virtualbox');
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('devops_auth') === '2548';
+  });
+  const [pinCode, setPinCode] = useState('');
+  const [authError, setAuthError] = useState(false);
+
+  const handleLogin = (e) => {
+    e?.preventDefault();
+    if (pinCode.trim() === '2548') {
+      sessionStorage.setItem('devops_auth', '2548');
+      setIsAuthenticated(true);
+      setAuthError(false);
+    } else {
+      setAuthError(true);
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('devops_auth');
+    setIsAuthenticated(false);
+    setPinCode('');
+  };
 
   useEffect(() => {
     const isDark = localStorage.getItem('devops_dark_theme') === 'true';
@@ -172,6 +197,60 @@ export default function App() {
     }
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-stone-950 flex flex-col items-center justify-center p-4 selection:bg-blue-600 selection:text-white">
+        <div className="w-full max-w-sm bg-[#18181b] border border-stone-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+          <div className="flex flex-col items-center text-center space-y-3">
+            <div className="w-14 h-14 rounded-2xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+              <Lock className="w-7 h-7" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-white tracking-tight">Security Access Required</h2>
+              <p className="text-xs text-stone-400 mt-1">กรุณากรอกรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
+            </div>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-1.5">
+              <div className="relative">
+                <KeyRound className="w-4 h-4 text-stone-500 absolute left-3 top-3" />
+                <input
+                  type="password"
+                  inputMode="numeric"
+                  maxLength={10}
+                  autoFocus
+                  value={pinCode}
+                  onChange={(e) => {
+                    setPinCode(e.target.value);
+                    if (authError) setAuthError(false);
+                  }}
+                  className={`w-full pl-9 pr-4 py-2.5 bg-stone-900 border rounded-xl text-center text-sm font-mono tracking-widest text-white placeholder:tracking-normal placeholder:text-xs placeholder:text-stone-500 focus:outline-none focus:ring-2 transition ${
+                    authError
+                      ? 'border-red-500 focus:ring-red-500/30'
+                      : 'border-stone-700 focus:border-blue-500 focus:ring-blue-500/30'
+                  }`}
+                />
+              </div>
+              {authError && (
+                <p className="text-[11px] text-red-400 text-center font-medium">
+                  ⚠️ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white text-xs font-bold transition shadow-lg shadow-blue-900/30 cursor-pointer"
+            >
+              เข้าสู่ระบบ
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[#fafaf9] dark:bg-[#121212] text-[#292524] dark:text-[#e7e5e4] transition-colors font-sans selection:bg-blue-200 dark:selection:bg-blue-900">
       
@@ -228,14 +307,24 @@ export default function App() {
               <div className="text-[10px] text-stone-500 font-medium">ทักษะ DevOps ปวส. (2568 - 2572)</div>
             </div>
           </div>
-          <button 
-            type="button"
-            onClick={toggleDarkMode}
-            className="hidden md:flex p-1.5 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500"
-            title="Toggle theme"
-          >
-            {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-stone-600" />}
-          </button>
+          <div className="hidden md:flex items-center gap-1">
+            <button 
+              type="button"
+              onClick={toggleDarkMode}
+              className="p-1.5 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500"
+              title="Toggle theme"
+            >
+              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-stone-600" />}
+            </button>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/40 text-stone-400 hover:text-red-500 transition"
+              title="ออกจากระบบ / ล็อกหน้าจอ"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Score Progress Card */}
@@ -478,15 +567,6 @@ export default function App() {
             <h1 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-stone-100 tracking-tight">
               ทักษะเทคโนโลยีสารสนเทศด้านโปรแกรมและเครือข่ายด้วยกระบวนการ DevOps
             </h1>
-            <a
-              href="/devops-exam-project.zip"
-              download="devops-exam-project.zip"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition shrink-0"
-              title="ดาวน์โหลดซอร์สโค้ดโปรเจกต์เต็มพร้อมรันและส่งประกวด"
-            >
-              <Download className="w-4 h-4" />
-              <span>ดาวน์โหลดโค้ดโปรเจกต์เต็ม (.ZIP)</span>
-            </a>
           </div>
 
           <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
